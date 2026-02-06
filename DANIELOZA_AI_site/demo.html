@@ -1,0 +1,105 @@
+    <!doctype html>
+    <html lang="pl">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      <title>Demo — DANIELOZA.AI</title>
+      <meta name="description" content="Demo reklamy AI DANIELOZA.AI">
+      <link rel="stylesheet" href="assets/css/style.css" />
+
+      <script src="assets/js/main.js" defer></script>
+    </head>
+    <body class="page-demo">
+      <header id="hdr">
+  <a class="brand-mini" href="index.html">
+    <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
+    <strong>DANIELOZA.AI</strong>
+  </a>
+  <nav>
+    <a href="oferta.html">OFERTA</a>
+    <a href="demo.html">DEMO</a>
+    <a href="audyt.html">AUDYT</a>
+    <a href="portfolio.html">PORTFOLIO</a>
+    <a href="kontakt.html">KONTAKT</a>
+  </nav>
+</header>
+
+      <main>
+  <section class="page-hero">
+    <div class="container">
+      <div class="kicker">DEMO</div>
+      <h1>Demo reklamy AI</h1>
+      <p class="note">Tu docelowo podłączysz Kling: formularz → job → preview wideo.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>GENERUJ DEMO</h2>
+    <div class="row">
+      <div class="panel">
+        <form class="form" onsubmit="event.preventDefault(); alert('MVP: podepniemy backend /api/demo-ad');">
+          <div>
+            <div class="label">Nazwa marki</div>
+            <input placeholder="np. Salon Danex" required>
+          </div>
+          <div>
+            <div class="label">Branża</div>
+            <select required>
+              <option value="" disabled selected>Wybierz</option>
+              <option>Beauty</option>
+              <option>E-commerce</option>
+              <option>Gastro</option>
+              <option>Fitness</option>
+              <option>IT / SaaS</option>
+            </select>
+          </div>
+          <div>
+            <div class="label">Styl</div>
+            <select required>
+              <option value="viral">Viral</option>
+              <option value="premium">Premium</option>
+              <option value="dynamic">Dynamiczny</option>
+            </select>
+          </div>
+          <button class="btn" type="submit">Generate demo</button>
+          <div class="note">Po podpięciu backendu: POST /api/demo-ad → dostaniesz job_id → polling /api/jobs/{job_id}.</div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="label">Preview</div>
+        <div style="height:320px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.25);display:grid;place-items:center;margin-top:10px;">
+          <div style="opacity:.7;text-align:center">
+            <div style="letter-spacing:.12em;text-transform:uppercase;font-size:12px">Wideo z Kling</div>
+            <div class="note" style="max-width:360px">Tu pokażesz video_url kiedy job będzie gotowy.</div>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <a class="btn secondary" href="kontakt.html">Chcę gotowy klip</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+      <footer>
+  <div>© <span id="y"></span> DANIELOZA.AI</div>
+
+  <div class="socialbar" aria-label="Social links">
+    <a class="socialbtn" href="https://www.tiktok.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="TikTok">
+      <img src="assets/img/tiktok.png" alt="">
+    </a>
+    <a class="socialbtn" href="https://www.instagram.com/DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="Instagram">
+      <img src="assets/img/instagram.png" alt="">
+    </a>
+    <a class="socialbtn" href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook">
+      <img src="assets/img/facebook.png" alt="">
+    </a>
+    <a class="socialbtn" href="https://www.youtube.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="YouTube">
+      <img src="assets/img/youtube_play.png" alt="">
+    </a>
+  </div>
+</footer>
+
+    </body>
+    </html>
