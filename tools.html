@@ -1,0 +1,153 @@
+﻿<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DANIELOZA.AI — Tools</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="has-intro sticky-header">
+  <!-- Zakładam, że masz globalny header wstrzykiwany/obecny w innych podstronach -->
+  <main class="toolsWrap">
+    <div class="toolsTop">
+      <div>
+        <div class="toolsTitle">TOOLS</div>
+        <div class="toolsSub">Twoje centrum narzędzi AI — demo, generowanie, audio, poradniki.</div>
+      </div>
+      <div class="toolsChipRow">
+        <span class="toolsChip">All</span>
+        <span class="toolsChip">Images</span>
+        <span class="toolsChip">Videos</span>
+        <span class="toolsChip">Audio</span>
+        <span class="toolsChip">Favorites</span>
+      </div>
+    </div>
+
+    <!-- HERO CARDS (jak na screenie: duże kafle narzędzi) -->
+    <section class="toolsHeroGrid">
+      <a class="toolHeroCard" href="demo.html" aria-label="Kling Demo">
+        <div class="toolHeroMedia" style="background-image:url('assets/img/hero-kling.jpg')"></div>
+        <div class="toolHeroOverlay"></div>
+        <div class="toolHeroBody">
+          <span class="toolBadge">NEW</span>
+          <div class="toolHeroName">KLING</div>
+          <div class="toolHeroDesc">Image → Video demo. Szybkie generowanie reklam / rolki / shorts.</div>
+          <div class="toolHeroCta">
+            <span class="toolBtn primary">Open Demo</span>
+            <span class="toolBtn">How it works</span>
+          </div>
+        </div>
+      </a>
+
+      <div class="toolHeroCard">
+        <div class="toolHeroMedia" style="background-image:url('assets/img/hero-sora.jpg')"></div>
+        <div class="toolHeroOverlay"></div>
+        <div class="toolHeroBody">
+          <span class="toolBadge">VIDEO</span>
+          <div class="toolHeroName">SORA 2</div>
+          <div class="toolHeroDesc">Placeholder kafel — tu podłączysz w przyszłości swoją integrację.</div>
+          <div class="toolHeroCta">
+            <span class="toolBtn">Coming soon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="toolHeroCard">
+        <div class="toolHeroMedia" style="background-image:url('assets/img/hero-audio.jpg')"></div>
+        <div class="toolHeroOverlay"></div>
+        <div class="toolHeroBody">
+          <span class="toolBadge">AUDIO</span>
+          <div class="toolHeroName">CLOUD AUDIO</div>
+          <div class="toolHeroDesc">Placeholder kafel — generator audio/voice w jednym miejscu.</div>
+          <div class="toolHeroCta">
+            <span class="toolBtn">Coming soon</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL "Co chcesz dziś stworzyć?" -->
+    <section class="toolsPanel">
+      <div class="toolsPanelGrid">
+        <div class="panelLeft">
+          <h3>Co chcesz dziś stworzyć?</h3>
+          <p>Wybierz szybkie akcje. Układ jest jak w Twoim screenie: lewa kolumna + przewijalne kafle.</p>
+          <a class="toolBtn primary" href="demo.html">Wszystkie narzędzia →</a>
+        </div>
+
+        <div class="panelRow" aria-label="Quick actions">
+          <div class="toolMini" onclick="location.href='demo.html'">
+            <div class="toolMiniIcon">🎬</div>
+            <div class="toolMiniTitle">Stwórz film</div>
+            <div class="toolMiniSub">Kling demo (image→video).</div>
+          </div>
+          <div class="toolMini">
+            <div class="toolMiniIcon">🖼️</div>
+            <div class="toolMiniTitle">Stwórz obrazek</div>
+            <div class="toolMiniSub">Placeholder pod image gen.</div>
+          </div>
+          <div class="toolMini">
+            <div class="toolMiniIcon">✨</div>
+            <div class="toolMiniTitle">Popraw jakość</div>
+            <div class="toolMiniSub">Placeholder pod upscaler.</div>
+          </div>
+          <div class="toolMini">
+            <div class="toolMiniIcon">🧠</div>
+            <div class="toolMiniTitle">Modele językowe</div>
+            <div class="toolMiniSub">Placeholder: GPT workflow.</div>
+          </div>
+          <div class="toolMini">
+            <div class="toolMiniIcon">🧩</div>
+            <div class="toolMiniTitle">Usuń tło</div>
+            <div class="toolMiniSub">Placeholder: background remove.</div>
+          </div>
+          <div class="toolMini">
+            <div class="toolMiniIcon">🎧</div>
+            <div class="toolMiniTitle">Chmurka Audio</div>
+            <div class="toolMiniSub">Placeholder: voice/audio.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARTYKUŁY -->
+    <section class="toolsArticles">
+      <div class="toolsArticlesTop">
+        <h3>Artykuły</h3>
+        <a class="toolBtn" href="oferta.html">Zobacz ofertę</a>
+      </div>
+
+      <div class="toolsArticlesGrid">
+        <div class="articleCard">
+          <div class="articleBody">
+            <div class="articleTitle">Porównanie modeli obrazów</div>
+            <div class="articleSub">Jak dobrać model do stylu: realistyczny / UGC / cinematic.</div>
+            <div class="articleCta toolBtn">Czytaj →</div>
+          </div>
+        </div>
+        <div class="articleCard">
+          <div class="articleBody">
+            <div class="articleTitle">Prompty pod virale</div>
+            <div class="articleSub">Hook + tempo + punchline — proste schematy do reels/shorts.</div>
+            <div class="articleCta toolBtn">Czytaj →</div>
+          </div>
+        </div>
+        <div class="articleCard">
+          <div class="articleBody">
+            <div class="articleTitle">Workflow “demo → kampania”</div>
+            <div class="articleSub">Jak z demka zrobić ofertę, lead i finalny klip.</div>
+            <div class="articleCta toolBtn">Czytaj →</div>
+          </div>
+        </div>
+        <div class="articleCard">
+          <div class="articleBody">
+            <div class="articleTitle">Jak pisać dobre prompty do video</div>
+            <div class="articleSub">Ruch kamery, światło, tempo, styl — checklist.</div>
+            <div class="articleCta toolBtn">Czytaj →</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,372 @@
+﻿<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DANIELOZA.AI - Seedance 15 Pro</title>
+  <meta name="description" content="DANIELOZA.AI - Seedance 15 Pro / Studio generowania wideo (mock UI)." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/main.js" defer></script>
+
+
+  <style id="STUDIO_HUB_V2">
+  .hubWrap{ padding: 0 18px 28px; }
+  .hubShell{ display:flex; gap:16px; align-items:flex-start; }
+  .hubContent{ flex:1; min-width:0; }
+
+  .hubTop{
+    margin: 6px 0 14px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.03);
+  }
+  .hubTop h1{ margin:0; font-size: 22px; letter-spacing:.4px; }
+  .hubTop p{ margin: 8px 0 0; opacity:.8; }
+
+  .hubSection{ display:none; }
+  .hubSection.is-active{ display:block; }
+
+  .hubFrame{
+    width: 100%;
+    height: calc(100vh - 220px);
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 18px;
+    background: rgba(0,0,0,.25);
+    overflow: hidden;
+  }
+  .hubFrame iframe{
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display:block;
+    border-radius: 18px;
+  }
+
+  @media (max-width: 900px){
+    .hubShell{ flex-direction:column; }
+    .hubFrame{ height: 70vh; }
+  }
+</style>
+  <style id="DANIELOZA_SIDEBAR_V2">
+  /* === DANIELOZA.AI Unified Sidebar (works even if page layout is messy) === */
+
+  /* fixed sidebar */
+  .sdSide{
+    position: fixed;
+    left: 24px;
+    top: 108px;
+    width: 320px;
+    max-width: 86vw;
+    padding: 16px;
+    border-radius: 22px;
+    background: rgba(10,10,10,.72);
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow: 0 18px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04) inset;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+  }
+
+  /* push page content away from sidebar */
+  body{ padding-left: 372px; }
+  @media (max-width: 980px){
+    .sdSide{ position: static; width: auto; margin: 14px; }
+    body{ padding-left: 0; }
+  }
+
+  .sdHead{ display:flex; align-items:center; gap:12px; padding: 8px 10px 14px; }
+  .sdSpark{
+    width: 30px; height: 30px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow: 0 0 30px rgba(120,90,255,.20);
+    display:grid; place-items:center;
+  }
+  .sdTitle{ font-weight: 900; letter-spacing:.7px; font-size: 16px; }
+  .sdSub{ opacity:.65; font-weight:800; font-size:12px; margin-top:3px; }
+
+  .sdNav{ display:flex; flex-direction:column; gap: 10px; margin-top: 6px; padding: 0 6px; }
+  .sdItem{
+    display:flex; align-items:center; gap: 10px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow: 0 10px 30px rgba(0,0,0,.35) inset;
+    transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+  .sdItem:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.055); }
+  .sdItem.is-active{
+    border-color: rgba(255,255,255,.22);
+    background: rgba(255,255,255,.07);
+    box-shadow: 0 12px 34px rgba(0,0,0,.35) inset, 0 0 0 1px rgba(255,255,255,.05) inset;
+  }
+  .sdIcon{ width: 22px; display:inline-grid; place-items:center; font-size: 16px; opacity: .95; }
+  .sdLabel{ font-weight: 900; font-size: 15px; }
+  .sdSpacer{ flex: 1; }
+
+  .sdBottom{ margin-top: auto; display:flex; flex-direction:column; gap: 10px; padding: 14px 6px 6px; }
+  .sdGhost{
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.10);
+    color: inherit;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  .sdGhost:hover{ border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.05); }
+
+  .sdCta{
+    display:flex; align-items:center; justify-content:center;
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(120, 90, 255, .22);
+    border: 1px solid rgba(120, 90, 255, .45);
+    font-weight: 900;
+    box-shadow: 0 18px 40px rgba(120,90,255,.10);
+    text-decoration:none;
+    color: inherit;
+  }
+</style>
+</head>
+
+<body class="sticky-header seedance-page">
+  <header id="hdr">
+  <a class="brand-mini" href="index.html">
+    <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
+    <strong>DANIELOZA.AI</strong>
+  </a>
+  <nav>
+    <a href="oferta.html">OFERTA</a>
+    <a href="kling.html">KLING</a>
+    <a href="gemini.html">GEMINI</a>
+    <a href="audyt.html">AUDYT</a>
+    <a href="portfolio.html">PORTFOLIO</a>
+    <a href="kontakt.html">KONTAKT</a>
+    <a href="faq.html">FAQ</a>
+  </nav>
+</header>
+
+  <main class="klingWrap">
+    <section class="klingShell" aria-label="Seedance layout">
+
+      <!-- LEFT SIDEBAR -->
+      <aside class="sdSide" aria-label="DANIELOZA.AI Studio Sidebar">
+  <div class="sdHead">
+    <div class="sdSpark">✨</div>
+    <div>
+      <div class="sdTitle">SEEDANCE</div>
+      <div class="sdSub">VIDEO / IMAGE</div>
+    </div>
+  </div>
+
+  <div class="sdNav">
+    <a class="sdItem " href="kling.html"><span class="sdIcon">🎬</span><span class="sdLabel">Kling</span><span class="sdSpacer"></span></a>
+    <a class="sdItem is-active" href="seedance-1-5-pro.html"><span class="sdIcon">🎞️</span><span class="sdLabel">Seedance</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="gemini.html"><span class="sdIcon">🤖</span><span class="sdLabel">Gemini</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="seedream-4-0.html"><span class="sdIcon">🖼️</span><span class="sdLabel">Seedream 4.0</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="seedream-4-5.html"><span class="sdIcon">🧩</span><span class="sdLabel">Seedream 4.5</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="demo.html"><span class="sdIcon">🧪</span><span class="sdLabel">Sora 2</span><span class="sdSpacer"></span></a>
+  </div>
+
+  <div class="sdBottom">
+    <button class="sdGhost" type="button" id="studioBackendBtn">Backend</button>
+    <button class="sdGhost" type="button" id="studioResetBtn">Reset</button>
+    <a class="sdCta" href="kontakt.html">Zapytaj o wdrożenie</a>
+  </div>
+</aside>
+
+      <!-- CENTER -->
+      <section class="klingCenter" aria-label="Seedance Studio">
+        <div class="klingTopbar panel">
+          <div>
+            <div class="klingKicker">VIDEO GENERATION</div>
+            <h1 class="klingTitle">SEEDANCE 1.5 PRO</h1>
+            <div class="klingSub">
+              Studio do generowania dynamicznych scen wideo (makieta UI - pod API Seedance).
+            </div>
+          </div>
+          <div class="klingTopbarRight">
+            <button class="klingBtn" type="button">OPEN VIDEO</button>
+            <button class="klingBtn" type="button">KOPIUJ JOB</button>
+          </div>
+        </div>
+
+        <div class="klingGrid">
+          <!-- MODEL -->
+          <div class="klingCol panel">
+            <div class="klingColHead">01 / MODEL</div>
+
+            <div class="klingSelect">
+              <div class="klingSelectLabel">Model</div>
+              <select>
+                <option selected>Seedance 15 Pro</option>
+                <option>Seedance 2.0</option>
+              </select>
+            </div>
+
+            <div class="klingField">
+              <div class="klingFieldLabel">Prompt</div>
+              <textarea rows="6" placeholder="Opisz scenę wideo (np. cinematic fight scene, slow motion, neon lights)..."></textarea>
+            </div>
+
+            <div class="klingRow3">
+              <label class="klingMiniField">
+                <span>Format</span>
+                <select>
+                  <option>16:9</option>
+                  <option selected>9:16</option>
+                  <option>1:1</option>
+                </select>
+              </label>
+
+              <label class="klingMiniField">
+                <span>Jakość</span>
+                <select>
+                  <option>720p</option>
+                  <option selected>1080p</option>
+                  <option>4K</option>
+                </select>
+              </label>
+
+              <label class="klingMiniField">
+                <span>Czas</span>
+                <select>
+                  <option>5s</option>
+                  <option selected>8s</option>
+                  <option>10s</option>
+                  <option>15s</option>
+                </select>
+              </label>
+            </div>
+
+            <button class="klingPrimary" type="button">Generuj wideo</button>
+
+            <div class="klingHint">
+              To jest makieta UI. Kolejny krok: podpinamy API Seedance.
+            </div>
+          </div>
+
+          <!-- PODGLĄD -->
+          <div class="klingCol panel klingStageCol">
+            <div class="klingColHead">02 / PODGLĄD</div>
+            <div class="klingStage">
+              <div class="klingStageInner">
+                <div class="klingBadge">Seedance 15 Pro</div>
+                <div class="klingStageTitle">Brak wideo</div>
+                <div class="klingStageSub">Po wygenerowaniu pojawi się tutaj podgląd.</div>
+              </div>
+            </div>
+
+            <div class="studioSlots" id="seedanceSlots">
+              <button class="slot" type="button" data-kind="image">
+                <span class="slotKicker">IMAGE SLOT</span>
+                <span class="slotHint">kliknij + wybierz PNG/JPG/WebP</span>
+                <span class="slotPreview"></span>
+              </button>
+              <button class="slot" type="button" data-kind="image">
+                <span class="slotKicker">IMAGE SLOT</span>
+                <span class="slotHint">kliknij + wybierz PNG/JPG/WebP</span>
+                <span class="slotPreview"></span>
+              </button>
+              <button class="slot" type="button" data-kind="video">
+                <span class="slotKicker">VIDEO SLOT</span>
+                <span class="slotHint">kliknij + wybierz MP4/WebM</span>
+                <span class="slotPreview"></span>
+              </button>
+              <button class="slot" type="button" data-kind="video">
+                <span class="slotKicker">VIDEO SLOT</span>
+                <span class="slotHint">kliknij + wybierz MP4/WebM</span>
+                <span class="slotPreview"></span>
+              </button>
+            </div>
+            <input id="seedanceSlotFile" type="file" accept="image/*,video/*" style="display:none" />
+          </div>
+
+          <!-- KOLEJKA -->
+          <div class="klingCol panel">
+            <div class="klingColHead">03 / KOLEJKA</div>
+            <div class="klingQueue">
+              <div class="klingQueueEmpty">Brak zadań</div>
+            </div>
+            <div class="klingQueueFoot">
+              <button class="klingBtn2" type="button">Wyczyść</button>
+              <button class="klingBtn2" type="button">Dodaj przykłady</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </section>
+  </main>
+<script>
+  (function(){
+    const wrap = document.getElementById("seedanceSlots");
+    const fileInp = document.getElementById("seedanceSlotFile");
+    if(!wrap || !fileInp) return;
+
+    let activeSlot = null;
+    const slots = Array.from(wrap.querySelectorAll(".slot"));
+
+    slots.forEach(slot=>{
+      slot.addEventListener("click", ()=>{
+        activeSlot = slot;
+        const kind = slot.getAttribute("data-kind");
+        fileInp.value = "";
+        fileInp.accept = kind === "video" ? "video/*" : "image/*";
+        fileInp.click();
+      });
+    });
+
+    fileInp.addEventListener("change", ()=>{
+      if(!activeSlot) return;
+      const f = fileInp.files && fileInp.files[0];
+      if(!f) return;
+
+      const kind = activeSlot.getAttribute("data-kind");
+      const prev = activeSlot.querySelector(".slotPreview");
+      const hint = activeSlot.querySelector(".slotHint");
+      const url = URL.createObjectURL(f);
+
+      prev.innerHTML = "";
+      hint.textContent = f.name;
+
+      if(kind === "video"){
+        const vid = document.createElement("video");
+        vid.src = url;
+        vid.controls = true;
+        vid.playsInline = true;
+        prev.appendChild(vid);
+      }else{
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = "preview";
+        prev.appendChild(img);
+      }
+
+      activeSlot.classList.add("hasMedia");
+    });
+  })();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

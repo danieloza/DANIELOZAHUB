@@ -1,0 +1,155 @@
+﻿<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DANIELOZA.AI — FAQ</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/main.js" defer></script>
+  <style>
+    /* FAQ PATCH (lekki, bez ryzyka) */
+    .faq-wrap{ max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .faq-grid{ display:grid; grid-template-columns: 1fr; gap:14px; }
+    .faq-item{ border:1px solid rgba(255,255,255,.10); border-radius:18px; padding:16px 16px; background: rgba(255,255,255,.03); }
+    .faq-q{ display:flex; justify-content:space-between; align-items:center; gap:10px; cursor:pointer; user-select:none; }
+    .faq-q strong{ letter-spacing:.02em; }
+    .faq-a{ margin-top:10px; opacity:.92; line-height:1.65; display:none; }
+    .faq-item.open .faq-a{ display:block; }
+    .faq-chev{ opacity:.7; transform: rotate(0deg); transition: transform .18s ease; }
+    .faq-item.open .faq-chev{ transform: rotate(180deg); }
+    @media (max-width: 980px){ .faq-wrap{ padding:0 16px; } }
+  </style>
+</head>
+<body  class="page-faq has-intro sticky-header">
+
+<header id="hdr">
+  <a class="brand-mini" href="index.html">
+    <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
+    <strong>DANIELOZA.AI</strong>
+  </a>
+  <nav>
+    <a href="oferta.html">OFERTA</a>
+    <a href="demo.html">DEMO</a>
+    <a href="audyt.html">AUDYT</a>
+    <a href="portfolio.html">PORTFOLIO</a>
+    <a href="kontakt.html">KONTAKT</a>
+    <a href="faq.html">FAQ</a>
+</nav>
+</header>
+
+<div id="site-intro" class="site-intro" aria-hidden="true">
+  <div class="site-intro__inner">
+    <div class="site-intro__logo">FAQ</div>
+  </div>
+</div>
+<script>
+/* SITE INTRO SCRIPT */
+(function(){
+  const el = document.getElementById('site-intro');
+  if(!el) return;
+  requestAnimationFrame(() => el.classList.add('is-on'));
+  setTimeout(() => {
+    el.classList.add('is-off');
+    setTimeout(() => el.remove(), 420);
+  }, 1100);
+})();
+</script>
+<main class="wrap faq-wrap">
+  <section class="panel" style="margin-top:18px;">
+    <div class="kicker">FAQ</div>
+    <h1 style="margin:6px 0 0;letter-spacing:.02em;">Najczęściej zadawane pytania</h1>
+    <p class="note" style="margin-top:10px;max-width:82ch;">
+      Krótko i konkretnie: jak to działa, ile trwa, co dostajesz i jak startujemy.
+    </p>
+  </section>
+
+  <section class="faq-grid" style="margin-top:14px;">
+
+    <div class="faq-item">
+      <div class="faq-q"><strong>Co dokładnie oferujesz?</strong><span class="faq-chev">⌄</span></div>
+      <div class="faq-a">
+        Tworzę AI video i krótkie formaty (rolki/shorts), pomagam w strategii treści i robię proste landing page pod ofertę.
+        Jeśli chcesz — robimy też audyt social mediów i plan publikacji.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><strong>Jak wygląda start współpracy?</strong><span class="faq-chev">⌄</span></div>
+      <div class="faq-a">
+        1) Piszesz czego potrzebujesz + cel (sprzedaż/rozpoznawalność/lead).<br/>
+        2) Dostajesz propozycję kierunku i krótką listę materiałów do podesłania (logo/produkt/klipy).<br/>
+        3) Robię pierwszą wersję i iterujemy szybko w krótkich poprawkach.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><strong>Ile trwa realizacja?</strong><span class="faq-chev">⌄</span></div>
+      <div class="faq-a">
+        Zależy od złożoności, ale najczęściej: pierwsza wersja w 24–72h.
+        Jeśli projekt jest większy (landing + kilka filmów), ustalamy harmonogram od razu.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><strong>Co muszę dostarczyć?</strong><span class="faq-chev">⌄</span></div>
+      <div class="faq-a">
+        Minimum: link do profilu/strony, krótki opis oferty, materiały (foto/wideo) jeśli masz.
+        Jak nie masz — da się zrobić kreację od zera, tylko potrzebuję jasnego celu i stylu.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><strong>Czy mogę mieć poprawki?</strong><span class="faq-chev">⌄</span></div>
+      <div class="faq-a">
+        Tak. Najlepiej działają krótkie, konkretne rundy (“bardziej dynamicznie”, “krócej”, “inna muzyka/tempo”, “więcej produktu”).
+        Dogadujemy liczbę rund na starcie.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><strong>Czy zrobisz to pod moje social media?</strong><span class="faq-chev">⌄</span></div>
+      <div class="faq-a">
+        Tak — dopasuję format (9:16), tempo, hook i napisy pod Reels/TikTok/Shorts.
+        Mogę też dorzucić rekomendacje co wrzucać i jak to spinać w serię.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><strong>Gdzie mam napisać, żeby zacząć?</strong><span class="faq-chev">⌄</span></div>
+      <div class="faq-a">
+        Najprościej: przejdź do <a href="kontakt.html">Kontakt</a> i wyślij krótko: “co + cel + deadline”.
+      </div>
+    </div>
+
+  </section>
+
+  <section class="panel" style="margin-top:14px;">
+    <div class="kicker">Szybki skrót</div>
+    <p class="note" style="margin-top:10px;line-height:1.7;max-width:82ch;">
+      Chcesz zobaczyć jak to działa? Wejdź w <a href="demo.html">DEMO</a>.
+      Jeśli wolisz konsultację: <a href="audyt.html">AUDYT</a>.
+    </p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+      <a class="btn" href="demo.html">Zobacz demo</a>
+      <a class="btn secondary" href="kontakt.html">Kontakt</a>
+    </div>
+  </section>
+</main>
+
+<script>
+/* FAQ accordion */
+(function(){
+  const items = Array.from(document.querySelectorAll('.faq-item'));
+  items.forEach(it => {
+    const q = it.querySelector('.faq-q');
+    q?.addEventListener('click', () => it.classList.toggle('open'));
+  });
+})();
+</script>
+</body>
+</html>
+
+
+
+
+

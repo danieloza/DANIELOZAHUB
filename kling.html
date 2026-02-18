@@ -1,0 +1,665 @@
+﻿<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DANIELOZA.AI - Kling Studio</title>
+  <meta name="description" content="DANIELOZA.AI - Kling / Video studio (mock UI)." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/main.js" defer></script>
+
+
+
+<style id="DANIELOZA_SIDEBAR_V2">
+  /* === DANIELOZA.AI Unified Sidebar (works even if page layout is messy) === */
+
+  /* fixed sidebar */
+  .sdSide{
+    position: fixed;
+    left: 24px;
+    top: 108px;
+    width: 320px;
+    max-width: 86vw;
+    padding: 16px;
+    border-radius: 22px;
+    background: rgba(10,10,10,.72);
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow: 0 18px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04) inset;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+  }
+
+  /* push page content away from sidebar */
+  body{ padding-left: 372px; }
+  @media (max-width: 980px){
+    .sdSide{ position: static; width: auto; margin: 14px; }
+    body{ padding-left: 0; }
+  }
+
+  .sdHead{ display:flex; align-items:center; gap:12px; padding: 8px 10px 14px; }
+  .sdSpark{
+    width: 30px; height: 30px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow: 0 0 30px rgba(120,90,255,.20);
+    display:grid; place-items:center;
+  }
+  .sdTitle{ font-weight: 900; letter-spacing:.7px; font-size: 16px; }
+  .sdSub{ opacity:.65; font-weight:800; font-size:12px; margin-top:3px; }
+
+  .sdNav{ display:flex; flex-direction:column; gap: 10px; margin-top: 6px; padding: 0 6px; }
+  .sdItem{
+    display:flex; align-items:center; gap: 10px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow: 0 10px 30px rgba(0,0,0,.35) inset;
+    transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+  .sdItem:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.055); }
+  .sdItem.is-active{
+    border-color: rgba(255,255,255,.22);
+    background: rgba(255,255,255,.07);
+    box-shadow: 0 12px 34px rgba(0,0,0,.35) inset, 0 0 0 1px rgba(255,255,255,.05) inset;
+  }
+  .sdIcon{ width: 22px; display:inline-grid; place-items:center; font-size: 16px; opacity: .95; }
+  .sdLabel{ font-weight: 900; font-size: 15px; }
+  .sdSpacer{ flex: 1; }
+
+  .sdBottom{ margin-top: auto; display:flex; flex-direction:column; gap: 10px; padding: 14px 6px 6px; }
+  .sdGhost{
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.10);
+    color: inherit;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  .sdGhost:hover{ border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.05); }
+
+  .sdCta{
+    display:flex; align-items:center; justify-content:center;
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(120, 90, 255, .22);
+    border: 1px solid rgba(120, 90, 255, .45);
+    font-weight: 900;
+    box-shadow: 0 18px 40px rgba(120,90,255,.10);
+    text-decoration:none;
+    color: inherit;
+  }
+</style>
+
+</head>
+
+<body class="sticky-header kling-page">
+  <header id="hdr">
+  <a class="brand-mini" href="index.html">
+    <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
+    <strong>DANIELOZA.AI</strong>
+  </a>
+  <nav>
+    <a href="oferta.html">OFERTA</a>
+    <a href="kling.html" aria-current="page">KLING</a>
+    <a href="gemini.html">GEMINI</a>
+    <a href="audyt.html">AUDYT</a>
+    <a href="portfolio.html">PORTFOLIO</a>
+    <a href="kontakt.html">KONTAKT</a>
+    <a href="faq.html">FAQ</a>
+  </nav>
+</header>
+
+  <main class="klingWrap">
+    <section class="klingShell" aria-label="Kling layout">
+
+      <!-- LEFT SIDEBAR -->
+<aside class="sdSide" aria-label="DANIELOZA.AI Studio Sidebar">
+  <div class="sdHead">
+    <div class="sdSpark">✨</div>
+    <div>
+      <div class="sdTitle">KLING</div>
+      <div class="sdSub">VIDEO / IMAGE</div>
+    </div>
+  </div>
+
+  <div class="sdNav">
+    <a class="sdItem is-active" href="kling.html"><span class="sdIcon">🎬</span><span class="sdLabel">Kling</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="seedance-1-5-pro.html"><span class="sdIcon">🎞️</span><span class="sdLabel">Seedance</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="gemini.html"><span class="sdIcon">🤖</span><span class="sdLabel">Gemini</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="seedream-4-0.html"><span class="sdIcon">🖼️</span><span class="sdLabel">Seedream 4.0</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="seedream-4-5.html"><span class="sdIcon">🧩</span><span class="sdLabel">Seedream 4.5</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="demo.html"><span class="sdIcon">🧪</span><span class="sdLabel">Sora 2</span><span class="sdSpacer"></span></a>
+  </div>
+
+  <div class="sdBottom">
+    <button class="sdGhost" type="button" id="studioBackendBtn">Backend</button>
+    <button class="sdGhost" type="button" id="studioResetBtn">Reset</button>
+    <a class="sdCta" href="kontakt.html">Zapytaj o wdrożenie</a>
+  </div>
+</aside>
+<script id="DANIELOZA_ACTIVE_NAV_JS">
+  (function(){
+    try{
+      var file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+      var items = document.querySelectorAll('#danielozaNav .sdItem');
+      items.forEach(function(a){
+        var p = (a.getAttribute('data-page') || '').toLowerCase();
+        if(p === file){ a.classList.add('is-active'); }
+      });
+    }catch(e){}
+  })();
+</script>
+
+      <!-- CENTER -->
+      <section class="klingCenter" aria-label="Studio">
+        <div class="klingTopbar panel">
+          <div>
+            <div class="klingKicker">VIDEO GENERATION</div>
+            <h1 class="klingTitle">KLING</h1>
+            <div class="klingSub">Makieta UI pod generowanie wideo + kolejka jobów. Następny krok: podpinamy API.</div>
+          </div>
+          <div class="klingTopbarRight">
+            <button class="klingBtn" type="button" id="klingOpenBtn">OPEN VIDEO</button>
+            <button class="klingBtn" type="button" id="klingCopyBtn">KOPIUJ JOB</button>
+          </div>
+        </div>
+
+        <div class="klingGrid">
+          <!-- MODEL / SETTINGS -->
+          <div class="klingCol panel">
+  <div class="klingColHead">01 / MODEL</div>
+
+  <div class="klingSelect">
+    <div class="klingSelectLabel">Model</div>
+    <select id="klingModel">
+      <option value="Kling 01" selected>Kling 01</option>
+      <option value="Kling 1.6">Kling 1.6</option>
+      <option value="Kling 2.0">Kling 2.0</option>
+    </select>
+  </div>
+
+  <div class="klingTabs" role="tablist" aria-label="Tryby">
+    <button class="klingTab is-active" type="button" data-tab="video" role="tab" aria-selected="true">Video</button>
+    <button class="klingTab" type="button" data-tab="img2vid" role="tab" aria-selected="false">Image→Video</button>
+    <button class="klingTab" type="button" data-tab="fx" role="tab" aria-selected="false">Elements</button>
+    <button class="klingTab" type="button" data-tab="xform" role="tab" aria-selected="false">Transform</button>
+  </div>
+
+  <div class="klingField">
+    <div class="klingFieldLabel">Prompt</div>
+    <textarea id="klingPrompt" rows="6" placeholder="Co chcesz dzisiaj stworzyć?"></textarea>
+  </div>
+
+  <div class="klingRow3">
+    <label class="klingMiniField">
+      <span>Format</span>
+      <select id="klingAR">
+        <option value="16:9">16:9</option>
+        <option value="1:1" selected>1:1</option>
+        <option value="9:16">9:16</option>
+      </select>
+    </label>
+
+    <label class="klingMiniField">
+      <span>Jakość</span>
+      <select id="klingRes">
+        <option value="720p">720p</option>
+        <option value="1080p" selected>1080p</option>
+        <option value="4K">4K</option>
+      </select>
+    </label>
+
+    <label class="klingMiniField">
+      <span>Czas</span>
+      <select id="klingDur">
+        <option value="5s">5s</option>
+        <option value="10s" selected>10s</option>
+        <option value="15s">15s</option>
+      </select>
+    </label>
+  </div>
+
+  <button class="klingPrimary" type="button" id="klingGenBtn">Generuj</button>
+
+  <div class="klingHint">
+    Generuj odpala backend (localhost). "Kopiuj job" kopiuje JSON z wynikiem.
+  </div>
+</div>
+
+          <!-- STAGE -->
+          <div class="klingCol panel klingStageCol">
+            <div class="klingColHead">02 / PODGLĄD</div>
+
+            <div class="klingStage" id="klingStage">
+              <div class="klingStageInner">
+                <div class="klingBadge" id="klingBadge">Kling 01</div>
+                <div class="klingStageTitle">Brak wideo - wygeneruj po lewej</div>
+                <div class="klingStageSub">Tu będzie player + mini-queue / progress.</div>
+              </div>
+            </div>
+
+            <div class="studioSlots" id="klingSlots">
+              <button class="slot" type="button" data-kind="image">
+                <span class="slotKicker">IMAGE SLOT</span>
+                <span class="slotHint">kliknij + wybierz PNG/JPG/WebP</span>
+                <span class="slotPreview"></span>
+              </button>
+              <button class="slot" type="button" data-kind="image">
+                <span class="slotKicker">IMAGE SLOT</span>
+                <span class="slotHint">kliknij + wybierz PNG/JPG/WebP</span>
+                <span class="slotPreview"></span>
+              </button>
+              <button class="slot" type="button" data-kind="video">
+                <span class="slotKicker">VIDEO SLOT</span>
+                <span class="slotHint">kliknij + wybierz MP4/WebM</span>
+                <span class="slotPreview"></span>
+              </button>
+              <button class="slot" type="button" data-kind="video">
+                <span class="slotKicker">VIDEO SLOT</span>
+                <span class="slotHint">kliknij + wybierz MP4/WebM</span>
+                <span class="slotPreview"></span>
+              </button>
+            </div>
+            <input id="klingSlotFile" type="file" accept="image/*,video/*" style="display:none" />
+
+            <div class="klingStatus">
+              <div class="klingPill">Ready: <b id="klingState">idle</b></div>
+              <div class="klingPill">Job: <b id="klingJob">—</b></div>
+              <div class="klingPill">Tryb: <b id="klingMode">video</b></div>
+            </div>
+          </div>
+
+          <!-- QUEUE / HISTORY -->
+          <div class="klingCol panel">
+            <div class="klingColHead">03 / KOLEJKA</div>
+
+            <div class="klingQueue" id="klingQueue">
+              <div class="klingQueueEmpty">Brak jobów</div>
+            </div>
+
+            <div class="klingQueueFoot">
+              <button class="klingBtn2" type="button" id="klingClearBtn">Wyczyść</button>
+              <button class="klingBtn2" type="button" id="klingMockBtn">Dodaj przykłady</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </section>
+  </main>
+
+  <script>
+    // ===== State
+    let KLING_MODEL = "Kling 01";
+    let KLING_TAB = "video";
+    let KLING_JOB = null;
+
+    // ===== Helpers
+    const $ = (s) => document.querySelector(s);
+
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    function setActiveTab(tab){
+      KLING_TAB = tab;
+      document.querySelectorAll(".klingTab").forEach(b=>{
+        const is = b.dataset.tab === tab;
+        b.classList.toggle("is-active", is);
+        b.setAttribute("aria-selected", is ? "true" : "false");
+      });
+      $("#klingMode").textContent = tab;
+    }
+
+    function syncBadge(){
+      const badge = document.querySelector("#klingBadge");
+      if (badge) badge.textContent = KLING_MODEL;
+    }
+
+    // ===== UI actions
+    function klingOpen(){
+      alert("Tu będzie otwieranie wygenerowanego pliku / player.");
+    }
+
+    async function klingCopyJob(){
+      if(!KLING_JOB){ alert("Brak joba. Najpierw wygeneruj (mock)."); return; }
+      try{
+        await navigator.clipboard.writeText(JSON.stringify(KLING_JOB, null, 2));
+        alert("Skopiowano job JSON do schowka");
+      }catch(e){
+        alert("Nie mogę skopiować (brak uprawnień w przeglądarce). Otwórz stronę przez http(s), nie file://.");
+      }
+    }
+
+    function klingPushQueue(job){
+      const q = $("#klingQueue");
+      const empty = q.querySelector(".klingQueueEmpty");
+      if(empty) empty.remove();
+
+      const el = document.createElement("div");
+      el.className = "klingQueueItem";
+      el.innerHTML = `
+        <div class="klingQueueTop">
+          <b>${escapeHtml(job.id)}</b>
+          <span>${escapeHtml(job.model)} • ${escapeHtml(job.res)} • ${escapeHtml(job.dur)} • ${escapeHtml(job.ar)}</span>
+        </div>
+        <div class="klingQueuePrompt">${escapeHtml(job.prompt)}</div>
+      `;
+      q.prepend(el);
+    }
+
+    function klingReset(){
+      const stage = $("#klingStage");
+      stage.innerHTML = `
+        <div class="klingStageInner">
+          <div class="klingBadge" id="klingBadge">${escapeHtml(KLING_MODEL)}</div>
+          <div class="klingStageTitle">Brak wideo - wygeneruj po lewej</div>
+          <div class="klingStageSub">Tu będzie player + mini-queue / progress.</div>
+        </div>
+      `;
+      $("#klingState").textContent = "idle";
+      $("#klingJob").textContent = "—";
+      $("#klingMode").textContent = KLING_TAB;
+      KLING_JOB = null;
+    }
+
+    function klingClear(){
+      $("#klingQueue").innerHTML = '<div class="klingQueueEmpty">Brak jobów</div>';
+      klingReset();
+    }
+
+    function klingMockFill(){
+      klingPushQueue({id:"JOB-7C2A1F", model:"Kling 01", res:"1080p", dur:"10s", ar:"16:9", prompt:"Cinematic product shot, neon rim light, slow dolly, 24fps."});
+      klingPushQueue({id:"JOB-19F3B0", model:"Kling 1.6", res:"1080p", dur:"15s", ar:"9:16", prompt:"Barber shop b-roll, closeups, shallow depth of field, grain."});
+      klingPushQueue({id:"JOB-A2C9D8", model:"Kling 2.0", res:"4K", dur:"10s", ar:"1:1", prompt:"Futuristic AI console UI, holograms, sleek black glass, cinematic."});
+    }
+
+    function klingGenerate(){
+      const prompt = ($("#klingPrompt").value || "").trim();
+      if(!prompt){ alert("Wpisz prompt."); return; }
+
+      const ar  = $("#klingAR").value;
+      const res = $("#klingRes").value;
+      const dur = $("#klingDur").value;
+
+      const id = "JOB-" + Math.random().toString(36).slice(2,8).toUpperCase();
+      KLING_JOB = { id, model: KLING_MODEL, mode: KLING_TAB, prompt, ar, res, dur, createdAt: new Date().toISOString() };
+
+      $("#klingState").textContent = "running";
+      $("#klingJob").textContent = id;
+
+      const stage = $("#klingStage");
+      stage.innerHTML = `
+        <div class="klingStageInner">
+          <div class="klingBadge" id="klingBadge">${escapeHtml(KLING_MODEL)}</div>
+          <div class="klingStageTitle">Generuję</div>
+          <div class="klingStageSub">${escapeHtml(prompt)}</div>
+          <div class="klingProgress" aria-label="Postęp">
+            <div class="klingBar" id="klingBar" style="width:0%"></div>
+          </div>
+        </div>
+      `;
+
+      let p = 0;
+      const t = setInterval(()=>{
+        p += 7;
+        const bar = $("#klingBar");
+        if(bar) bar.style.width = Math.min(p,100) + "%";
+
+        if(p >= 100){
+          clearInterval(t);
+          $("#klingState").textContent = "done";
+
+          stage.innerHTML = `
+            <div class="klingStageInner">
+              <div class="klingBadge" id="klingBadge">${escapeHtml(KLING_MODEL)}</div>
+              <div class="klingStageTitle">Gotowe (mock)</div>
+              <div class="klingStageSub">Tu będzie player / link do wideo + download.</div>
+              <div class="klingStageBtns">
+                <button class="klingPrimary" type="button" id="klingOpenBtn2">OPEN VIDEO</button>
+                <button class="klingBtn2" type="button" id="klingCopyBtn2">KOPIUJ JOB</button>
+              </div>
+            </div>
+          `;
+          $("#klingOpenBtn2").addEventListener("click", klingOpen);
+          $("#klingCopyBtn2").addEventListener("click", klingCopyJob);
+          klingPushQueue(KLING_JOB);
+        }
+      }, 140);
+    }
+
+    // ===== Bind events
+    (function init(){
+      $("#klingModel").addEventListener("change", (e)=>{
+        KLING_MODEL = e.target.value;
+        syncBadge();
+      });
+
+      document.querySelectorAll(".klingTab").forEach(btn=>{
+        btn.addEventListener("click", ()=> setActiveTab(btn.dataset.tab));
+      });
+
+      $("#klingBackendBtn").addEventListener("click", ()=> alert("Tu podepniemy backend Kling / API."));
+      $("#klingResetBtn").addEventListener("click", klingReset);
+      $("#klingOpenBtn").addEventListener("click", klingOpen);
+      $("#klingCopyBtn").addEventListener("click", klingCopyJob);
+      $("#klingGenBtn").addEventListener("click", ()=>window.klingGenerate());
+      $("#klingClearBtn").addEventListener("click", klingClear);
+      $("#klingMockBtn").addEventListener("click", klingMockFill);
+
+      setActiveTab("video");
+      syncBadge();
+    })();
+  </script>
+<!-- KLING_BACKEND_OVERRIDE_START -->
+<script>
+  // === Backend override (nadpisuje klingGenerate w bezpieczny sposób)
+  const API_BASE = "http://127.0.0.1:8000";
+
+  async function apiCreateJob(payload){
+    const r = await fetch(`${API_BASE}/api/kling/jobs`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if(!r.ok){
+      const t = await r.text().catch(()=> "");
+      throw new Error("Create job failed: " + r.status + " " + t);
+    }
+    return await r.json();
+  }
+
+  async function apiGetJob(id){
+    const r = await fetch(`${API_BASE}/api/kling/jobs/${encodeURIComponent(id)}`, { cache: "no-store" });
+    if(!r.ok){
+      const t = await r.text().catch(()=> "");
+      throw new Error("Get job failed: " + r.status + " " + t);
+    }
+    return await r.json();
+  }
+
+  async function apiHealth(){
+    try{
+      const r = await fetch(`${API_BASE}/api/health`, { cache: "no-store" });
+      const ok = r.ok;
+      const btn = document.getElementById("klingBackendBtn");
+      if(btn) btn.textContent = ok ? "Backend: online" : "Backend: offline";
+      return ok;
+    }catch(e){
+      const btn = document.getElementById("klingBackendBtn");
+      if(btn) btn.textContent = "Backend: offline";
+      return false;
+    }
+  }
+
+  window.addEventListener("load", ()=>{ apiHealth(); });
+
+  // Nadpisanie: klingGenerate
+  window.klingGenerate = function klingGenerate(){
+    (async ()=>{
+      const promptEl = document.getElementById("klingPrompt");
+      const prompt = (promptEl ? promptEl.value : "").trim();
+      if(!prompt){ alert("Wpisz prompt."); return; }
+
+      const ok = await apiHealth();
+      if(!ok){ alert("Backend offline. Odpal: .\\start-backend.ps1"); return; }
+
+      const ar  = (document.getElementById("klingAR")?.value)  || "1:1";
+      const res = (document.getElementById("klingRes")?.value) || "1080p";
+      const dur = (document.getElementById("klingDur")?.value) || "10s";
+
+      const model = (window.KLING_MODEL || "Kling 01");
+      const mode  = (window.KLING_TAB || "video");
+
+      const stateEl = document.getElementById("klingState");
+      const modeEl  = document.getElementById("klingMode");
+      const jobEl   = document.getElementById("klingJob");
+      if(stateEl) stateEl.textContent = "queued";
+      if(modeEl)  modeEl.textContent  = mode;
+
+      const stage = document.getElementById("klingStage");
+      if(stage){
+        stage.innerHTML = `
+          <div class="klingStageInner">
+            <div class="klingBadge">${model}</div>
+            <div class="klingStageTitle">Wysyłam job do backendu...</div>
+            <div class="klingStageSub">${prompt}</div>
+            <div class="klingProgress"><div class="klingBar" id="klingBar" style="width:12%"></div></div>
+          </div>
+        `;
+      }
+
+      const created = await apiCreateJob({ model, mode, prompt, ar, res, dur });
+      const id = created.id;
+
+      if(jobEl) jobEl.textContent = id;
+      if(stateEl) stateEl.textContent = "running";
+
+      // polling
+      for(let i=0;i<60;i++){
+        const job = await apiGetJob(id);
+        window.KLING_JOB = job;
+
+        if(stateEl) stateEl.textContent = job.status || "running";
+        const bar = document.getElementById("klingBar");
+        if(bar) bar.style.width = Math.min(12 + i*1.4, 99) + "%";
+
+        if(job.status === "done"){
+          if(bar) bar.style.width = "100%";
+          if(stage){
+            const msg = job.result?.message || "Backend: done";
+            stage.innerHTML = `
+              <div class="klingStageInner">
+                <div class="klingBadge">${model}</div>
+                <div class="klingStageTitle">Gotowe</div>
+                <div class="klingStageSub">${msg}</div>
+              </div>
+            `;
+          }
+
+          if(typeof window.klingPushQueue === "function"){
+            window.klingPushQueue({ id, model, res, dur, ar, prompt });
+          }
+          return;
+        }
+        await new Promise(r=>setTimeout(r, 700));
+      }
+
+      if(stateEl) stateEl.textContent = "timeout";
+      alert("Timeout - worker trwa albo stoi. Sprawdź backend.");
+    })().catch(e=>{
+      console.error(e);
+      const stateEl = document.getElementById("klingState");
+      if(stateEl) stateEl.textContent = "error";
+      alert("Błąd: " + (e?.message || e));
+    });
+  };
+</script>
+<!-- KLING_BACKEND_OVERRIDE_END -->
+<script>
+  (function(){
+    const wrap = document.getElementById("klingSlots");
+    const fileInp = document.getElementById("klingSlotFile");
+    if(!wrap || !fileInp) return;
+
+    let activeSlot = null;
+    const slots = Array.from(wrap.querySelectorAll(".slot"));
+
+    slots.forEach(slot=>{
+      slot.addEventListener("click", ()=>{
+        activeSlot = slot;
+        const kind = slot.getAttribute("data-kind");
+        fileInp.value = "";
+        fileInp.accept = kind === "video" ? "video/*" : "image/*";
+        fileInp.click();
+      });
+    });
+
+    fileInp.addEventListener("change", ()=>{
+      if(!activeSlot) return;
+      const f = fileInp.files && fileInp.files[0];
+      if(!f) return;
+
+      const kind = activeSlot.getAttribute("data-kind");
+      const prev = activeSlot.querySelector(".slotPreview");
+      const hint = activeSlot.querySelector(".slotHint");
+      const url = URL.createObjectURL(f);
+
+      prev.innerHTML = "";
+      hint.textContent = f.name;
+
+      if(kind === "video"){
+        const vid = document.createElement("video");
+        vid.src = url;
+        vid.controls = true;
+        vid.playsInline = true;
+        prev.appendChild(vid);
+      }else{
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = "preview";
+        prev.appendChild(img);
+      }
+
+      activeSlot.classList.add("hasMedia");
+    });
+  })();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

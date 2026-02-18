@@ -1,0 +1,141 @@
+﻿<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Audyt - DANIELOZA.AI</title>
+  <meta name="description" content="Darmowy audyt social media: problem, szybkie rekomendacje i plan działania." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/main.js" defer></script>
+  <style>
+    .audit-wrap { max-width: 1060px; margin: 0 auto; padding: 26px 14px 70px; }
+    .audit-hero { border: 1px solid rgba(255,255,255,.14); border-radius: 16px; padding: 18px; background: rgba(255,255,255,.03); }
+    .audit-hero h1 { margin: 0 0 8px; font-size: clamp(28px, 4vw, 42px); }
+    .audit-hero p { margin: 0; opacity: .85; max-width: 80ch; }
+
+    .audit-grid { display: grid; gap: 14px; margin-top: 14px; }
+    @media (min-width: 940px) { .audit-grid { grid-template-columns: 1.1fr .9fr; } }
+
+    .audit-card { border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 14px; background: rgba(0,0,0,.18); }
+    .audit-card h2 { margin: 0 0 10px; font-size: 16px; }
+    .audit-form { display: grid; gap: 10px; }
+    .audit-row { display: grid; gap: 10px; }
+    @media (min-width: 760px) { .audit-row.two { grid-template-columns: 1fr 1fr; } }
+
+    .audit-form label { display: grid; gap: 6px; font-size: 13px; opacity: .9; }
+    .audit-form input, .audit-form select, .audit-form textarea {
+      width: 100%; border-radius: 10px; border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35); color: #fff; padding: 10px 12px;
+    }
+    .audit-form textarea { min-height: 110px; resize: vertical; }
+
+    .audit-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+    .audit-actions .btn { border-radius: 999px; }
+
+    .audit-list { margin: 0; padding-left: 18px; line-height: 1.55; opacity: .9; }
+    .audit-list li { margin: 7px 0; }
+    .audit-note { margin-top: 10px; opacity: .75; font-size: 13px; }
+  </style>
+</head>
+<body class="page-audyt has-intro sticky-header">
+<header id="hdr">
+  <a class="brand-mini" href="index.html">
+    <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
+    <strong>DANIELOZA.AI</strong>
+  </a>
+  <nav>
+    <a href="oferta.html">OFERTA</a>
+    <a href="demo.html">DEMO</a>
+    <a href="audyt.html" aria-current="page">AUDYT</a>
+    <a href="portfolio.html">PORTFOLIO</a>
+    <a href="kontakt.html">KONTAKT</a>
+    <a href="faq.html">FAQ</a>
+  </nav>
+</header>
+
+<div id="site-intro" class="site-intro" aria-hidden="true">
+  <div class="site-intro__inner"><div class="site-intro__logo">Audyt</div></div>
+</div>
+<script>
+(function(){
+  const el = document.getElementById('site-intro');
+  if(!el) return;
+  requestAnimationFrame(() => el.classList.add('is-on'));
+  setTimeout(() => { el.classList.add('is-off'); setTimeout(() => el.remove(), 420); }, 900);
+})();
+</script>
+
+<main class="audit-wrap">
+  <section class="audit-hero">
+    <h1>Umów darmowy audyt social media</h1>
+    <p>W 1 formularzu zbierasz kontekst, a my przechodzimy przez: problem, decyzje i plan 7 dni. Bez długiego briefowania.</p>
+  </section>
+
+  <section class="audit-grid">
+    <article class="audit-card">
+      <h2>Formularz audytu</h2>
+      <form class="audit-form" onsubmit="event.preventDefault(); alert('Dziękuję. Następny krok: kontakt i doprecyzowanie planu.');">
+        <div class="audit-row two">
+          <label>Link do profilu
+            <input required placeholder="https://instagram.com/twojprofil" />
+          </label>
+          <label>Platforma
+            <select>
+              <option>Instagram</option>
+              <option>TikTok</option>
+              <option>YouTube Shorts</option>
+              <option>Facebook Reels</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="audit-row two">
+          <label>Cel
+            <select>
+              <option>Więcej obserwujących</option>
+              <option>Leady / sprzedaż</option>
+              <option>Rozpoznawalność marki</option>
+            </select>
+          </label>
+          <label>Branża
+            <input placeholder="np. beauty, lokalne usługi, e-commerce" />
+          </label>
+        </div>
+
+        <label>Co teraz nie działa?
+          <textarea placeholder="np. niski zasięg, słabe CTA, mało zapytań z profilu"></textarea>
+        </label>
+
+        <div class="audit-actions">
+          <button class="btn" type="submit">Wyślij zgłoszenie audytu</button>
+          <a class="btn secondary" href="demo.html">Zobacz demo</a>
+          <a class="btn secondary" href="kontakt.html">Skontaktuj się</a>
+        </div>
+      </form>
+      <div class="audit-note">To jest lekka wersja formularza P0: szybki kontakt i kwalifikacja.</div>
+    </article>
+
+    <article class="audit-card">
+      <h2>Co dostajesz w audycie</h2>
+      <ul class="audit-list">
+        <li>3 kluczowe problemy, które blokują wzrost profilu.</li>
+        <li>Proponowany kierunek treści: hook, visual, CTA.</li>
+        <li>Plan publikacji na 7 dni pod Twój cel biznesowy.</li>
+        <li>Priorytet działań: co robić teraz, a co odpuścić.</li>
+      </ul>
+      <div class="audit-note">Jeśli chcesz pełną wersję (z wdrożeniem), przechodzimy do oferty i harmonogramu.</div>
+    </article>
+  </section>
+</main>
+
+<footer>
+  <div>&copy; <span id="y"></span> DANIELOZA.AI</div>
+  <div class="socialbar" aria-label="Social links">
+    <a class="socialbtn" href="https://www.tiktok.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="TikTok"><img src="assets/img/tiktok.png" alt=""></a>
+    <a class="socialbtn" href="https://www.instagram.com/DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="Instagram"><img src="assets/img/instagram.png" alt=""></a>
+    <a class="socialbtn" href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook"><img src="assets/img/facebook.png" alt=""></a>
+    <a class="socialbtn" href="https://www.youtube.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="YouTube"><img src="assets/img/youtube_play.png" alt=""></a>
+  </div>
+</footer>
+</body>
+</html>

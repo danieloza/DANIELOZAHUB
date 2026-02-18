@@ -1,0 +1,329 @@
+﻿<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Oferta — DANIELOZA.AI</title>
+  <meta name="description" content="Oferta DANIELOZA.AI" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/main.js" defer></script>
+
+  <!-- Oferta-only styles (nie psuje reszty strony) -->
+  <style>
+    .page-oferta .pricing-wrap{max-width:1180px;margin:0 auto;padding:40px 16px 70px;}
+    .page-oferta .pricing-top{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;margin-bottom:26px;}
+    .page-oferta .pricing-top h1{margin:0;font-size:46px;letter-spacing:.2px}
+    .page-oferta .pricing-top p{margin:0;opacity:.85;max-width:620px}
+
+    .page-oferta .billing-toggle{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:6px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.04);
+      backdrop-filter: blur(10px);
+    }
+    .page-oferta .bill-btn{
+      appearance:none;border:0;cursor:pointer;
+      padding:10px 14px;border-radius:999px;
+      background:transparent;color:rgba(255,255,255,.78);
+      font-weight:600;letter-spacing:.2px;
+      transition:.15s ease;
+    }
+    .page-oferta .bill-btn:hover{background:rgba(255,255,255,.06);color:#fff}
+    .page-oferta .bill-btn[aria-pressed="true"]{
+      background:rgba(255,255,255,.10);color:#fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,.28);
+    }
+
+    .page-oferta .pricing-grid{
+      display:grid;gap:18px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items:stretch;
+      margin-top:18px;
+    }
+    @media (max-width: 1100px){
+      .page-oferta .pricing-grid{grid-template-columns: repeat(2, minmax(0, 1fr));}
+    }
+    @media (max-width: 640px){
+      .page-oferta .pricing-top h1{font-size:34px}
+      .page-oferta .pricing-grid{grid-template-columns: 1fr;}
+    }
+
+    .page-oferta .plan{
+      position:relative;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: 0 30px 80px rgba(0,0,0,.35);
+      padding:18px 18px 16px;
+      overflow:hidden;
+      min-height: 420px;
+      display:flex;flex-direction:column;
+    }
+    .page-oferta .plan h3{margin:4px 0 6px;font-size:18px}
+    .page-oferta .plan .old{opacity:.45;text-decoration:line-through;font-size:12px;margin-top:2px}
+    .page-oferta .plan .price{
+      font-size:38px;font-weight:800;letter-spacing:-.6px;margin:6px 0 2px;
+    }
+    .page-oferta .plan .per{
+      font-size:12px;opacity:.75;margin:0 0 14px;
+    }
+    .page-oferta .plan .cta{
+      width:100%;
+      border:0;cursor:pointer;
+      border-radius:999px;
+      padding:12px 14px;
+      background:#000;color:#fff;
+      font-weight:700;
+      box-shadow:0 12px 30px rgba(0,0,0,.35);
+      transition:transform .12s ease, opacity .12s ease;
+    }
+    .page-oferta .plan .cta:hover{transform:translateY(-1px)}
+    .page-oferta .plan .cta:active{transform:translateY(0px);opacity:.92}
+
+    .page-oferta .plan ul{list-style:none;padding:0;margin:14px 0 0;display:flex;flex-direction:column;gap:10px}
+    .page-oferta .plan li{
+      display:flex;gap:10px;align-items:flex-start;
+      opacity:.92;
+      border-top:1px solid rgba(255,255,255,.10);
+      padding-top:10px;
+    }
+    .page-oferta .plan li:first-child{border-top:0;padding-top:0}
+    .page-oferta .tick{
+      width:18px;height:18px;border-radius:999px;
+      display:inline-flex;align-items:center;justify-content:center;
+      background:rgba(125,107,255,.18);
+      border:1px solid rgba(125,107,255,.35);
+      flex:0 0 18px;margin-top:1px;
+    }
+    .page-oferta .tick:before{content:"✓";font-size:12px;opacity:.95}
+
+    .page-oferta .badge{
+      position:absolute;right:14px;top:14px;
+      font-size:11px;font-weight:800;letter-spacing:.3px;
+      padding:6px 10px;border-radius:999px;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.16);
+    }
+    .page-oferta .plan.best{
+      outline:2px solid rgba(125,107,255,.35);
+      box-shadow: 0 40px 120px rgba(125,107,255,.18), 0 30px 80px rgba(0,0,0,.35);
+    }
+
+    .page-oferta .mini-note{
+      margin-top:14px;
+      text-align:center;
+      opacity:.70;
+      font-size:12px;
+    }
+
+    /* Drobne: żeby nie robiło “pustki” jak na screenie */
+    .page-oferta main{padding-top:20px}
+  </style>
+</head>
+
+<body  class="page-oferta has-intro sticky-header">
+
+<header id="hdr">
+  <a class="brand-mini" href="index.html">
+    <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
+    <strong>DANIELOZA.AI</strong>
+  </a>
+  <nav>
+    <a href="oferta.html">OFERTA</a>
+    <a href="demo.html">DEMO</a>
+    <a href="audyt.html">AUDYT</a>
+    <a href="portfolio.html">PORTFOLIO</a>
+    <a href="kontakt.html">KONTAKT</a>
+    <a href="faq.html">FAQ</a>
+</nav>
+</header>
+
+<div id="site-intro" class="site-intro" aria-hidden="true">
+  <div class="site-intro__inner">
+    <div class="site-intro__logo">Oferta</div>
+  </div>
+</div>
+<script>
+(function(){
+  const el = document.getElementById('site-intro');
+  if(!el) return;
+  requestAnimationFrame(() => el.classList.add('is-on'));
+  setTimeout(() => {
+    el.classList.add('is-off');
+    setTimeout(() => el.remove(), 420);
+  }, 1100);
+})();
+</script>
+
+<main>
+  <section class="pricing-wrap">
+    <div class="pricing-top">
+      <div class="kicker">DANIELOZA.AI</div>
+      <h1>Oferta</h1>
+      <p>Układ “jak platforma” — proste pakiety, czytelne benefity i szybki start pod short-form.</p>
+
+      <div class="billing-toggle" role="group" aria-label="Wybór rozliczenia">
+        <button class="bill-btn" data-billing="yearly" aria-pressed="true">Rocznie −20%</button>
+        <button class="bill-btn" data-billing="quarterly" aria-pressed="false">Kwartalnie −10%</button>
+        <button class="bill-btn" data-billing="monthly" aria-pressed="false">Miesięcznie</button>
+      </div>
+    </div>
+
+    <div class="pricing-grid" id="pricingGrid">
+      <!-- STARTER -->
+      <article class="plan" data-plan="starter"
+        data-price-monthly="149"
+        data-price-quarterly="399"
+        data-price-yearly="1429"
+        data-old-monthly="199"
+        data-old-quarterly="499"
+        data-old-yearly="1799">
+        <h3>Starter</h3>
+        <div class="old" data-old>199</div>
+        <div class="price"><span data-price>149</span> zł</div>
+        <p class="per" data-per>miesięcznie</p>
+        <button class="cta" data-cta>Wybieram</button>
+        <ul>
+          <li><span class="tick"></span><span>3 klipy (10–15s) — szybki start</span></li>
+          <li><span class="tick"></span><span>1 runda poprawek</span></li>
+          <li><span class="tick"></span><span>Hook + CTA (pod sprzedaż lub follow)</span></li>
+          <li><span class="tick"></span><span>Dostawa gotowa do publikacji (Reels/Shorts/TikTok)</span></li>
+        </ul>
+      </article>
+
+      <!-- STANDARD -->
+      <article class="plan" data-plan="standard"
+        data-price-monthly="299"
+        data-price-quarterly="799"
+        data-price-yearly="2879"
+        data-old-monthly="399"
+        data-old-quarterly="999"
+        data-old-yearly="3599">
+        <h3>Standard</h3>
+        <div class="old" data-old>399</div>
+        <div class="price"><span data-price>299</span> zł</div>
+        <p class="per" data-per>miesięcznie</p>
+        <button class="cta" data-cta>Wybieram</button>
+        <ul>
+          <li><span class="tick"></span><span>10 klipów (10–15s)</span></li>
+          <li><span class="tick"></span><span>Lepsze tempo: hook + punchline</span></li>
+          <li><span class="tick"></span><span>Mini strategia: formaty + propozycje opisów</span></li>
+          <li><span class="tick"></span><span>Priorytetowa realizacja</span></li>
+        </ul>
+      </article>
+
+      <!-- PRO / BEST -->
+      <article class="plan best" data-plan="pro"
+        data-price-monthly="599"
+        data-price-quarterly="1599"
+        data-price-yearly="5749"
+        data-old-monthly="799"
+        data-old-quarterly="1999"
+        data-old-yearly="7199">
+        <div class="badge">Best deal</div>
+        <h3>Pro</h3>
+        <div class="old" data-old>799</div>
+        <div class="price"><span data-price>599</span> zł</div>
+        <p class="per" data-per>miesięcznie</p>
+        <button class="cta" data-cta>Wybieram</button>
+        <ul>
+          <li><span class="tick"></span><span>20 klipów / miesiąc (short-form)</span></li>
+          <li><span class="tick"></span><span>Warianty: 2–3 wersje hooka na część klipów</span></li>
+          <li><span class="tick"></span><span>Wersje pod reklamę (UGC vibe)</span></li>
+          <li><span class="tick"></span><span>Wspólny szablon stylu marki (spójność)</span></li>
+        </ul>
+      </article>
+
+      <!-- SCALE -->
+      <article class="plan" data-plan="scale"
+        data-price-monthly="1199"
+        data-price-quarterly="3199"
+        data-price-yearly="11499"
+        data-old-monthly="1499"
+        data-old-quarterly="3999"
+        data-old-yearly="13999">
+        <h3>Scale</h3>
+        <div class="old" data-old>1499</div>
+        <div class="price"><span data-price>1199</span> zł</div>
+        <p class="per" data-per>miesięcznie</p>
+        <button class="cta" data-cta>Kontakt</button>
+        <ul>
+          <li><span class="tick"></span><span>40+ klipów / miesiąc (pipeline)</span></li>
+          <li><span class="tick"></span><span>Stały kalendarz publikacji + pakiet formatów</span></li>
+          <li><span class="tick"></span><span>Wsparcie kreatywne: pomysły + scenki</span></li>
+          <li><span class="tick"></span><span>Priorytet + szybkie iteracje</span></li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="mini-note">
+      * Ceny przykładowe — układ i UX “jak z platformy” (switch + karty + CTA) jest tu najważniejszy.
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>© <span id="y"></span> DANIELOZA.AI</div>
+
+  <div class="socialbar" aria-label="Social links">
+    <a class="socialbtn" href="https://www.tiktok.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="TikTok">
+      <img src="assets/img/tiktok.png" alt="">
+    </a>
+    <a class="socialbtn" href="https://www.instagram.com/DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="Instagram">
+      <img src="assets/img/instagram.png" alt="">
+    </a>
+    <a class="socialbtn" href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook">
+      <img src="assets/img/facebook.png" alt="">
+    </a>
+    <a class="socialbtn" href="https://www.youtube.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="YouTube">
+      <img src="assets/img/youtube_play.png" alt="">
+    </a>
+  </div>
+</footer>
+
+<script>
+  // Billing switcher (oferta only)
+  (function(){
+    const buttons = Array.from(document.querySelectorAll('.bill-btn'));
+    const plans = Array.from(document.querySelectorAll('.plan'));
+    const perLabel = { monthly: 'miesięcznie', quarterly: 'na kwartał', yearly: 'rocznie' };
+
+    function setBilling(mode){
+      buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.billing === mode)));
+      plans.forEach(p => {
+        const price = p.getAttribute('data-price-' + mode) || '';
+        const old   = p.getAttribute('data-old-' + mode) || '';
+        const priceEl = p.querySelector('[data-price]');
+        const oldEl   = p.querySelector('[data-old]');
+        const perEl   = p.querySelector('[data-per]');
+
+        if(priceEl) priceEl.textContent = price;
+        if(oldEl) oldEl.textContent = old;
+        if(perEl) perEl.textContent = perLabel[mode] || '';
+      });
+
+      try{ localStorage.setItem('danieloza_billing', mode); }catch(_){}
+    }
+
+    buttons.forEach(b => b.addEventListener('click', () => setBilling(b.dataset.billing)));
+
+    let saved = 'yearly';
+    try{ saved = localStorage.getItem('danieloza_billing') || 'yearly'; }catch(_){}
+    setBilling(saved);
+
+    // CTA (na razie: scroll do kontaktu / przekierowanie)
+    document.querySelectorAll('[data-cta]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // jeśli masz kontakt.html:
+        window.location.href = 'kontakt.html';
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
+
+
+

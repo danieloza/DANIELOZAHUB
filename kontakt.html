@@ -1,0 +1,135 @@
+﻿<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kontakt - DANIELOZA.AI</title>
+  <meta name="description" content="Kontakt DANIELOZA.AI: szybki brief i przejście do wdrożenia." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/main.js" defer></script>
+  <style>
+    .contact-wrap { max-width: 1040px; margin: 0 auto; padding: 24px 14px 70px; }
+    .contact-grid { display: grid; gap: 14px; }
+    @media (min-width: 940px) { .contact-grid { grid-template-columns: 1.15fr .85fr; } }
+
+    .contact-card { border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 14px; background: rgba(0,0,0,.18); }
+    .contact-card h2 { margin: 0 0 10px; font-size: 18px; }
+
+    .contact-form { display: grid; gap: 10px; }
+    .contact-row { display: grid; gap: 10px; }
+    @media (min-width: 760px) { .contact-row.two { grid-template-columns: 1fr 1fr; } }
+
+    .contact-form label { display: grid; gap: 6px; font-size: 13px; opacity: .9; }
+    .contact-form input, .contact-form select, .contact-form textarea {
+      width: 100%; border-radius: 10px; border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35); color: #fff; padding: 10px 12px;
+    }
+    .contact-form textarea { min-height: 110px; resize: vertical; }
+
+    .contact-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .contact-note { margin-top: 10px; opacity: .74; font-size: 13px; }
+    .contact-list { margin: 0; padding-left: 18px; line-height: 1.55; opacity: .9; }
+    .contact-list li { margin: 6px 0; }
+  </style>
+</head>
+<body class="page-kontakt has-intro sticky-header">
+<header id="hdr">
+  <a class="brand-mini" href="index.html">
+    <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
+    <strong>DANIELOZA.AI</strong>
+  </a>
+  <nav>
+    <a href="oferta.html">OFERTA</a>
+    <a href="demo.html">DEMO</a>
+    <a href="audyt.html">AUDYT</a>
+    <a href="portfolio.html">PORTFOLIO</a>
+    <a href="kontakt.html" aria-current="page">KONTAKT</a>
+    <a href="faq.html">FAQ</a>
+  </nav>
+</header>
+
+<div id="site-intro" class="site-intro" aria-hidden="true">
+  <div class="site-intro__inner"><div class="site-intro__logo">Kontakt</div></div>
+</div>
+<script>
+(function(){
+  const el = document.getElementById('site-intro');
+  if(!el) return;
+  requestAnimationFrame(() => el.classList.add('is-on'));
+  setTimeout(() => { el.classList.add('is-off'); setTimeout(() => el.remove(), 420); }, 1000);
+})();
+</script>
+
+<main class="contact-wrap">
+  <section class="page-hero">
+    <div class="container">
+      <div class="kicker">KONTAKT</div>
+      <h1>Skontaktuj się i wyślij brief</h1>
+      <p class="note">Najkrótsza ścieżka: formularz + szybka odpowiedź + decyzja o wdrożeniu.</p>
+    </div>
+  </section>
+
+  <section class="contact-grid">
+    <article class="contact-card">
+      <h2>Formularz kontaktowy</h2>
+      <form class="contact-form" onsubmit="event.preventDefault(); alert('Dziękuję. Odpowiemy z propozycją kolejnych kroków.');">
+        <div class="contact-row two">
+          <label>Firma / marka
+            <input required placeholder="np. Salon Danex" />
+          </label>
+          <label>Profil (IG / WWW)
+            <input required placeholder="@twojprofil lub link" />
+          </label>
+        </div>
+
+        <div class="contact-row two">
+          <label>Cel
+            <input required placeholder="np. leady, sprzedaż, wzrost profilu" />
+          </label>
+          <label>Budżet
+            <select required>
+              <option value="" disabled selected>Wybierz</option>
+              <option>do 500 zł / miesiąc</option>
+              <option>500-2000 zł / miesiąc</option>
+              <option>2000+ zł / miesiąc</option>
+              <option>Ustalimy po audycie</option>
+            </select>
+          </label>
+        </div>
+
+        <label>Opis potrzeb
+          <textarea placeholder="Napisz krótko: co teraz nie działa i czego oczekujesz po wdrożeniu."></textarea>
+        </label>
+
+        <div class="contact-actions">
+          <button class="btn" type="submit">Wyślij brief</button>
+          <a class="btn secondary" href="audyt.html">Umów audyt</a>
+          <a class="btn secondary" href="demo.html">Zobacz demo</a>
+        </div>
+      </form>
+      <div class="contact-note">Wersja P0: prosty formularz konwersyjny, gotowy do podpięcia backendu.</div>
+    </article>
+
+    <article class="contact-card">
+      <h2>Dane kontaktowe</h2>
+      <ul class="contact-list">
+        <li>Email: <strong>kontakt@danieloza.ai</strong></li>
+        <li>Instagram: <strong>@DANIELOZA.AI</strong></li>
+        <li>TikTok / YouTube: <strong>DANIELOZA.AI</strong></li>
+      </ul>
+      <div class="contact-note">Najlepiej działa kolejność: Audyt -> Oferta -> Wdrożenie.</div>
+    </article>
+  </section>
+</main>
+
+<footer>
+  <div>&copy; <span id="y"></span> DANIELOZA.AI</div>
+  <div class="socialbar" aria-label="Social links">
+    <a class="socialbtn" href="https://www.tiktok.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="TikTok"><img src="assets/img/tiktok.png" alt=""></a>
+    <a class="socialbtn" href="https://www.instagram.com/DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="Instagram"><img src="assets/img/instagram.png" alt=""></a>
+    <a class="socialbtn" href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook"><img src="assets/img/facebook.png" alt=""></a>
+    <a class="socialbtn" href="https://www.youtube.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="YouTube"><img src="assets/img/youtube_play.png" alt=""></a>
+  </div>
+</footer>
+</body>
+</html>

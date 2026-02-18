@@ -1,0 +1,433 @@
+﻿<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SEEDANCE 1.5 PRO — DANIELOZA.AI</title>
+  <meta name="description" content="DANIELOZA.AI — SEEDANCE 1.5 PRO (studio mock UI)." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/main.js" defer></script>
+<style id="DANIELOZA_SIDEBAR_TUNE_V1">
+  .sdSide{
+    width: 320px;
+    max-width: 86vw;
+    padding: 16px;
+    border-radius: 22px;
+    background: rgba(10,10,10,.72);
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow: 0 18px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04) inset;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 120px);
+  }
+  .sdHead{ display:flex; align-items:center; gap:12px; padding: 8px 10px 14px; }
+  .sdSpark{
+    width: 30px; height: 30px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow: 0 0 30px rgba(255,0,140,.18);
+    display:grid; place-items:center;
+  }
+  .sdTitle{ font-weight: 900; letter-spacing:.7px; font-size: 16px; }
+  .sdSub{ opacity:.65; font-weight:800; font-size:12px; margin-top:3px; }
+
+  .sdNav{ display:flex; flex-direction:column; gap: 10px; margin-top: 6px; padding: 0 6px; }
+  .sdItem{
+    display:flex; align-items:center; gap: 10px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow: 0 10px 30px rgba(0,0,0,.35) inset;
+    transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+  .sdItem:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.055); }
+  .sdItem.is-active{
+    border-color: rgba(255,255,255,.22);
+    background: rgba(255,255,255,.07);
+    box-shadow: 0 12px 34px rgba(0,0,0,.35) inset, 0 0 0 1px rgba(255,255,255,.05) inset;
+  }
+
+  .sdBottom{ margin-top: auto; display:flex; flex-direction:column; gap: 10px; padding: 14px 6px 6px; }
+  .sdGhost{
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.10);
+    color: inherit;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  .sdGhost:hover{ border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.05); }
+  .sdCta{
+    display:flex; align-items:center; justify-content:center;
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(120, 90, 255, .22);
+    border: 1px solid rgba(120, 90, 255, .45);
+    font-weight: 900;
+    box-shadow: 0 18px 40px rgba(120,90,255,.10);
+    text-decoration:none;
+    color: inherit;
+  }
+
+  @media (max-width: 900px){ .sdSide{ width: 100%; min-height: auto; } }
+</style>
+<style id="DANIELOZA_SIDEBAR_TUNE_V1">
+  .sdSide{
+    width:320px; max-width:86vw; padding:16px; border-radius:22px;
+    background:rgba(10,10,10,.72);
+    border:1px solid rgba(255,255,255,.10);
+    box-shadow:0 18px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04) inset;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    display:flex; flex-direction:column;
+    min-height: calc(100vh - 120px);
+  }
+  .sdHead{ display:flex; align-items:center; gap:12px; padding:8px 10px 14px; }
+  .sdSpark{
+    width:30px; height:30px; border-radius:14px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 0 30px rgba(255,0,140,.18);
+    display:grid; place-items:center;
+  }
+  .sdTitle{ font-weight:900; letter-spacing:.7px; font-size:16px; }
+  .sdSub{ opacity:.65; font-weight:800; font-size:12px; margin-top:3px; }
+
+  .sdNav{ display:flex; flex-direction:column; gap:10px; margin-top:6px; padding:0 6px; }
+  .sdItem{
+    display:flex; align-items:center; gap:10px;
+    padding:14px 16px; border-radius:18px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.10);
+    box-shadow:0 10px 30px rgba(0,0,0,.35) inset;
+    transition:transform .12s ease, border-color .12s ease, background .12s ease;
+    text-decoration:none; color:inherit;
+  }
+  .sdItem:hover{ transform: translateY(-1px); border-color:rgba(255,255,255,.18); background:rgba(255,255,255,.055); }
+  .sdItem.is-active{
+    border-color:rgba(255,255,255,.22);
+    background:rgba(255,255,255,.07);
+    box-shadow:0 12px 34px rgba(0,0,0,.35) inset, 0 0 0 1px rgba(255,255,255,.05) inset;
+  }
+  .sdIcon{ width:22px; display:inline-grid; place-items:center; font-size:16px; opacity:.95; }
+  .sdLabel{ font-weight:900; font-size:15px; }
+  .sdSpacer{ flex:1; }
+
+  .sdBottom{ margin-top:auto; display:flex; flex-direction:column; gap:10px; padding:14px 6px 6px; }
+  .sdGhost{
+    width:100%;
+    padding:14px 16px; border-radius:18px;
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.10);
+    color:inherit; font-weight:900; cursor:pointer;
+  }
+  .sdGhost:hover{ border-color:rgba(255,255,255,.18); background:rgba(255,255,255,.05); }
+  .sdCta{
+    display:flex; align-items:center; justify-content:center;
+    width:100%;
+    padding:14px 16px; border-radius:18px;
+    background:rgba(120, 90, 255, .22);
+    border:1px solid rgba(120, 90, 255, .45);
+    font-weight:900; box-shadow:0 18px 40px rgba(120,90,255,.10);
+    text-decoration:none; color:inherit;
+  }
+  @media (max-width:900px){ .sdSide{ width:100%; min-height:auto; } }
+</style>
+<style id="STUDIO_HUB_V1">
+  .hubShell{ display:flex; gap:16px; align-items:flex-start; }
+  .hubContent{ flex:1; min-width:0; }
+  .hubSection{ display:none; }
+  .hubSection.is-active{ display:block; }
+  .hubSection > h2{ margin: 8px 0 14px; letter-spacing:.2px; }
+  @media (max-width: 900px){
+    .hubShell{ flex-direction:column; }
+  }
+</style>
+<script id="STUDIO_HUB_ROUTER_V1">
+(function(){
+  function getKey(){
+    var h = window.location.hash || "#seedance";
+    return h.replace("#","");
+  }
+  function route(){
+    var k = getKey();
+
+    var secs = document.querySelectorAll(".hubSection");
+    for(var i=0;i<secs.length;i++){
+      var s = secs[i];
+      var on = (s.getAttribute("data-hub") === k);
+      if(on) s.classList.add("is-active"); else s.classList.remove("is-active");
+    }
+
+    var items = document.querySelectorAll(".sdItem");
+    for(var j=0;j<items.length;j++){
+      var a = items[j];
+      var href = a.getAttribute("href");
+      var active = (href === "#"+k);
+      if(active) a.classList.add("is-active"); else a.classList.remove("is-active");
+    }
+  }
+
+  window.addEventListener("hashchange", route);
+  window.addEventListener("load", route);
+})();
+</script>
+</head>
+
+<body class="sticky-header studio-page accent-cyan">
+  <header id="hdr">
+    <a class="brand-mini" href="index.html">
+      <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
+      <strong>DANIELOZA.AI</strong>
+    </a>
+    <nav>
+      <a href="oferta.html">OFERTA</a>
+      <a href="kling.html">KLING</a>
+      <a href="seedance-1-5-pro.html" aria-current="page">SEEDANCE 1.5</a>
+      <a href="gemini.html">GEMINI</a>
+      <a href="seedream-4-0.html">SEEDREAM 4.0</a>
+      <a href="seedream-4-5.html">SEEDREAM 4.5</a>
+      <a href="demo.html">DEMO</a>
+      <a href="audyt.html">AUDYT</a>
+      <a href="portfolio.html">PORTFOLIO</a>
+      <a href="kontakt.html">KONTAKT</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+  </header>
+
+  <main class="hubWrap">
+  <section class="hubShell" aria-label="Studio Hub">
+    <aside class="sdSide" aria-label="Sidebar">
+  <div class="sdHead">
+    <div class="sdSpark">⚡</div>
+    <div>
+      <div class="sdTitle">STUDIO HUB</div>
+      <div class="sdSub">DANIELOZA.AI STUDIO</div>
+    </div>
+  </div>
+
+  <div class="sdNav" id="danielozaNav">
+    <a class="sdItem" data-page="kling.html" href="#kling"><span class="sdIcon">🎬</span><span class="sdLabel">Kling</span><span class="sdSpacer"></span></a>
+    <a class="sdItem" data-page="seedance-1-5-pro.html" href="#seedance"><span class="sdIcon">✨</span><span class="sdLabel">Seedance</span><span class="sdSpacer"></span></a>
+    <a class="sdItem" data-page="gemini.html" href="#gemini"><span class="sdIcon">💬</span><span class="sdLabel">Gemini</span><span class="sdSpacer"></span></a>
+    <a class="sdItem" data-page="seedream-4-0.html" href="#seedream40"><span class="sdIcon">🖼️</span><span class="sdLabel">Seedream 4.0</span><span class="sdSpacer"></span></a>
+    <a class="sdItem" data-page="seedream-4-5.html" href="#seedream45"><span class="sdIcon">🧠</span><span class="sdLabel">Seedream 4.5</span><span class="sdSpacer"></span></a>
+    <a class="sdItem" data-page="demo.html" href="#demo"><span class="sdIcon">🧪</span><span class="sdLabel">Demo/Lab</span><span class="sdSpacer"></span></a>
+  </div>
+
+  <div class="sdBottom">
+    <button class="sdGhost" type="button" data-action="backend">⚙ Backend</button>
+    <button class="sdGhost" type="button" data-action="reset">↺ Reset</button>
+    <a class="sdCta" href="kontakt.html">⚡ Zapytaj o wdrożenie</a>
+  </div>
+</aside>
+    <section class="hubContent">
+
+      <section class="hubSection is-active" id="hub-seedance" data-hub="seedance">
+        <h2>Seedance 1.5</h2>
+        
+      </section>
+
+      <section class="hubSection" id="hub-kling" data-hub="kling">
+        <h2>Kling</h2>
+        
+      </section>
+
+      <section class="hubSection" id="hub-gemini" data-hub="gemini">
+        <h2>Gemini</h2>
+        
+      </section>
+
+      <section class="hubSection" id="hub-seedream40" data-hub="seedream40">
+        <h2>Seedream 4.0</h2>
+        
+      </section>
+
+      <section class="hubSection" id="hub-seedream45" data-hub="seedream45">
+        <h2>Seedream 4.5</h2>
+        
+      </section>
+
+      <section class="hubSection" id="hub-demo" data-hub="demo">
+        <h2>Demo / Lab</h2>
+        
+      </section>
+
+    </section>
+  </section>
+</main>
+
+  <script>
+    (function(){
+      const q = (s, r=document) => r.querySelector(s);
+      const qa = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+      // Basic state
+      const stateEl = q(".stState");
+      const jobEl   = q(".stJob");
+      const modeEl  = q(".stMode");
+      const prompt  = q(".studioPrompt");
+      const modeSel = q(".studioMode");
+      const arSel   = q(".studioAR");
+      const resSel  = q(".studioRes");
+      const durSel  = q(".studioDur");
+      const queue   = q(".studioQueue");
+      const fileInp = q("#studioFile");
+
+      let activeSlot = null;
+      let lastJob = null;
+
+      function escapeHtml(s){
+        return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+      }
+
+      function toast(msg){
+        alert(msg);
+      }
+
+      // Slots: click -> choose file -> preview
+      qa(".slot").forEach(slot=>{
+        slot.addEventListener("click", ()=>{
+          activeSlot = slot;
+          const kind = slot.getAttribute("data-kind");
+          fileInp.value = "";
+          if(kind === "image") fileInp.accept = "image/*";
+          if(kind === "video") fileInp.accept = "video/*";
+          fileInp.click();
+        });
+      });
+
+      fileInp.addEventListener("change", ()=>{
+        if(!activeSlot) return;
+        const f = fileInp.files && fileInp.files[0];
+        if(!f) return;
+
+        const kind = activeSlot.getAttribute("data-kind");
+        const prev = activeSlot.querySelector(".slotPreview");
+        const hint = activeSlot.querySelector(".slotHint");
+        const url = URL.createObjectURL(f);
+
+        prev.innerHTML = "";
+        hint.textContent = f.name;
+
+        if(kind === "image"){
+          const img = document.createElement("img");
+          img.src = url;
+          img.alt = "preview";
+          prev.appendChild(img);
+        } else {
+          const vid = document.createElement("video");
+          vid.src = url;
+          vid.controls = true;
+          vid.playsInline = true;
+          prev.appendChild(vid);
+        }
+
+        activeSlot.classList.add("hasMedia");
+      });
+
+      // Generate mock job
+      function pushJob(job){
+        const empty = queue.querySelector(".studioQueueEmpty");
+        if(empty) empty.remove();
+
+        const el = document.createElement("div");
+        el.className = "studioQueueItem";
+        el.innerHTML = `
+          <div class="studioQueueTop">
+            <b>${escapeHtml(job.id)}</b>
+            <span>${escapeHtml(job.mode)} • ${escapeHtml(job.res)} • ${escapeHtml(job.dur)} • ${escapeHtml(job.ar)}</span>
+          </div>
+          <div class="studioQueuePrompt">${escapeHtml(job.prompt)}</div>
+        `;
+        queue.prepend(el);
+      }
+
+      function gen(){
+        const p = (prompt.value || "").trim();
+        if(!p){ toast("Wpisz prompt."); return; }
+        const id  = "JOB-" + Math.random().toString(36).slice(2,8).toUpperCase();
+        lastJob = {
+          id,
+          prompt: p,
+          mode: modeSel.value,
+          ar: arSel.value,
+          res: resSel.value,
+          dur: durSel.value,
+          createdAt: new Date().toISOString()
+        };
+
+        stateEl.textContent = "running";
+        jobEl.textContent = id;
+        modeEl.textContent = modeSel.value;
+
+        let pr = 0;
+        const t = setInterval(()=>{
+          pr += 9;
+          if(pr >= 100){
+            clearInterval(t);
+            stateEl.textContent = "done";
+            pushJob(lastJob);
+          }
+        }, 120);
+      }
+
+      // Actions
+      qa("[data-action]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const a = btn.getAttribute("data-action");
+          if(a === "backend") toast("Backend: offline (na razie).");
+          if(a === "reset"){
+            stateEl.textContent = "idle";
+            jobEl.textContent = "—";
+            modeEl.textContent = modeSel.value;
+            lastJob = null;
+            qa(".slot").forEach(s=>{
+              s.classList.remove("hasMedia");
+              s.querySelector(".slotHint").textContent = s.getAttribute("data-kind")==="video" ? "kliknij + wybierz MP4/WebM" : "kliknij + wybierz PNG/JPG/WebP";
+              s.querySelector(".slotPreview").innerHTML = "";
+            });
+          }
+          if(a === "open") toast("OPEN: tu będzie player / otwieranie assetu.");
+          if(a === "copy"){
+            if(!lastJob){ toast("Brak joba."); return; }
+            try{
+              navigator.clipboard.writeText(JSON.stringify(lastJob, null, 2));
+              toast("Skopiowano job JSON ✅");
+            }catch(e){
+              toast("Nie mogę skopiować. Odpal stronę przez http(s), nie file://");
+            }
+          }
+          if(a === "generate") gen();
+          if(a === "clear"){
+            queue.innerHTML = '<div class="studioQueueEmpty">Brak jobów</div>';
+            stateEl.textContent = "idle";
+            jobEl.textContent = "—";
+            lastJob = null;
+          }
+          if(a === "mock"){
+            pushJob({id:"JOB-9AF2C1", mode:"fast", res:"1080p", dur:"10s", ar:"16:9", prompt:"Cinematic UI b-roll, neon rim light, slow dolly."});
+            pushJob({id:"JOB-1BD9E0", mode:"quality", res:"4K", dur:"10s", ar:"1:1", prompt:"Premium product shot on black glass, minimal, glossy."});
+            pushJob({id:"JOB-77C31A", mode:"batch", res:"1080p", dur:"15s", ar:"9:16", prompt:"Shorts-ready vertical montage, dynamic cuts, crisp text."});
+          }
+        });
+      });
+
+      modeSel.addEventListener("change", ()=>{ modeEl.textContent = modeSel.value; });
+
+    })();
+  </script>
+</body>
+</html>
+
+
+
+
