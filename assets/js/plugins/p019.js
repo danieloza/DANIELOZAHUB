@@ -1,4 +1,4 @@
-﻿/* p019 — Export state to downloadable JSON file */
+/* p019 — Export state to downloadable JSON file */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p019"] = {

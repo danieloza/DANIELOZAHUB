@@ -1,31 +1,35 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Kontakt - DANIELOZA.AI</title>
-  <meta name="description" content="Kontakt DANIELOZA.AI: szybki brief i przejście do wdrożenia." />
+  <meta name="description" content="Kontakt DANIELOZA.AI: szybki brief i przejcie do wdroenia." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://danieloza.ai/kontakt.html" />
+  <meta property="og:title" content="Kontakt - DANIELOZA.AI" />
+  <meta property="og:description" content="Wylij brief i wr z decyzj wdroeniow jeszcze tego samego dnia roboczego." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://danieloza.ai/kontakt.html" />
+  <meta property="og:image" content="https://danieloza.ai/assets/img/logotype.png" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/analytics.config.js" defer></script>
   <script src="assets/js/main.js" defer></script>
   <style>
     .contact-wrap { max-width: 1040px; margin: 0 auto; padding: 24px 14px 70px; }
     .contact-grid { display: grid; gap: 14px; }
     @media (min-width: 940px) { .contact-grid { grid-template-columns: 1.15fr .85fr; } }
-
     .contact-card { border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 14px; background: rgba(0,0,0,.18); }
     .contact-card h2 { margin: 0 0 10px; font-size: 18px; }
-
     .contact-form { display: grid; gap: 10px; }
     .contact-row { display: grid; gap: 10px; }
     @media (min-width: 760px) { .contact-row.two { grid-template-columns: 1fr 1fr; } }
-
     .contact-form label { display: grid; gap: 6px; font-size: 13px; opacity: .9; }
     .contact-form input, .contact-form select, .contact-form textarea {
       width: 100%; border-radius: 10px; border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.35); color: #fff; padding: 10px 12px;
     }
     .contact-form textarea { min-height: 110px; resize: vertical; }
-
     .contact-actions { display: flex; gap: 10px; flex-wrap: wrap; }
     .contact-note { margin-top: 10px; opacity: .74; font-size: 13px; }
     .contact-list { margin: 0; padding-left: 18px; line-height: 1.55; opacity: .9; }
@@ -39,12 +43,13 @@
     <strong>DANIELOZA.AI</strong>
   </a>
   <nav>
-    <a href="oferta.html">OFERTA</a>
-    <a href="demo.html">DEMO</a>
-    <a href="audyt.html">AUDYT</a>
-    <a href="portfolio.html">PORTFOLIO</a>
-    <a href="kontakt.html" aria-current="page">KONTAKT</a>
-    <a href="faq.html">FAQ</a>
+    <a href="oferta.html" data-track="cta_click" data-track-label="kontakt_nav_oferta">OFERTA</a>
+    <a href="demo.html" data-track="cta_click" data-track-label="kontakt_nav_demo">DEMO</a>
+    <a href="audyt.html" data-track="cta_click" data-track-label="kontakt_nav_audyt">AUDYT</a>
+    <a href="portfolio.html" data-track="cta_click" data-track-label="kontakt_nav_portfolio">PORTFOLIO</a>
+    <a href="case-studies.html" data-track="cta_click" data-track-label="kontakt_nav_case_studies">CASE STUDIES</a>
+    <a href="kontakt.html" aria-current="page" data-track="cta_click" data-track-label="kontakt_nav_kontakt">KONTAKT</a>
+    <a href="faq.html" data-track="cta_click" data-track-label="kontakt_nav_faq">FAQ</a>
   </nav>
 </header>
 
@@ -64,60 +69,71 @@
   <section class="page-hero">
     <div class="container">
       <div class="kicker">KONTAKT</div>
-      <h1>Skontaktuj się i wyślij brief</h1>
-      <p class="note">Najkrótsza ścieżka: formularz + szybka odpowiedź + decyzja o wdrożeniu.</p>
+      <h1>Skontaktuj si i wylij brief</h1>
+      <p class="note">Najkrtsza cieka: formularz + szybka odpowied + decyzja o wdroeniu. Zwykle odpisuj w dzie roboczy.</p>
     </div>
   </section>
 
   <section class="contact-grid">
     <article class="contact-card">
       <h2>Formularz kontaktowy</h2>
-      <form class="contact-form" onsubmit="event.preventDefault(); alert('Dziękuję. Odpowiemy z propozycją kolejnych kroków.');">
+      <form class="contact-form" data-lead-form="kontakt" data-track-submit="form_submit" data-track-submit-label="kontakt_form_submit">
         <div class="contact-row two">
           <label>Firma / marka
-            <input required placeholder="np. Salon Danex" />
+            <input name="firma" required placeholder="np. Salon Danex" />
           </label>
+          <label>Email kontaktowy
+            <input type="email" name="email" required placeholder="np. kontakt@twojamarka.pl" />
+          </label>
+        </div>
+
+        <div class="contact-row two">
           <label>Profil (IG / WWW)
-            <input required placeholder="@twojprofil lub link" />
+            <input name="profil" required placeholder="@twojprofil lub link" />
+          </label>
+          <label>Telefon (opcjonalnie)
+            <input name="telefon" placeholder="+48 ..." />
           </label>
         </div>
 
         <div class="contact-row two">
           <label>Cel
-            <input required placeholder="np. leady, sprzedaż, wzrost profilu" />
+            <input name="cel" required placeholder="np. leady, sprzeda, wzrost profilu" />
           </label>
-          <label>Budżet
-            <select required>
+          <label>Budet
+            <select name="budzet" required>
               <option value="" disabled selected>Wybierz</option>
-              <option>do 500 zł / miesiąc</option>
-              <option>500-2000 zł / miesiąc</option>
-              <option>2000+ zł / miesiąc</option>
+              <option>do 500 z / miesic</option>
+              <option>500-2000 z / miesic</option>
+              <option>2000+ z / miesic</option>
               <option>Ustalimy po audycie</option>
             </select>
           </label>
         </div>
 
         <label>Opis potrzeb
-          <textarea placeholder="Napisz krótko: co teraz nie działa i czego oczekujesz po wdrożeniu."></textarea>
+          <textarea name="opis" placeholder="Napisz krtko: co teraz nie dziaa i czego oczekujesz po wdroeniu."></textarea>
         </label>
+        <input type="text" name="website" autocomplete="off" tabindex="-1" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true" />
 
         <div class="contact-actions">
-          <button class="btn" type="submit">Wyślij brief</button>
-          <a class="btn secondary" href="audyt.html">Umów audyt</a>
-          <a class="btn secondary" href="demo.html">Zobacz demo</a>
+          <button class="btn" type="submit" data-track="cta_click" data-track-label="kontakt_wyslij_brief">Wylij brief</button>
+          <a class="btn secondary" href="audyt.html" data-track="cta_click" data-track-label="kontakt_umow_audyt">Umw audyt</a>
+          <a class="btn secondary" href="demo.html" data-track="cta_click" data-track-label="kontakt_zobacz_demo">Zobacz demo</a>
         </div>
+        <div data-form-status aria-live="polite"></div>
       </form>
-      <div class="contact-note">Wersja P0: prosty formularz konwersyjny, gotowy do podpięcia backendu.</div>
+      <div class="contact-note">Wysyka trafia od razu do backendu i skrzynki waciciela (po konfiguracji SMTP).</div>
     </article>
 
     <article class="contact-card">
       <h2>Dane kontaktowe</h2>
       <ul class="contact-list">
-        <li>Email: <strong>kontakt@danieloza.ai</strong></li>
-        <li>Instagram: <strong>@DANIELOZA.AI</strong></li>
-        <li>TikTok / YouTube: <strong>DANIELOZA.AI</strong></li>
+        <li>Email: <strong><a href="mailto:kontakt@danieloza.ai" data-track="cta_click" data-track-label="kontakt_email_mailto">kontakt@danieloza.ai</a></strong></li>
+        <li>Instagram: <strong><a href="https://www.instagram.com/DANIELOZA.AI" target="_blank" rel="noreferrer" data-track="cta_click" data-track-label="kontakt_instagram">DANIELOZA.AI</a></strong></li>
+        <li>TikTok / YouTube: <strong><a href="https://www.tiktok.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" data-track="cta_click" data-track-label="kontakt_tiktok">TikTok</a> / <a href="https://www.youtube.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" data-track="cta_click" data-track-label="kontakt_youtube">YouTube</a></strong></li>
       </ul>
-      <div class="contact-note">Najlepiej działa kolejność: Audyt -> Oferta -> Wdrożenie.</div>
+      <div class="contact-note">Najlepiej dziaa kolejno: Audyt -> Oferta -> Wdroenie.</div>
     </article>
   </section>
 </main>
@@ -129,6 +145,10 @@
     <a class="socialbtn" href="https://www.instagram.com/DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="Instagram"><img src="assets/img/instagram.png" alt=""></a>
     <a class="socialbtn" href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook"><img src="assets/img/facebook.png" alt=""></a>
     <a class="socialbtn" href="https://www.youtube.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="YouTube"><img src="assets/img/youtube_play.png" alt=""></a>
+  </div>
+  <div class="footer-legal">
+    <a href="privacy.html">Polityka prywatnoci</a>
+    <a href="cookies.html">Polityka cookies</a>
   </div>
 </footer>
 </body>

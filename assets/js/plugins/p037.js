@@ -1,4 +1,4 @@
-﻿/* p037 — Prompt history (last 5) + dropdown load */
+/* p037 — Prompt history (last 5) + dropdown load */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p037"] = {

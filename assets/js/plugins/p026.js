@@ -1,4 +1,4 @@
-﻿/* p026 — Ctrl+Enter triggers Generate (if #generateBtn exists) */
+/* p026 — Ctrl+Enter triggers Generate (if #generateBtn exists) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p026"] = {

@@ -1,4 +1,4 @@
-﻿/* p082 — STUB plugin (safe no-op) */
+/* p082 — STUB plugin (safe no-op) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p082"] = {

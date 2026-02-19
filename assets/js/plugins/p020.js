@@ -1,4 +1,4 @@
-﻿/* p020 — Import state from JSON file */
+/* p020 — Import state from JSON file */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p020"] = {

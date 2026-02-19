@@ -1,4 +1,4 @@
-﻿/* p016 — Favorites (save/load prompt) */
+/* p016 — Favorites (save/load prompt) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p016"] = {

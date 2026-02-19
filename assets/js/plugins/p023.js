@@ -1,4 +1,4 @@
-﻿/* p023 — Auto health ping indicator (every 30s) */
+/* p023 — Auto health ping indicator (every 30s) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p023"] = {

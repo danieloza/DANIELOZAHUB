@@ -2,6 +2,17 @@
 
 if (!(Test-Path ".\backend")) { throw "Brak folderu backend\ w tym miejscu." }
 
+$envFile = ".\backend\.env"
+if (Test-Path $envFile) {
+  Get-Content $envFile | ForEach-Object {
+    if ($_ -match '^\s*#' -or $_ -notmatch '=') { return }
+    $kv = $_ -split '=', 2
+    $k = $kv[0].Trim()
+    $v = $kv[1].Trim().Trim('"')
+    if ($k) { [System.Environment]::SetEnvironmentVariable($k, $v, "Process") }
+  }
+}
+
 # venv w backend/
 $venv = ".\backend\.venv"
 if (!(Test-Path $venv)) {

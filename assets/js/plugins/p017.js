@@ -1,4 +1,4 @@
-﻿/* p017 — Random suffix append to prompt */
+/* p017 — Random suffix append to prompt */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p017"] = {

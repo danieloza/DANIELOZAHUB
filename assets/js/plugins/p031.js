@@ -1,4 +1,4 @@
-﻿/* p031 — Clear demo state (localStorage state key) with confirm */
+/* p031 — Clear demo state (localStorage state key) with confirm */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p031"] = {

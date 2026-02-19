@@ -1,4 +1,4 @@
-﻿/* p029 — Video meta info (duration + size if possible) */
+/* p029 — Video meta info (duration + size if possible) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p029"] = {
@@ -73,7 +73,7 @@ function select(){
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width,initial-scale=1" />
-      <title>Portfolio â€” DANIELOZA.AI</title>
+      <title>Portfolio — DANIELOZA.AI</title>
       <meta name="description" content="Portfolio DANIELOZA.AI">
       <link rel="stylesheet" href="assets/css/style.css" />
 
@@ -129,7 +129,7 @@ function select(){
     <div class="container">
       <div class="kicker">PORTFOLIO</div>
       <h1>Case studies</h1>
-      <p class="note">Zamiast placeholderĂłw: miniatura + 1 zdanie + metryka.</p>
+      <p class="note">Zamiast placeholderów: miniatura + 1 zdanie + metryka.</p>
     </div>
   </section>
 
@@ -138,13 +138,13 @@ function select(){
     <div class="grid">
       <div class="card"><strong>CASE #1</strong><br><br>Opis 1 zdanie.<br><br><span style="opacity:.8">np. 100k views</span></div>
       <div class="card"><strong>CASE #2</strong><br><br>Opis 1 zdanie.<br><br><span style="opacity:.8">np. 48h viral</span></div>
-      <div class="card"><strong>CASE #3</strong><br><br>Opis 1 zdanie.<br><br><span style="opacity:.8">np. CTR â†‘</span></div>
+      <div class="card"><strong>CASE #3</strong><br><br>Opis 1 zdanie.<br><br><span style="opacity:.8">np. CTR ↑</span></div>
     </div>
   </section>
 </main>
 
       <footer>
-  <div>Â© <span id="y"></span> DANIELOZA.AI</div>
+  <div>© <span id="y"></span> DANIELOZA.AI</div>
 
   <div class="socialbar" aria-label="Social links">
     <a class="socialbtn" href="https://www.tiktok.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="TikTok">

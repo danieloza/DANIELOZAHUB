@@ -1,11 +1,19 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Audyt - DANIELOZA.AI</title>
-  <meta name="description" content="Darmowy audyt social media: problem, szybkie rekomendacje i plan działania." />
+  <meta name="description" content="Darmowy audyt social media: problem, szybkie rekomendacje i plan dziaania." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://danieloza.ai/audyt.html" />
+<meta property="og:title" content="Audyt - DANIELOZA.AI" />
+  <meta property="og:description" content="Zamw audyt social media i odbierz plan dziaa na najblisze 7 dni." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://danieloza.ai/audyt.html" />
+  <meta property="og:image" content="https://danieloza.ai/assets/img/logotype.png" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/analytics.config.js" defer></script>
   <script src="assets/js/main.js" defer></script>
   <style>
     .audit-wrap { max-width: 1060px; margin: 0 auto; padding: 26px 14px 70px; }
@@ -44,12 +52,13 @@
     <strong>DANIELOZA.AI</strong>
   </a>
   <nav>
-    <a href="oferta.html">OFERTA</a>
-    <a href="demo.html">DEMO</a>
-    <a href="audyt.html" aria-current="page">AUDYT</a>
-    <a href="portfolio.html">PORTFOLIO</a>
-    <a href="kontakt.html">KONTAKT</a>
-    <a href="faq.html">FAQ</a>
+    <a href="oferta.html" data-track="cta_click" data-track-label="audyt_nav_oferta">OFERTA</a>
+    <a href="demo.html" data-track="cta_click" data-track-label="audyt_nav_demo">DEMO</a>
+    <a href="audyt.html" aria-current="page" data-track="cta_click" data-track-label="audyt_nav_audyt">AUDYT</a>
+    <a href="portfolio.html" data-track="cta_click" data-track-label="audyt_nav_portfolio">PORTFOLIO</a>
+    <a href="case-studies.html" data-track="cta_click" data-track-label="audyt_nav_case_studies">CASE STUDIES</a>
+    <a href="kontakt.html" data-track="cta_click" data-track-label="audyt_nav_kontakt">KONTAKT</a>
+    <a href="faq.html" data-track="cta_click" data-track-label="audyt_nav_faq">FAQ</a>
   </nav>
 </header>
 
@@ -67,20 +76,26 @@
 
 <main class="audit-wrap">
   <section class="audit-hero">
-    <h1>Umów darmowy audyt social media</h1>
-    <p>W 1 formularzu zbierasz kontekst, a my przechodzimy przez: problem, decyzje i plan 7 dni. Bez długiego briefowania.</p>
+    <h1>Umw darmowy audyt social media</h1>
+    <p>W 1 formularzu zbierasz kontekst, a my przechodzimy przez: problem, decyzje i plan 7 dni. Bez dugiego briefowania.</p>
   </section>
 
   <section class="audit-grid">
     <article class="audit-card">
       <h2>Formularz audytu</h2>
-      <form class="audit-form" onsubmit="event.preventDefault(); alert('Dziękuję. Następny krok: kontakt i doprecyzowanie planu.');">
+      <form class="audit-form" data-lead-form="audyt" data-track-submit="form_submit" data-track-submit-label="audyt_form_submit">
         <div class="audit-row two">
           <label>Link do profilu
-            <input required placeholder="https://instagram.com/twojprofil" />
+            <input name="profil_link" required placeholder="https://instagram.com/twojprofil" />
           </label>
+          <label>Email kontaktowy
+            <input type="email" name="email" required placeholder="np. kontakt@twojamarka.pl" />
+          </label>
+        </div>
+
+        <div class="audit-row two">
           <label>Platforma
-            <select>
+            <select name="platforma">
               <option>Instagram</option>
               <option>TikTok</option>
               <option>YouTube Shorts</option>
@@ -91,39 +106,41 @@
 
         <div class="audit-row two">
           <label>Cel
-            <select>
-              <option>Więcej obserwujących</option>
-              <option>Leady / sprzedaż</option>
-              <option>Rozpoznawalność marki</option>
+            <select name="cel">
+              <option>Wicej obserwujcych</option>
+              <option>Leady / sprzeda</option>
+              <option>Rozpoznawalno marki</option>
             </select>
           </label>
-          <label>Branża
-            <input placeholder="np. beauty, lokalne usługi, e-commerce" />
+          <label>Brana
+            <input name="branza" placeholder="np. beauty, lokalne usugi, e-commerce" />
           </label>
         </div>
 
-        <label>Co teraz nie działa?
-          <textarea placeholder="np. niski zasięg, słabe CTA, mało zapytań z profilu"></textarea>
+        <label>Co teraz nie dziaa?
+          <textarea name="problem" placeholder="np. niski zasig, sabe CTA, mao zapyta z profilu"></textarea>
         </label>
+        <input type="text" name="website" autocomplete="off" tabindex="-1" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true" />
 
         <div class="audit-actions">
-          <button class="btn" type="submit">Wyślij zgłoszenie audytu</button>
-          <a class="btn secondary" href="demo.html">Zobacz demo</a>
-          <a class="btn secondary" href="kontakt.html">Skontaktuj się</a>
+          <button class="btn" type="submit" data-track="cta_click" data-track-label="audyt_wyslij_zgloszenie">Wylij zgoszenie audytu</button>
+          <a class="btn secondary" href="demo.html" data-track="cta_click" data-track-label="audyt_zobacz_demo">Zobacz demo</a>
+          <a class="btn secondary" href="kontakt.html" data-track="cta_click" data-track-label="audyt_skontaktuj_sie">Skontaktuj si</a>
         </div>
+        <div data-form-status aria-live="polite"></div>
       </form>
-      <div class="audit-note">To jest lekka wersja formularza P0: szybki kontakt i kwalifikacja.</div>
+      <div class="audit-note">Formularz jest podpity pod backend leadw i gotowy pod automatyczne notyfikacje mailowe.</div>
     </article>
 
     <article class="audit-card">
       <h2>Co dostajesz w audycie</h2>
       <ul class="audit-list">
-        <li>3 kluczowe problemy, które blokują wzrost profilu.</li>
-        <li>Proponowany kierunek treści: hook, visual, CTA.</li>
-        <li>Plan publikacji na 7 dni pod Twój cel biznesowy.</li>
-        <li>Priorytet działań: co robić teraz, a co odpuścić.</li>
+        <li>3 kluczowe problemy, ktre blokuj wzrost profilu.</li>
+        <li>Proponowany kierunek treci: hook, visual, CTA.</li>
+        <li>Plan publikacji na 7 dni pod Twj cel biznesowy.</li>
+        <li>Priorytet dziaa: co robi teraz, a co odpuci.</li>
       </ul>
-      <div class="audit-note">Jeśli chcesz pełną wersję (z wdrożeniem), przechodzimy do oferty i harmonogramu.</div>
+      <div class="audit-note">Jeli chcesz pen wersj (z wdroeniem), przechodzimy do oferty i harmonogramu.</div>
     </article>
   </section>
 </main>
@@ -136,6 +153,11 @@
     <a class="socialbtn" href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook"><img src="assets/img/facebook.png" alt=""></a>
     <a class="socialbtn" href="https://www.youtube.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="YouTube"><img src="assets/img/youtube_play.png" alt=""></a>
   </div>
+  <div class="footer-legal">
+    <a href="privacy.html">Polityka prywatnoci</a>
+    <a href="cookies.html">Polityka cookies</a>
+  </div>
 </footer>
 </body>
 </html>
+

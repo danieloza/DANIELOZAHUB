@@ -1,4 +1,4 @@
-﻿/* demo.core.js — plugin core (SAFE) */
+/* demo.core.js — plugin core (SAFE) */
 (function(){
   const CORE_KEY = "danieloza_demo_plugins_cfg_v1";
 

@@ -1,4 +1,4 @@
-﻿/* p015 — Show backend host pill live */
+/* p015 — Show backend host pill live */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p015"] = {

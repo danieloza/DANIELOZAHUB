@@ -1,4 +1,4 @@
-﻿/* p033 — Prompt duplicate lint (simple) */
+/* p033 — Prompt duplicate lint (simple) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p033"] = {

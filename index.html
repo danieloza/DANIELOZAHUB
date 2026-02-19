@@ -3,381 +3,375 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DANIELOZA.AI — AI Video & Viral Content</title>
-  <meta name="description" content="DANIELOZA.AI — premium AI video, reels, shorts. Styl YSL/Gucci.">
+  <title>DANIELOZA.AI - AI Video i Viral Content</title>
+  <meta name="description" content="DANIELOZA.AI: produkcja AI video, rolki i shorty pod leady, sprzedaż i rozpoznawalność marki." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://danieloza.ai/" />
+<meta property="og:type" content="website" />
+  <meta property="og:site_name" content="DANIELOZA.AI" />
+  <meta property="og:title" content="DANIELOZA.AI - AI Video i Viral Content" />
+  <meta property="og:description" content="Szybkie wdrożenia short-form: audyt, oferta i realizacja contentu AI." />
+  <meta property="og:url" content="https://danieloza.ai/" />
+  <meta property="og:image" content="https://danieloza.ai/assets/img/logotype.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DANIELOZA.AI - AI Video i Viral Content" />
+  <meta name="twitter:description" content="Szybkie wdrożenia short-form: audyt, oferta i realizacja contentu AI." />
+  <meta name="twitter:image" content="https://danieloza.ai/assets/img/logotype.png" />
+
   <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/analytics.config.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "DANIELOZA.AI",
+        "url": "https://danieloza.ai/",
+        "email": "kontakt@danieloza.ai",
+        "sameAs": [
+          "https://www.instagram.com/DANIELOZA.AI",
+          "https://www.tiktok.com/@DANIELOZA.AI",
+          "https://www.youtube.com/@DANIELOZA.AI"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "name": "DANIELOZA.AI",
+        "url": "https://danieloza.ai/"
+      },
+      {
+        "@type": "Service",
+        "serviceType": "AI video i short-form content",
+        "provider": { "@type": "Organization", "name": "DANIELOZA.AI" },
+        "areaServed": "PL"
+      }
+    ]
+  }
+  </script>
+
   <style>
-    /* Embedded Demo (index only) */
-    .embedDemo{padding:64px 16px 84px}
-    .embedDemo__wrap{max-width:1200px;margin:0 auto}
-    .embedDemo__head{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;justify-content:space-between;margin-bottom:14px}
-    .embedDemo__head h2{margin:0;font-size:28px;letter-spacing:.2px}
-    .embedDemo__head p{margin:0;opacity:.75}
-    .embedDemo__actions .btn{
-      display:inline-flex;align-items:center;justify-content:center;
-      padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.18);
-      background:rgba(255,255,255,.06);text-decoration:none;color:inherit
-    }
-    .embedDemo__frame{border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.22)}
-    .embedDemo__frame iframe{width:100%;height:min(80vh,900px);border:0;display:block;background:transparent}
-    @media (max-width:640px){
-      .embedDemo{padding:46px 12px 64px}
-      .embedDemo__head h2{font-size:22px}
-      .embedDemo__frame iframe{height:82vh}
-    }
+    .aboutBlock{ padding:56px 16px 84px; }
+    .aboutWrap{ max-width:1200px; margin:0 auto; }
+    .aboutHead h2{ margin:0; font-size:28px; letter-spacing:.2px; }
+    .aboutLead{ margin:10px 0 0; opacity:.80; max-width:85ch; line-height:1.55; }
+    .aboutGrid{ margin-top:18px; display:grid; grid-template-columns:1.05fr 1fr; gap:14px; align-items:start; }
+    .aboutCard{ border-radius:18px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.18); padding:16px; }
+    .aboutCard h3{ margin:0 0 10px; font-size:16px; letter-spacing:.08em; }
+    .aboutCard p, .aboutCard ul{ margin:0; opacity:.85; line-height:1.55; }
+    .aboutCard ul{ padding-left:18px; }
+    .aboutCard li{ margin:6px 0; }
+    .quickActions{ margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; }
+    .footer-legal{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:10px; font-size:12px; opacity:.78; }
+    .footer-legal a{ color:inherit; text-decoration:none; border-bottom:1px dashed rgba(255,255,255,.28); }
+    @media (max-width:900px){ .aboutGrid{ grid-template-columns:1fr; } }
   </style>
-
 </head>
-
-<body  class="page-homeno-sticky-header">
-  
-
-
-
-
+<body class="page-home has-mobile-cta">
 <header id="hdr">
   <a class="brand-mini" href="index.html">
     <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
     <strong>DANIELOZA.AI</strong>
   </a>
   <nav>
-    <a href="oferta.html">OFERTA</a>
-    <a href="demo.html">DEMO</a>
-    <a href="audyt.html">AUDYT</a>
-    <a href="portfolio.html">PORTFOLIO</a>
-    <a href="kontakt.html">KONTAKT</a>
-    <a href="faq.html">FAQ</a>
+    <a href="oferta.html" data-track="cta_click" data-track-label="nav_oferta">OFERTA</a>
+    <a href="demo.html" data-track="cta_click" data-track-label="nav_demo">DEMO</a>
+    <a href="audyt.html" data-track="cta_click" data-track-label="nav_audyt">AUDYT</a>
+    <a href="portfolio.html" data-track="cta_click" data-track-label="nav_portfolio">PORTFOLIO</a>
+    <a href="case-studies.html" data-track="cta_click" data-track-label="index_nav_case_studies">CASE STUDIES</a>
+    <a href="kontakt.html" data-track="cta_click" data-track-label="nav_kontakt">KONTAKT</a>
+    <a href="faq.html" data-track="cta_click" data-track-label="nav_faq">FAQ</a>
   </nav>
 </header>
-</div>
 
+<section class="hero" id="hero">
+  <video class="bg-video" id="bg1" src="assets/video/bg-1.mp4" autoplay muted loop playsinline preload="metadata"></video>
+  <video class="bg-video" id="bg2" src="assets/video/bg-2.mp4" autoplay muted loop playsinline preload="none" style="display:none"></video>
+  <div class="overlay"></div>
+  <div class="hero-mesh" aria-hidden="true"></div>
 
+  <div class="logo-center" id="logoCenter">
+    <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
+    <h1 class="hero-punch">Kampanie AI video, ktore zamieniaja scroll w zapytania.</h1>
+    <div class="tagline">AI VIDEO DLA MAREK LOKALNYCH I E-COMMERCE</div>
+    <p class="hero-subline">Od briefu do pierwszych kreacji w 7 dni. Szybko, konkretnie, pod wynik.</p>
+    <div class="hero-cta">
+      <a class="btn" href="audyt.html" data-track="cta_click" data-track-label="hero_umow_audyt">Umów audyt</a>
+      <a class="btn secondary" href="demo.html" data-track="cta_click" data-track-label="hero_zobacz_demo">Zobacz demo</a>
+      <a class="btn secondary" href="kontakt.html" data-track="cta_click" data-track-label="hero_skontaktuj_sie">Skontaktuj się</a>
+    </div>
+  </div>
+</section>
 
-  <section class="hero" id="hero">
-    <video class="bg-video" id="bg1" src="assets/video/bg-1.mp4" autoplay muted loop playsinline></video>
-    <video class="bg-video" id="bg2" src="assets/video/bg-2.mp4" autoplay muted loop playsinline style="display:none"></video>
-    <div class="overlay"></div>
-
-    <div class="logo-center" id="logoCenter">
-      <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
-      <div class="tagline">AI VIDEO - VIRAL CONTENT - REKLAMY</div>
-      <div class="hero-cta">
-
-        <a class="btn" href="audyt.html">Umow audyt</a>
-        <a class="btn secondary" href="demo.html">Zobacz demo</a>
-        <a class="btn secondary" href="kontakt.html">Skontaktuj sie</a>
-      
-
-</div>
+<main>
+  <section class="wow-reveal">
+    <h2>W skrócie</h2>
+    <div class="grid">
+      <div class="card">Short-form pod performance: hook, tempo i CTA pod wynik.</div>
+      <div class="card">Produkcja reklam brand/UGC dla marek lokalnych i e-commerce.</div>
+      <div class="card">Szybkie testy i skalowanie kreacji, ktore realnie domykaja leady.</div>
     </div>
   </section>
 
-  <main>
-    <section>
-      <h2>W SKROCIE</h2>
-      <div class="grid">
-        <div class="card">Premium short-form: 10-20s, hook + tempo + punchline.</div>
-        <div class="card">Reklamy brand/UGC w klimacie premium.</div>
-        <div class="card">AI postac i serie, ktore buduja rozpoznawalnosc.</div>
-      </div>
-    </section>
-<section class="homeHub" aria-label="Tools hub">
-  <div class="homeHubTop">
-    <div>
-      <h2 class="homeHubTitle">CO CHCESZ DZIŚ STWORZYĆ?</h2>
-      <div class="homeHubSub">Wybierz szybkie akcje — układ “hub” jak w narzędziach AI: kafle, zakładki i gotowe wejścia.</div>
+  <section class="impactStats wow-reveal" aria-label="Kluczowe liczby">
+    <h2>Efekt, nie obietnice</h2>
+    <div class="impactStatsGrid">
+      <article class="impactStatCard">
+        <div class="impactStatValue"><span data-count-to="7">0</span> dni</div>
+        <p>Do pierwszej paczki gotowych kreacji.</p>
+      </article>
+      <article class="impactStatCard">
+        <div class="impactStatValue">+<span data-count-to="41">0</span>%</div>
+        <p>Wzrost klikniec do kontaktu w lokalnych kampaniach.</p>
+      </article>
+      <article class="impactStatCard">
+        <div class="impactStatValue">-<span data-count-to="28">0</span>%</div>
+        <p>Sredni spadek kosztu produkcji tresci m/m.</p>
+      </article>
+      <article class="impactStatCard">
+        <div class="impactStatValue"><span data-count-to="22">0</span>+</div>
+        <p>Wariantow hookow testowanych miesiecznie.</p>
+      </article>
     </div>
-    <div class="homeHubTabs" aria-label="Filters">
-      <div class="homeHubTab">All</div>
-      <div class="homeHubTab">Images</div>
-      <div class="homeHubTab">Videos</div>
-      <div class="homeHubTab">Audio</div>
-      <div class="homeHubTab">Favorites</div>
-    </div>
-  </div>
+  </section>
 
-  <div class="homeHubGrid">
-    <div class="homeHubLeft">
-      <div class="homeHubRow">
-        <div class="homeMini" onclick="location.href='kling.html'">
-          <div class="homeMiniIcon">🎬</div>
-          <div class="homeMiniTitle">Kling (Video)</div>
-          <div class="homeMiniSub">Image→Video, job queue, podgląd i status. Kliknij i wejdź do Kling Studio.</div>
-        </div>
-        
-        <div class="homeMini" onclick="location.href='gemini.html'">
-          <div class="homeMiniIcon">💬</div>
-          <div class="homeMiniTitle">Chat AI (Gemini)</div>
-          <div class="homeMiniSub">Panel rozmowy + modele + historia. Kliknij i wejdź do studio chat.</div>
-        </div><div class="homeMini" onclick="location.href='demo.html'">
-          <div class="homeMiniIcon">🎬</div>
-          <div class="homeMiniTitle">Stwórz film</div>
-          <div class="homeMiniSub">Kling demo (image → video). Szybki test reklamy/rolki.</div>
-        </div>
-        <div class="homeMini" onclick="location.href='audyt.html'">
-          <div class="homeMiniIcon">🧠</div>
-          <div class="homeMiniTitle">Social audit</div>
-          <div class="homeMiniSub">IG/TikTok → 3 konkretne wnioski: hook, visual, CTA.</div>
-        </div>
-        <div class="homeMini" onclick="location.href='portfolio.html'">
-          <div class="homeMiniIcon">📌</div>
-          <div class="homeMiniTitle">Case studies</div>
-          <div class="homeMiniSub">Najlepsze przykłady + metryki. Zobacz portfolio.</div>
-        </div>
-
-        <div class="homeMini" onclick="location.href='oferta.html'">
-          <div class="homeMiniIcon">💎</div>
-          <div class="homeMiniTitle">Pakiety</div>
-          <div class="homeMiniSub">Wybierz start / viral / brand. Szybko i premium.</div>
-        </div>
-        <div class="homeMini">
-          <div class="homeMiniIcon">🖼️</div>
-          <div class="homeMiniTitle">Stwórz obrazek</div>
-          <div class="homeMiniSub">Placeholder pod przyszły moduł (images).</div>
-        </div>
-        <div class="homeMini">
-          <div class="homeMiniIcon">🎧</div>
-          <div class="homeMiniTitle">Audio</div>
-          <div class="homeMiniSub">Placeholder pod voice/audio workflow.</div>
-        </div>
+  <section class="compareSection wow-reveal" aria-label="Przed i po">
+    <h2>Przed i po wdrozeniu</h2>
+    <p class="compareLead">Przesun suwak i zobacz roznice miedzy przypadkowym contentem a pipeline produkcji pod performance.</p>
+    <div class="compareBox" id="compareBox">
+      <div class="compareLayer compareBefore">
+        <h3>Przed</h3>
+        <p>Nieregularne publikacje. Slabe hooki. Brak procesu testow i danych do decyzji.</p>
       </div>
-    </div>
-
-    <div class="homeHubRight">
-      <div class="homeHeroCard">
-        <div class="homeHeroTop">
-          <div class="homeHeroName">KLING</div>
-          <span class="homeBadge">NEW</span>
-        </div>
-        <div class="homeHeroDesc">Image → Video. Najszybszy sposób na “demo reklamy” w Twoim stylu.</div>
-        <div class="homeHeroCta">
-
-          <a class="homeBtn primary" href="demo.html">Zobacz demo</a>
-          <a class="homeBtn" href="oferta.html">Zobacz ofertę</a>
-        
-
-</div>
+      <div class="compareLayer compareAfter">
+        <h3>Po</h3>
+        <p>Staly rytm publikacji, testy wariantow i jasne CTA prowadzace do zapytania.</p>
       </div>
-
-      <div class="homeHeroCard">
-        <div class="homeHeroTop">
-          <div class="homeHeroName">SORA 2</div>
-          <span class="homeBadge">VIDEO</span>
-        </div>
-        <div class="homeHeroDesc">Placeholder kafel — docelowo możesz tu podpiąć kolejne demo / integrację.</div>
-        <div class="homeHeroCta">
-
-          <a class="homeBtn" href="kontakt.html">Zapytaj o wdrożenie</a>
-        
-
-</div>
-      </div>
+      <input class="compareRange" id="compareRange" type="range" min="0" max="100" value="52" aria-label="Suwak porownania przed i po" />
     </div>
-  </div>
-</section>
-<section class="aboutBlock" id="o-mnie">
-  <div class="aboutWrap">
-    <div class="aboutHead">
-      <h2>O co chodzi w DANIELOZA.AI?</h2>
-      <p class="aboutLead">
-        To jest moje „studio wejścia” do narzędzi AI, które zamieniam w realne efekty: krótkie reklamy, rolki, shorty,
-        viralowe formaty i testy kampanii — szybko i w premium klimacie.
-      </p>
+  </section>
+
+    <section class="wow-reveal" aria-label="Proces wdrozenia">
+    <h2>Proces 7 dni</h2>
+    <div class="grid">
+      <article class="card">
+        <strong>Dzien 1</strong><br>
+        Audyt, cel i plan testow.
+      </article>
+      <article class="card">
+        <strong>Dzien 2-4</strong><br>
+        Produkcja pierwszej paczki kreacji i copy.
+      </article>
+      <article class="card">
+        <strong>Dzien 5-7</strong><br>
+        Publikacja, feedback i pierwsze iteracje.
+      </article>
+    </div>
+    <p class="note">Gwarancja pierwszych testow: w 7 dni startujesz z gotowa paczka materialow do publikacji.</p>
+  </section>
+<section class="caseSnippets wow-reveal" aria-label="Mini case studies">
+    <h2>Mini case studies</h2>
+    <div class="caseGrid">
+      <article class="caseCard">
+        <div class="caseMeta">Local beauty • short-form ads</div>
+        <h3>Problem</h3>
+        <p>Niski CTR z profilu do kontaktu i brak regularnych publikacji.</p>
+        <h3>Decyzja</h3>
+        <p>Seria 12 pionowych klipów z jednym, mocnym CTA.</p>
+        <h3>Wynik</h3>
+        <p><strong>+41% kliknięć do kontaktu w 5 tygodni.</strong></p>
+      </article>
+
+      <article class="caseCard">
+        <div class="caseMeta">E-commerce • produkt premium</div>
+        <h3>Problem</h3>
+        <p>Wysoki koszt testów i wolne tempo produkcji kreacji.</p>
+        <h3>Decyzja</h3>
+        <p>Pipeline AI: warianty video i stały rytm testów hooków.</p>
+        <h3>Wynik</h3>
+        <p><strong>-28% kosztu produkcji contentu miesiąc do miesiąca.</strong></p>
+      </article>
+
+      <article class="caseCard">
+        <div class="caseMeta">Usługi lokalne • lead generation</div>
+        <h3>Problem</h3>
+        <p>Ruch był, ale brakowało procesu domknięcia zapytania.</p>
+        <h3>Decyzja</h3>
+        <p>Lejek: demo → audyt → kontakt z jasnym CTA.</p>
+        <h3>Wynik</h3>
+        <p><strong>2.2x więcej zapytań z ruchu organicznego.</strong></p>
+      </article>
+    </div>
+    <a class="btn caseSnippetsBtn" href="case-studies.html" data-track="cta_click" data-track-label="index_mini_case_studies">Zobacz pełne case studies</a>
+  </section>
+
+  <section class="homeHub wow-reveal" aria-label="Tools hub">
+    <div class="homeHubTop">
+      <div>
+        <h2 class="homeHubTitle">Co chcesz dziś stworzyć?</h2>
+        <div class="homeHubSub">Szybkie wejście do modułów i gotowych akcji.</div>
+      </div>
+      <div class="homeHubTabs" aria-label="Filters">
+        <button class="homeHubTab" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="homeHubTab" type="button" data-filter="image" aria-pressed="false">Images</button>
+        <button class="homeHubTab" type="button" data-filter="video" aria-pressed="false">Videos</button>
+        <button class="homeHubTab" type="button" data-filter="audio" aria-pressed="false">Audio</button>
+        <button class="homeHubTab" type="button" data-filter="favorites" aria-pressed="false">Favorites</button>
+      </div>
     </div>
 
-    <div class="aboutGrid">
-      <div class="aboutCard">
-        <h3>Cel tej strony</h3>
-        <ul>
-          <li>Jedno miejsce do demo (wideo / chat / obrazy) i szybkich wejść do modułów.</li>
-          <li>Pokazać jak wyglądają moje workflow’y: od pomysłu → do gotowego klipu.</li>
-          <li>Ułatwić kontakt / wdrożenie / wycenę — bez zbędnego tłumaczenia.</li>
-        </ul>
-      </div>
-
-      <div class="aboutCard">
-        <h3>Trochę o mnie</h3>
-        <p>
-          Jestem Daniel. Robię content i buduję własne „AI studio” do produkcji short-form (TikTok / Reels / Shorts).
-          Łączę kreatywne pomysły z automatyzacją, żeby tworzyć szybciej, testować więcej i dowozić konkretny efekt.
-        </p>
-
-        <div class="narratorRow">
-          <button class="narratorBtn" id="narrateBtn" type="button">▶ Odsłuchaj (narrator)</button>
-          <button class="narratorBtn ghost" id="stopBtn" type="button">■ Stop</button>
-        </div>
-
-        <p class="aboutNote">
-          (Działa w Chrome/Edge. W razie braku głosu: sprawdź, czy system ma zainstalowane głosy.)
-        </p>
-      </div>
-
-      <div class="aboutCard">
-        <h3>Sloty — zdjęcia / wideo</h3>
-        <div class="mediaSlots">
-          <div class="slot">
-            <div class="slotTitle">Slot #1 (Video)</div>
-            <div class="slotBox">Tu wstawisz video / podgląd</div>
+    <div class="homeHubGrid">
+      <div class="homeHubLeft">
+        <div class="homeHubRow">
+          <div class="homeMini" data-kind="video" data-favorite="1" onclick="location.href='kling.html'" data-track="cta_click" data-track-label="homehub_kafelek_kling">
+            <div class="homeMiniIcon">🎬</div>
+            <div class="homeMiniTitle">Kling (Video)</div>
+            <div class="homeMiniSub">Image→Video, kolejka jobów, podgląd i status.</div>
           </div>
-          <div class="slot">
-            <div class="slotTitle">Slot #2 (Image)</div>
-            <div class="slotBox">Tu wstawisz zdjęcie</div>
+
+          <div class="homeMini" data-kind="video" data-favorite="1" onclick="location.href='gemini.html'" data-track="cta_click" data-track-label="homehub_kafelek_gemini">
+            <div class="homeMiniIcon">💬</div>
+            <div class="homeMiniTitle">Chat AI (Gemini)</div>
+            <div class="homeMiniSub">Panel rozmowy + modele + historia.</div>
           </div>
-          <div class="slot">
-            <div class="slotTitle">Slot #3 (Image)</div>
-            <div class="slotBox">Tu wstawisz zdjęcie</div>
+
+          <div class="homeMini" data-kind="video" onclick="location.href='demo.html'" data-track="cta_click" data-track-label="homehub_kafelek_stworz_film">
+            <div class="homeMiniIcon">🎬</div>
+            <div class="homeMiniTitle">Stwórz film</div>
+            <div class="homeMiniSub">Szybki test reklamy/rolki z gotowego mocka.</div>
           </div>
-          <div class="slot">
-            <div class="slotTitle">Slot #4 (Video)</div>
-            <div class="slotBox">Tu wstawisz video / GIF</div>
+
+          <div class="homeMini" data-kind="video" data-favorite="1" onclick="location.href='audyt.html'" data-track="cta_click" data-track-label="homehub_kafelek_social_audit">
+            <div class="homeMiniIcon">🧠</div>
+            <div class="homeMiniTitle">Social audit</div>
+            <div class="homeMiniSub">3 konkretne wnioski: hook, visual, CTA.</div>
+          </div>
+
+          <div class="homeMini" data-kind="video" onclick="location.href='case-studies.html'" data-track="cta_click" data-track-label="homehub_kafelek_case_studies">
+            <div class="homeMiniIcon">📌</div>
+            <div class="homeMiniTitle">Case studies</div>
+            <div class="homeMiniSub">Najlepsze przykłady + metryki.</div>
+          </div>
+
+          <div class="homeMini" data-kind="video" onclick="location.href='oferta.html'" data-track="cta_click" data-track-label="homehub_kafelek_pakiety">
+            <div class="homeMiniIcon">💎</div>
+            <div class="homeMiniTitle">Pakiety</div>
+            <div class="homeMiniSub">Wybierz start, viral lub brand.</div>
+          </div>
+
+          <div class="homeMini" data-kind="image">
+            <div class="homeMiniIcon">🖼️</div>
+            <div class="homeMiniTitle">Stwórz obrazek</div>
+            <div class="homeMiniSub">Moduł image workflow (w przygotowaniu).</div>
+          </div>
+
+          <div class="homeMini" data-kind="audio">
+            <div class="homeMiniIcon">🎧</div>
+            <div class="homeMiniTitle">Audio</div>
+            <div class="homeMiniSub">Moduł voice/audio (w przygotowaniu).</div>
           </div>
         </div>
       </div>
+
+      <div class="homeHubRight">
+        <div class="homeHeroCard">
+          <div class="homeHeroTop">
+            <div class="homeHeroName">KLING</div>
+            <span class="homeBadge">NEW</span>
+          </div>
+          <div class="homeHeroDesc">Image → Video. Najszybszy sposób na demo reklamy w Twoim stylu.</div>
+          <div class="homeHeroCta">
+            <a class="homeBtn primary" href="demo.html" data-track="cta_click" data-track-label="homehub_kling_zobacz_demo">Zobacz demo</a>
+            <a class="homeBtn" href="oferta.html" data-track="cta_click" data-track-label="homehub_kling_zobacz_oferte">Zobacz ofertę</a>
+          </div>
+        </div>
+
+        <div class="homeHeroCard">
+          <div class="homeHeroTop">
+            <div class="homeHeroName">WDROŻENIE</div>
+            <span class="homeBadge">FAST</span>
+          </div>
+          <div class="homeHeroDesc">Chcesz to uruchomić u siebie? Przechodzimy od audytu do produkcji.</div>
+          <div class="homeHeroCta">
+            <a class="homeBtn" href="kontakt.html" data-track="cta_click" data-track-label="homehub_wdrozenie_kontakt">Zapytaj o wdrożenie</a>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<style>
-  /* === ABOUT / PURPOSE BLOCK === */
-  .aboutBlock{ padding: 56px 16px 84px; }
-  .aboutWrap{ max-width: 1200px; margin: 0 auto; }
-  .aboutHead h2{ margin:0; font-size: 28px; letter-spacing:.2px; }
-  .aboutLead{ margin:10px 0 0; opacity:.80; max-width: 85ch; line-height: 1.55; }
+  <section class="logoWall wow-reveal" aria-label="Social proof">
+    <h2>Zaufali i wspoltworza z nami</h2>
+    <div class="logoMarquee" aria-hidden="true">
+      <div class="logoTrack">
+        <span>Beauty Studio</span>
+        <span>E-commerce Pro</span>
+        <span>Clinic Group</span>
+        <span>Local Premium</span>
+        <span>Creator Brand</span>
+        <span>Food & Retail</span>
+        <span>Beauty Studio</span>
+        <span>E-commerce Pro</span>
+        <span>Clinic Group</span>
+        <span>Local Premium</span>
+        <span>Creator Brand</span>
+        <span>Food & Retail</span>
+      </div>
+    </div>
+  </section>
 
-  .aboutGrid{
-    margin-top: 18px;
-    display:grid;
-    grid-template-columns: 1.05fr 1fr;
-    gap: 14px;
-    align-items: start;
-  }
-  .aboutCard{
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,.12);
-    background: rgba(0,0,0,.18);
-    padding: 16px;
-  }
-  .aboutCard h3{ margin:0 0 10px; font-size: 16px; letter-spacing:.08em; }
-  .aboutCard p{ margin:0; opacity:.82; line-height:1.55; }
-  .aboutCard ul{ margin:0; padding-left: 18px; opacity:.85; line-height:1.6; }
-  .aboutCard li{ margin: 6px 0; }
+  <section class="aboutBlock wow-reveal" id="o-mnie">
+    <div class="aboutWrap">
+      <div class="aboutHead">
+        <h2>Dlaczego to działa?</h2>
+        <p class="aboutLead">Łączę kreatywę i egzekucję: od pomysłu, przez produkcję, po wynik i analitykę. Bez zbędnego procesu.</p>
+      </div>
 
-  .narratorRow{ margin-top: 14px; display:flex; gap:10px; flex-wrap: wrap; }
-  .narratorBtn{
-    padding: 10px 14px;
-    border-radius: 14px;
-    border: 1px solid rgba(0,225,255,.18);
-    background: rgba(0,225,255,.10);
-    color: rgba(255,255,255,.92);
-    font-weight: 900;
-    cursor: pointer;
-  }
-  .narratorBtn:hover{ background: rgba(0,225,255,.14); }
-  .narratorBtn.ghost{
-    border: 1px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.04);
-  }
-  .narratorBtn.ghost:hover{ background: rgba(255,255,255,.07); }
+      <div class="aboutGrid">
+        <article class="aboutCard">
+          <h3>Co dostajesz</h3>
+          <ul>
+            <li>Strategię formatu i kierunku treści.</li>
+            <li>Produkcję short-form pod platformę i cel biznesowy.</li>
+            <li>Iteracje na podstawie danych, nie domysłów.</li>
+          </ul>
+        </article>
 
-  .aboutNote{ margin-top: 10px; opacity:.65; font-size: 12px; }
-
-  .mediaSlots{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .slotTitle{ font-size: 12px; opacity:.78; margin-bottom: 6px; letter-spacing:.06em; }
-  .slotBox{
-    height: 120px;
-    border-radius: 16px;
-    border: 1px dashed rgba(255,255,255,.16);
-    background: rgba(255,255,255,.03);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    opacity:.70;
-  }
-
-  @media (max-width: 900px){
-    .aboutGrid{ grid-template-columns: 1fr; }
-    .mediaSlots{ grid-template-columns: 1fr; }
-    .slotBox{ height: 150px; }
-  }
-</style>
-
-<script>
-  (function(){
-    function getNarrationText(){
-      return [
-        "DANIELOZA AI — moje studio do szybkich produkcji short form.",
-        "Tu wchodzisz w moduły: wideo, chat, obrazy — i od razu widzisz jak wygląda workflow.",
-        "Jeśli chcesz wdrożenie lub współpracę, napisz — ogarniemy to szybko i konkretnie."
-      ].join(" ");
-    }
-
-    const btn = document.getElementById("narrateBtn");
-    const stop = document.getElementById("stopBtn");
-    if(!btn || !stop) return;
-
-    btn.addEventListener("click", function(){
-      try{
-        if(!window.speechSynthesis){ alert("Brak wsparcia narrator (SpeechSynthesis) w tej przeglądarce."); return; }
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(getNarrationText());
-        u.lang = "pl-PL";
-        u.rate = 1.0;
-        u.pitch = 1.0;
-        window.speechSynthesis.speak(u);
-      }catch(e){
-        console.error(e);
-        alert("Narrator nie zadziałał. Sprawdź konsolę.");
-      }
-    });
-
-    stop.addEventListener("click", function(){
-      try{ window.speechSynthesis && window.speechSynthesis.cancel(); }catch(e){}
-    });
-  })();
-</script>
+        <article class="aboutCard">
+          <h3>Szybki start</h3>
+          <p>Najkrótsza ścieżka: audyt, decyzja, wdrożenie. Bez długich kickoffów i bez „slajdów dla slajdów”.</p>
+          <div class="quickActions">
+            <a class="btn" href="audyt.html" data-track="cta_click" data-track-label="index_about_umow_audyt">Umów audyt</a>
+            <a class="btn secondary" href="kontakt.html" data-track="cta_click" data-track-label="index_about_kontakt">Napisz</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
 </main>
 
-  <footer>
-  <div>© <span id="y"></span> DANIELOZA.AI</div>
+<div class="mobileCtaBar" aria-label="Szybkie akcje mobilne">
+  <a class="mobileCtaBarBtn primary" href="audyt.html" data-track="cta_click" data-track-label="mobile_umow_audyt">Umów audyt</a>
+  <a class="mobileCtaBarBtn" href="kontakt.html" data-track="cta_click" data-track-label="mobile_napisz">Napisz</a>
+</div>
 
+<footer>
+  <div>&copy; <span id="y"></span> DANIELOZA.AI</div>
   <div class="socialbar" aria-label="Social links">
-    <a class="socialbtn" href="https://www.tiktok.com/@shadow_twink69" target="_blank" rel="noreferrer" aria-label="TikTok">
-      <img src="assets/img/tiktok.png" alt="">
-    </a>
-    <a class="socialbtn" href="https://www.instagram.com/shadow_twink69" target="_blank" rel="noreferrer" aria-label="Instagram">
-      <img src="assets/img/instagram.png" alt="">
-    </a>
-    <a class="socialbtn" href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook">
-      <img src="assets/img/facebook.png" alt="">
-    </a>
-    <a class="socialbtn" href="https://www.youtube.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="YouTube">
-      <img src="assets/img/youtube_play.png" alt="">
-    </a>
+    <a class="socialbtn" href="https://www.tiktok.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="TikTok"><img src="assets/img/tiktok.png" alt=""></a>
+    <a class="socialbtn" href="https://www.instagram.com/DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="Instagram"><img src="assets/img/instagram.png" alt=""></a>
+    <a class="socialbtn" href="https://www.youtube.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="YouTube"><img src="assets/img/youtube_play.png" alt=""></a>
+  </div>
+  <div class="footer-legal">
+    <a href="privacy.html">Polityka prywatności</a>
+    <a href="cookies.html">Polityka cookies</a>
   </div>
 </footer>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

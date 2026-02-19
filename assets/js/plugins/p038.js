@@ -1,4 +1,4 @@
-﻿/* p038 — Fill sample values (safe) */
+/* p038 — Fill sample values (safe) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p038"] = {

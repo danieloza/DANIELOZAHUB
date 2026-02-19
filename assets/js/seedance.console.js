@@ -1,5 +1,5 @@
-﻿/* seedance.console.js
-   UI “konsola” w stylu Kling/ModelArk:
+/* seedance.console.js
+   UI "konsola" w stylu Kling/ModelArk:
    - filtrowanie All/Images/Videos/Audio
    - Favorites toggle
    - Search
@@ -271,7 +271,7 @@
 
   // ===== generator (frontend-only)
   async function fakeGenerate(payload){
-    // symulacja “job”
+    // symulacja "job"
     statePill.textContent = "WORKING…";
     note.textContent = "Symuluję job (UI).";
     await new Promise(r=>setTimeout(r, 650));

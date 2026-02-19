@@ -1,4 +1,4 @@
-﻿/* p027 — CORS quick probe (shows error details best-effort) */
+/* p027 — CORS quick probe (shows error details best-effort) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p027"] = {

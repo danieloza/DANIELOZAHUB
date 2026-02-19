@@ -1,4 +1,4 @@
-﻿/* p024 — Style presets (if #style exists) */
+/* p024 — Style presets (if #style exists) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p024"] = {

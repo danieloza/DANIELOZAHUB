@@ -1,4 +1,4 @@
-﻿/* p013 — Paste image_url from clipboard */
+/* p013 — Paste image_url from clipboard */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p013"] = {

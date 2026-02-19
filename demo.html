@@ -1,20 +1,23 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DEMO / LAB — DANIELOZA.AI</title>
-  <meta name="description" content="DANIELOZA.AI — DEMO / LAB (studio mock UI)." />
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://danieloza.ai/demo.html" />
+  <title>DEMO / LAB - DANIELOZA.AI</title>
+  <meta name="description" content="DANIELOZA.AI - DEMO / LAB (studio mock UI)." />
+  <link rel="stylesheet" href="assets/css/style.css?v=20260219-5" />
+  <script src="assets/js/analytics.config.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 <style id="DANIELOZA_SIDEBAR_V2">
   /* === DANIELOZA.AI Unified Sidebar (works even if page layout is messy) === */
 
   /* fixed sidebar */
-  .sdSide{
+  body.demo-wow .sdSide{
     position: fixed;
-    left: 24px;
-    top: 108px;
+    left: 20px;
+    top: 90px;
     width: 320px;
     max-width: 86vw;
     padding: 16px;
@@ -29,11 +32,41 @@
     z-index: 999;
   }
 
-  /* push page content away from sidebar */
-  body{ padding-left: 372px; }
-  @media (max-width: 980px){
-    .sdSide{ position: static; width: auto; margin: 14px; }
-    body{ padding-left: 0; }
+  /* keep main layout stable with fixed sidebar */
+  body.demo-wow{
+    padding-left: 0;
+  }
+  body.demo-wow .studioShell{
+    max-width: 1880px;
+    display:block;
+    padding: 16px 20px 40px;
+  }
+  body.demo-wow .studioCenter{
+    margin-left: 356px;
+    min-width: 0;
+  }
+  body.demo-wow .studio-page .studioTopbar,
+  body.demo-wow .studioTopbar{
+    width:100%;
+    margin-left:0;
+    margin-right:0;
+  }
+  body.demo-wow .studioGrid{
+    grid-template-columns: minmax(270px, 330px) minmax(460px, 1fr) minmax(250px, 320px);
+  }
+  body.demo-wow .studioGrid > *{
+    min-width: 0;
+  }
+  @media (max-width: 1500px){
+    body.demo-wow .studioGrid{
+      grid-template-columns: minmax(250px, 300px) minmax(420px, 1fr) minmax(240px, 290px);
+    }
+  }
+  @media (max-width: 1280px){
+    body.demo-wow .sdSide{ position: static; width: auto; margin: 14px 0; }
+    body.demo-wow .studioCenter{ margin-left: 0; }
+    body.demo-wow .studioGrid{ grid-template-columns: 1fr; }
+    body.demo-wow .studioShell{ padding: 14px 12px 34px; }
   }
 
   .sdHead{ display:flex; align-items:center; gap:12px; padding: 8px 10px 14px; }
@@ -96,21 +129,346 @@
     color: inherit;
   }
 </style>
+<style id="DANIELOZA_DEMO_WOW">
+  body.demo-wow{
+    --accentA: rgba(0,224,255,.28);
+    --accentB: rgba(108,94,255,.24);
+  }
+  body.demo-wow::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:
+      radial-gradient(640px 360px at 12% 0%, var(--accentA), transparent 72%),
+      radial-gradient(580px 320px at 88% 12%, var(--accentB), transparent 72%);
+  }
+
+  .studioTopbar{
+    position:relative;
+    overflow:hidden;
+  }
+  body.demo-wow .studioTopbar{
+    position: relative !important;
+    top: auto !important;
+    z-index: 2;
+    margin-bottom: 0;
+  }
+  .studioTopbar::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background: linear-gradient(115deg, transparent 22%, rgba(255,255,255,.12) 45%, transparent 64%);
+    transform: translateX(-60%);
+    animation: sheenSlide 4.8s ease-in-out infinite;
+  }
+  @keyframes sheenSlide{
+    0%,20%{ transform:translateX(-65%); opacity:0; }
+    32%{ opacity:.9; }
+    58%,100%{ transform:translateX(65%); opacity:0; }
+  }
+
+  .studioSub{
+    max-width: 64ch;
+    line-height: 1.55;
+  }
+  .liveDot{
+    display:inline-flex;
+    width:8px;
+    height:8px;
+    border-radius:999px;
+    background:#66ffc7;
+    margin-left:8px;
+    box-shadow:0 0 0 0 rgba(102,255,199,.6);
+    animation:pulseDot 1.8s ease infinite;
+  }
+  @keyframes pulseDot{
+    0%{ box-shadow:0 0 0 0 rgba(102,255,199,.55); }
+    100%{ box-shadow:0 0 0 10px rgba(102,255,199,0); }
+  }
+
+  .studioQuickBar{
+    margin-top:12px;
+    display:grid;
+    grid-template-columns: 1fr 280px;
+    gap:12px;
+  }
+  .quickTemplates{
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:16px;
+    background:rgba(255,255,255,.03);
+    padding:12px;
+  }
+  .quickHead{
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    opacity:.82;
+    margin-bottom:8px;
+  }
+  .quickChips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .quickChip{
+    border:1px solid rgba(255,255,255,.16);
+    background:rgba(255,255,255,.05);
+    color:#fff;
+    border-radius:999px;
+    padding:7px 10px;
+    font-size:12px;
+    cursor:pointer;
+  }
+  .quickChip:hover{
+    border-color: rgba(0,224,255,.42);
+    transform:translateY(-1px);
+  }
+  .quickStats{
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:16px;
+    background:rgba(255,255,255,.03);
+    padding:12px;
+    display:grid;
+    gap:8px;
+    align-content:start;
+  }
+  .quickStat{
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:10px;
+    padding:8px 10px;
+    background:rgba(0,0,0,.22);
+  }
+  .quickStat b{
+    display:block;
+    font-size:16px;
+  }
+  .quickStat span{
+    font-size:11px;
+    opacity:.76;
+  }
+
+  .studioStageInner{
+    position:relative;
+    overflow:hidden;
+  }
+  body.demo-wow .studioStage{
+    overflow: hidden;
+  }
+  body.demo-wow .studioSlots{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+  body.demo-wow .slot{
+    min-width: 0;
+    max-width: 100%;
+  }
+  body.demo-wow .slotHint{
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  body.demo-wow .slotPreview{
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  body.demo-wow .slotPreview img,
+  body.demo-wow .slotPreview video{
+    display:block;
+    width:100%;
+    max-width:100%;
+    height:clamp(116px, 14vw, 146px);
+  }
+  .studioStageInner::before,
+  .studioStageInner::after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    border:1px solid rgba(0,224,255,.22);
+    pointer-events:none;
+  }
+  .studioStageInner::before{
+    width:260px;
+    height:260px;
+    right:-110px;
+    top:-90px;
+    animation:orbFloat 7.6s ease-in-out infinite;
+  }
+  .studioStageInner::after{
+    width:180px;
+    height:180px;
+    left:-70px;
+    bottom:-70px;
+    border-color: rgba(164,122,255,.22);
+    animation:orbFloat 8.4s ease-in-out infinite reverse;
+  }
+  @keyframes orbFloat{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-10px); }
+  }
+
+  .studioToast{
+    position:fixed;
+    right:16px;
+    top:84px;
+    z-index:1200;
+    min-width:220px;
+    max-width:min(90vw,420px);
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:12px;
+    padding:10px 12px;
+    background:rgba(7,10,16,.92);
+    color:#fff;
+    font-size:13px;
+    opacity:0;
+    transform: translateY(-8px);
+    pointer-events:none;
+    transition: opacity .22s ease, transform .22s ease;
+  }
+  .studioToast.is-on{
+    opacity:1;
+    transform: translateY(0);
+  }
+
+  @media (max-width:1200px){
+    .studioQuickBar{ grid-template-columns:1fr; }
+    body.demo-wow .studioSlots{ grid-template-columns:1fr; }
+  }
+
+  .demoIntro{
+    position:fixed;
+    inset:0;
+    z-index:2000;
+    display:grid;
+    place-items:center;
+    background:
+      radial-gradient(900px 520px at 50% 22%, rgba(0,224,255,.18), transparent 72%),
+      radial-gradient(700px 440px at 50% 88%, rgba(120,90,255,.14), transparent 72%),
+      rgba(4,8,16,.96);
+    backdrop-filter: blur(8px);
+    opacity:1;
+    transition: opacity .42s ease, visibility .42s ease;
+  }
+  .demoIntroVideo{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:.42;
+    filter: saturate(1.08) contrast(1.08) brightness(.72);
+    transform: scale(1.06);
+  }
+  .demoIntro::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      radial-gradient(900px 520px at 50% 22%, rgba(0,224,255,.16), transparent 72%),
+      radial-gradient(700px 440px at 50% 88%, rgba(120,90,255,.12), transparent 72%),
+      rgba(4,8,16,.72);
+  }
+  .demoIntro.is-off{
+    opacity:0;
+    visibility:hidden;
+  }
+  .demoIntroCard{
+    position:relative;
+    z-index:1;
+    width:min(92vw, 560px);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:20px;
+    background:rgba(255,255,255,.05);
+    box-shadow: 0 40px 120px rgba(0,0,0,.48);
+    padding:24px 22px 18px;
+    text-align:center;
+  }
+  .demoIntroLogo{
+    margin:0;
+    font-size:clamp(32px, 6.2vw, 56px);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    line-height:1;
+    text-shadow:0 10px 26px rgba(0,0,0,.42);
+    animation:introPop 1.2s cubic-bezier(.2,.9,.2,1);
+  }
+  @keyframes introPop{
+    0%{ opacity:0; transform: scale(.88) translateY(8px); }
+    100%{ opacity:1; transform: scale(1) translateY(0); }
+  }
+  .demoIntroSub{
+    margin:12px auto 0;
+    max-width:44ch;
+    font-size:13px;
+    opacity:.84;
+    line-height:1.55;
+  }
+  .demoIntroBar{
+    margin:16px auto 0;
+    width:min(320px, 92%);
+    height:8px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.22);
+    overflow:hidden;
+    background:rgba(0,0,0,.22);
+  }
+  .demoIntroFill{
+    width:0;
+    height:100%;
+    background: linear-gradient(90deg, rgba(0,224,255,.82), rgba(120,90,255,.88));
+    box-shadow:0 0 24px rgba(0,224,255,.52);
+    animation:introLoad 1.8s ease forwards;
+  }
+  @keyframes introLoad{
+    to{ width:100%; }
+  }
+  .demoIntroSkip{
+    margin-top:14px;
+    border:1px solid rgba(255,255,255,.2);
+    background:rgba(255,255,255,.05);
+    color:#fff;
+    border-radius:999px;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    padding:7px 11px;
+    cursor:pointer;
+  }
+  .demoIntroSkip:hover{ border-color: rgba(255,255,255,.34); }
+  body.intro-running{
+    overflow:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .demoIntroFill,.demoIntroLogo{ animation:none !important; }
+  }
+</style>
 </head>
 
-<body class="sticky-header studio-page accent-cyan">
+<body class="sticky-header studio-page accent-cyan demo-wow">
+  <div class="demoIntro" id="demoIntro" aria-hidden="true">
+    <video class="demoIntroVideo" id="demoIntroVideo" src="assets/video/bg-2.mp4" autoplay muted loop playsinline preload="metadata"></video>
+    <div class="demoIntroCard">
+      <h2 class="demoIntroLogo">DEMO LAB</h2>
+      <p class="demoIntroSub">Wejscie do studia kreatywnego. Za chwile otwierasz prompty, sloty i testy reklamowe.</p>
+      <div class="demoIntroBar"><div class="demoIntroFill"></div></div>
+      <button class="demoIntroSkip" type="button" id="demoIntroSkip">Pomin</button>
+    </div>
+  </div>
   <header id="hdr">
   <a class="brand-mini" href="index.html">
     <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
     <strong>DANIELOZA.AI</strong>
   </a>
   <nav>
-    <a href="oferta.html">OFERTA</a>
-    <a href="demo.html">DEMO</a>
-    <a href="audyt.html">AUDYT</a>
-    <a href="portfolio.html">PORTFOLIO</a>
-    <a href="kontakt.html">KONTAKT</a>
-    <a href="faq.html">FAQ</a>
+    <a href="oferta.html" data-track="cta_click" data-track-label="demo_nav_oferta">OFERTA</a>
+    <a href="demo.html" data-track="cta_click" data-track-label="demo_nav_demo">DEMO</a>
+    <a href="audyt.html" data-track="cta_click" data-track-label="demo_nav_audyt">AUDYT</a>
+    <a href="portfolio.html" data-track="cta_click" data-track-label="demo_nav_portfolio">PORTFOLIO</a>
+    <a href="case-studies.html" data-track="cta_click" data-track-label="demo_nav_case_studies">CASE STUDIES</a>
+    <a href="kontakt.html" data-track="cta_click" data-track-label="demo_nav_kontakt">KONTAKT</a>
+    <a href="faq.html" data-track="cta_click" data-track-label="demo_nav_faq">FAQ</a>
   </nav>
 </header>
 
@@ -120,7 +478,7 @@
       <!-- LEFT SIDEBAR -->
       <aside class="sdSide" aria-label="DANIELOZA.AI Studio Sidebar">
   <div class="sdHead">
-    <div class="sdSpark">⚡</div>
+    <div class="sdSpark">&#9889;</div>
     <div>
       <div class="sdTitle">DEMO / LAB</div>
       <div class="sdSub">VIDEO / IMAGE</div>
@@ -128,18 +486,18 @@
   </div>
 
   <div class="sdNav">
-    <a class="sdItem " href="kling.html"><span class="sdIcon">🎬</span><span class="sdLabel">Kling</span><span class="sdSpacer"></span></a>
-    <a class="sdItem " href="seedance-1-5-pro.html"><span class="sdIcon">✨</span><span class="sdLabel">Seedance</span><span class="sdSpacer"></span></a>
-    <a class="sdItem " href="gemini.html"><span class="sdIcon">💬</span><span class="sdLabel">Gemini</span><span class="sdSpacer"></span></a>
-    <a class="sdItem " href="seedream-4-0.html"><span class="sdIcon">🖼️</span><span class="sdLabel">Seedream 4.0</span><span class="sdSpacer"></span></a>
-    <a class="sdItem " href="seedream-4-5.html"><span class="sdIcon">🧠</span><span class="sdLabel">Seedream 4.5</span><span class="sdSpacer"></span></a>
-    <a class="sdItem is-active" href="demo.html"><span class="sdIcon">🧪</span><span class="sdLabel">Sora 2</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="kling.html"><span class="sdIcon">&#127909;</span><span class="sdLabel">Kling</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="seedance-1-5-pro.html"><span class="sdIcon">&#10024;</span><span class="sdLabel">Seedance</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="gemini.html"><span class="sdIcon">&#129302;</span><span class="sdLabel">Gemini</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="seedream-4-0.html"><span class="sdIcon">&#128444;&#65039;</span><span class="sdLabel">Seedream 4.0</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="seedream-4-5.html"><span class="sdIcon">&#127912;</span><span class="sdLabel">Seedream 4.5</span><span class="sdSpacer"></span></a>
+    <a class="sdItem is-active" href="demo.html"><span class="sdIcon">&#129514;</span><span class="sdLabel">Sora 2</span><span class="sdSpacer"></span></a>
   </div>
 
   <div class="sdBottom">
-    <button class="sdGhost" type="button" id="studioBackendBtn">⚙ Backend</button>
-    <button class="sdGhost" type="button" id="studioResetBtn">↺ Reset</button>
-    <a class="sdCta" href="kontakt.html">⚡ Zapytaj o wdrożenie</a>
+    <button class="sdGhost" type="button" id="studioBackendBtn">&#9881; Backend</button>
+    <button class="sdGhost" type="button" id="studioResetBtn">&#8635; Reset</button>
+    <a class="sdCta" href="kontakt.html" data-track="cta_click" data-track-label="demo_sidebar_wdrozenie">&#9889; Zapytaj o wdrozenie</a>
   </div>
 </aside>
 <script id="DANIELOZA_ACTIVE_NAV_JS">
@@ -161,12 +519,29 @@
           <div>
             <div class="studioKicker">PLAYGROUND</div>
             <h1 class="studioTitle">DEMO / LAB</h1>
-            <div class="studioSub">Plac zabaw: testy promptów, batch, sloty media.</div>
+            <div class="studioSub">Nowy tryb kreatywny: szybkie template promptow, batch i sloty media gotowe pod testy reklamowe.<span class="liveDot" aria-hidden="true"></span></div>
           </div>
           <div class="studioTopbarRight">
             <button class="studioBtn" type="button" data-action="open">OPEN</button>
             <button class="studioBtn" type="button" data-action="copy">KOPIUJ JOB</button>
           </div>
+        </div>
+        <div class="studioQuickBar">
+          <div class="quickTemplates">
+            <div class="quickHead">Szybkie template</div>
+            <div class="quickChips">
+              <button class="quickChip" type="button" data-prompt-template="UCG ad, vertical 9:16, bold hook in first 2s, clean subtitles, close-up product lighting.">UGC Hook</button>
+              <button class="quickChip" type="button" data-prompt-template="Luxury product reveal, black studio, reflective floor, smooth dolly-in, high contrast, premium branding.">Premium Reveal</button>
+              <button class="quickChip" type="button" data-prompt-template="Local business ad, before/after transformation, energetic pacing, trust cues, strong CTA ending frame.">Local Sales</button>
+              <button class="quickChip" type="button" data-prompt-template="Social reel style, talking head + b-roll inserts, dynamic captions, retention-focused edits, end CTA.">Reel Retention</button>
+            </div>
+          </div>
+          <aside class="quickStats" aria-label="Live stats">
+            <div class="quickHead">Live status</div>
+            <div class="quickStat"><b id="jobsToday">0</b><span>jobow w tej sesji</span></div>
+            <div class="quickStat"><b id="assetsLoaded">0</b><span>zaladowanych slotow</span></div>
+            <div class="quickStat"><b id="activeModeNow">default</b><span>aktywny tryb</span></div>
+          </aside>
         </div>
 
         <div class="studioGrid">
@@ -199,7 +574,7 @@
                 </select>
               </label>
               <label class="studioMiniField">
-                <span>Jakość</span>
+                <span>Jakosc</span>
                 <select class="studioRes">
                   <option value="720p">720p</option>
                   <option value="1080p" selected>1080p</option>
@@ -216,10 +591,10 @@
               </label>
             </div>
 
-            <button class="studioPrimary" type="button" data-action="generate">⚡ Generuj (mock)</button>
+            <button class="studioPrimary" type="button" data-action="generate"> Generuj (mock)</button>
 
             <div class="studioHint">
-              Sloty media są na środku. Możesz wrzucać pliki lokalnie (podgląd w przeglądarce). Backend podpinamy później.
+              Sloty media sa na srodku. Mozesz wrzucac pliki lokalnie (podglad w przegladarce). Backend podpinamy pozniej.
             </div>
           </div>
 
@@ -231,7 +606,7 @@
               <div class="studioStageInner">
                 <div class="studioBadge">DEMO / LAB</div>
                 <div class="studioStageTitle">Puste sloty na obrazy / wideo</div>
-                <div class="studioStageSub">Kliknij slot → wybierz plik. To jest podgląd lokalny (bez uploadu).</div>
+                <div class="studioStageSub">Kliknij slot  wybierz plik. To jest podglad lokalny (bez uploadu).</div>
               </div>
 
               <div class="studioSlots" id="studioSlots">
@@ -272,7 +647,7 @@
 
             <div class="studioStatus">
               <div class="studioPill">State: <b class="stState">idle</b></div>
-              <div class="studioPill">Job: <b class="stJob">—</b></div>
+              <div class="studioPill">Job: <b class="stJob"></b></div>
               <div class="studioPill">Mode: <b class="stMode">default</b></div>
             </div>
           </div>
@@ -282,12 +657,12 @@
             <div class="studioColHead">03 / KOLEJKA + BIBLIOTEKA</div>
 
             <div class="studioQueue">
-              <div class="studioQueueEmpty">Brak jobów</div>
+              <div class="studioQueueEmpty">Brak jobow</div>
             </div>
 
             <div class="studioQueueFoot">
-              <button class="studioBtn2" type="button" data-action="clear">Wyczyść</button>
-              <button class="studioBtn2" type="button" data-action="mock">Dodaj przykłady</button>
+              <button class="studioBtn2" type="button" data-action="clear">Wyczysc</button>
+              <button class="studioBtn2" type="button" data-action="mock">Dodaj przykady</button>
             </div>
 
             <div class="studioLibrary">
@@ -308,6 +683,37 @@
 
   <script>
     (function(){
+      const intro = document.getElementById("demoIntro");
+      if(!intro) return;
+      const skip = document.getElementById("demoIntroSkip");
+      const introVideo = document.getElementById("demoIntroVideo");
+      const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const saveData = !!(navigator.connection && navigator.connection.saveData);
+      const seenKey = "dz_demo_intro_seen";
+      let seen = false;
+      try{ seen = localStorage.getItem(seenKey) === "1"; }catch(_){}
+      const duration = (reduce || seen) ? 220 : 1950;
+      document.body.classList.add("intro-running");
+
+      if ((reduce || saveData) && introVideo) {
+        introVideo.remove();
+      }
+
+      const closeIntro = ()=>{
+        intro.classList.add("is-off");
+        document.body.classList.remove("intro-running");
+        try{ localStorage.setItem(seenKey, "1"); }catch(_){}
+        window.setTimeout(()=>{ if(intro && intro.parentNode) intro.parentNode.removeChild(intro); }, 500);
+      };
+
+      if(skip) skip.addEventListener("click", closeIntro);
+      intro.addEventListener("click", (e)=>{ if(e.target === intro) closeIntro(); });
+      window.setTimeout(closeIntro, duration);
+    })();
+  </script>
+
+  <script>
+    (function(){
       const q = (s, r=document) => r.querySelector(s);
       const qa = (s, r=document) => Array.from(r.querySelectorAll(s));
 
@@ -322,16 +728,39 @@
       const durSel  = q(".studioDur");
       const queue   = q(".studioQueue");
       const fileInp = q("#studioFile");
+      const jobsTodayEl = q("#jobsToday");
+      const assetsLoadedEl = q("#assetsLoaded");
+      const activeModeNowEl = q("#activeModeNow");
+      let toastTimer = null;
 
       let activeSlot = null;
       let lastJob = null;
+      let jobsToday = 0;
 
       function escapeHtml(s){
         return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
       }
 
       function toast(msg){
-        alert(msg);
+        let t = q(".studioToast");
+        if(!t){
+          t = document.createElement("div");
+          t.className = "studioToast";
+          document.body.appendChild(t);
+        }
+        t.textContent = msg;
+        t.classList.add("is-on");
+        if(toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(()=> t.classList.remove("is-on"), 1450);
+      }
+
+      function syncStats(){
+        if(jobsTodayEl) jobsTodayEl.textContent = String(jobsToday);
+        if(activeModeNowEl) activeModeNowEl.textContent = modeSel.value;
+        if(assetsLoadedEl){
+          const count = qa(".slot.hasMedia").length;
+          assetsLoadedEl.textContent = String(count);
+        }
       }
 
       // Slots: click -> choose file -> preview
@@ -373,6 +802,7 @@
         }
 
         activeSlot.classList.add("hasMedia");
+        syncStats();
       });
 
       // Generate mock job
@@ -385,7 +815,7 @@
         el.innerHTML = `
           <div class="studioQueueTop">
             <b>${escapeHtml(job.id)}</b>
-            <span>${escapeHtml(job.mode)} • ${escapeHtml(job.res)} • ${escapeHtml(job.dur)} • ${escapeHtml(job.ar)}</span>
+            <span>${escapeHtml(job.mode)}  ${escapeHtml(job.res)}  ${escapeHtml(job.dur)}  ${escapeHtml(job.ar)}</span>
           </div>
           <div class="studioQueuePrompt">${escapeHtml(job.prompt)}</div>
         `;
@@ -417,9 +847,21 @@
             clearInterval(t);
             stateEl.textContent = "done";
             pushJob(lastJob);
+            jobsToday += 1;
+            syncStats();
+            toast("Job wygenerowany (mock) - " + id);
           }
         }, 120);
       }
+
+      qa("[data-prompt-template]").forEach((btn)=>{
+        btn.addEventListener("click", ()=>{
+          const txt = btn.getAttribute("data-prompt-template") || "";
+          prompt.value = txt;
+          prompt.focus();
+          toast("Podstawiono template promptu");
+        });
+      });
 
       // Actions
       qa("[data-action]").forEach(btn=>{
@@ -428,46 +870,65 @@
           if(a === "backend") toast("Backend: offline (na razie).");
           if(a === "reset"){
             stateEl.textContent = "idle";
-            jobEl.textContent = "—";
+            jobEl.textContent = "";
             modeEl.textContent = modeSel.value;
             lastJob = null;
+            jobsToday = 0;
             qa(".slot").forEach(s=>{
               s.classList.remove("hasMedia");
               s.querySelector(".slotHint").textContent = s.getAttribute("data-kind")==="video" ? "kliknij + wybierz MP4/WebM" : "kliknij + wybierz PNG/JPG/WebP";
               s.querySelector(".slotPreview").innerHTML = "";
             });
+            syncStats();
+            toast("Studio zresetowane");
           }
-          if(a === "open") toast("OPEN: tu będzie player / otwieranie assetu.");
+          if(a === "open") toast("OPEN: tu bedzie player / otwieranie assetu.");
           if(a === "copy"){
             if(!lastJob){ toast("Brak joba."); return; }
             try{
               navigator.clipboard.writeText(JSON.stringify(lastJob, null, 2));
-              toast("Skopiowano job JSON ✅");
+              toast("Skopiowano job JSON -");
             }catch(e){
-              toast("Nie mogę skopiować. Odpal stronę przez http(s), nie file://");
+              toast("Nie moge skopiowac. Odpal strone przez http(s), nie file://");
             }
           }
           if(a === "generate") gen();
           if(a === "clear"){
-            queue.innerHTML = '<div class="studioQueueEmpty">Brak jobów</div>';
+            queue.innerHTML = '<div class="studioQueueEmpty">Brak jobow</div>';
             stateEl.textContent = "idle";
-            jobEl.textContent = "—";
+            jobEl.textContent = "";
             lastJob = null;
+            toast("Kolejka wyczyszczona");
           }
           if(a === "mock"){
             pushJob({id:"JOB-9AF2C1", mode:"fast", res:"1080p", dur:"10s", ar:"16:9", prompt:"Cinematic UI b-roll, neon rim light, slow dolly."});
             pushJob({id:"JOB-1BD9E0", mode:"quality", res:"4K", dur:"10s", ar:"1:1", prompt:"Premium product shot on black glass, minimal, glossy."});
             pushJob({id:"JOB-77C31A", mode:"batch", res:"1080p", dur:"15s", ar:"9:16", prompt:"Shorts-ready vertical montage, dynamic cuts, crisp text."});
+            jobsToday += 3;
+            syncStats();
+            toast("Dodano 3 mock joby");
           }
         });
       });
 
-      modeSel.addEventListener("change", ()=>{ modeEl.textContent = modeSel.value; });
+      modeSel.addEventListener("change", ()=>{ modeEl.textContent = modeSel.value; syncStats(); });
+      document.addEventListener("keydown", (e)=>{
+        if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "enter"){
+          e.preventDefault();
+          gen();
+        }
+      });
+      syncStats();
 
     })();
   </script>
 </body>
 </html>
+
+
+
+
+
 
 
 

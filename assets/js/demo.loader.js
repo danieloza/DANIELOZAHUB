@@ -1,4 +1,4 @@
-﻿/* demo.loader.js — loads enabled plugins (SAFE + crash-shield) */
+/* demo.loader.js — loads enabled plugins (SAFE + crash-shield) */
 (function(){
   const CORE = window.DANIELOZA_CORE;
   if(!CORE) return;

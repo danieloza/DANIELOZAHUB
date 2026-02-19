@@ -1,4 +1,4 @@
-﻿/* p014 — Backend health check button */
+/* p014 — Backend health check button */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p014"] = {

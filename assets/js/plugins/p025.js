@@ -1,4 +1,4 @@
-﻿/* p025 — Prompt templates dropdown */
+/* p025 — Prompt templates dropdown */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p025"] = {

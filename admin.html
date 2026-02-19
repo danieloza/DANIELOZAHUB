@@ -1,0 +1,2586 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin CRM - DANIELOZA.AI</title>
+  <style>
+    :root { --bg:#0b1118; --panel:#121b26; --txt:#eef4ff; --muted:#9eb0c7; --line:#223247; --ok:#66e2a0; --warn:#ffd37a; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--txt); }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 16px 12px 40px; }
+    h1 { margin: 0 0 10px; font-size: 22px; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; align-items: center; }
+    input, button, select, textarea { border:1px solid var(--line); background:var(--panel); color:var(--txt); border-radius: 8px; padding: 7px 9px; font: inherit; }
+    button { cursor: pointer; }
+    textarea { resize: vertical; min-height: 70px; width: 100%; }
+    .cards { display:grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 8px; margin: 10px 0; }
+    .card { background:var(--panel); border:1px solid var(--line); border-radius: 10px; padding: 8px; }
+    .k { color:var(--muted); font-size: 12px; }
+    .v { font-size: 21px; font-weight: 700; margin-top: 4px; }
+    .grid { display:grid; gap: 10px; }
+    @media (min-width: 1000px) { .grid { grid-template-columns: 1.4fr .9fr; } }
+    .kanban { display:grid; gap:8px; margin:10px 0; }
+    @media (min-width: 1100px) { .kanban { grid-template-columns: repeat(4, 1fr); } }
+    .kb-col { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:8px; min-height: 160px; }
+    .kb-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; font-size:12px; color:var(--muted); }
+    .kb-body { min-height: 120px; display:grid; gap:6px; }
+    .kb-card { border:1px solid var(--line); border-radius:8px; padding:7px; background:#0f1621; cursor:grab; }
+    .kb-card:active { cursor:grabbing; }
+    .kb-card .t { font-size:12px; font-weight:700; }
+    .kb-card .s { font-size:11px; color:var(--muted); margin-top:3px; }
+    .kb-drop { outline: 2px dashed var(--ok); outline-offset: 2px; }
+    .tier { display:inline-block; font-size:10px; border-radius:999px; padding:2px 7px; margin-top:4px; }
+    .tier-hot { background:#3a1616; color:#ffb4b4; border:1px solid #7a2c2c; }
+    .tier-warm { background:#3a2d14; color:#ffd9a1; border:1px solid #80653a; }
+    .tier-cold { background:#162637; color:#b6d9ff; border:1px solid #2f4c6b; }
+    .prio { display:inline-block; font-size:10px; border-radius:999px; padding:2px 7px; margin-top:4px; }
+    .prio-p1 { background:#3a1414; color:#ffaaaa; border:1px solid #943636; }
+    .prio-p2 { background:#3a2a14; color:#ffd9a1; border:1px solid #80653a; }
+    .prio-p3 { background:#152735; color:#b6d9ff; border:1px solid #2f4c6b; }
+    .due-pill { display:inline-block; font-size:10px; border-radius:999px; padding:2px 7px; }
+    .due-overdue { background:#3a1414; color:#ffaaaa; border:1px solid #943636; }
+    .due-risk { background:#3a2a14; color:#ffd9a1; border:1px solid #80653a; }
+    .due-ok { background:#143123; color:#b8ffd7; border:1px solid #2f7a55; }
+    .reco { display:inline-block; font-size:10px; border-radius:999px; padding:2px 7px; }
+    .reco-push { background:#143123; color:#b8ffd7; border:1px solid #2f7a55; }
+    .reco-nurture { background:#3a2a14; color:#ffd9a1; border:1px solid #80653a; }
+    .reco-drop { background:#3a1414; color:#ffaaaa; border:1px solid #943636; }
+    .alloc { display:inline-block; font-size:10px; border-radius:999px; padding:2px 7px; }
+    .alloc-scale { background:#143123; color:#b8ffd7; border:1px solid #2f7a55; }
+    .alloc-hold { background:#2c2c2c; color:#d7d7d7; border:1px solid #5a5a5a; }
+    .alloc-cut { background:#3a1414; color:#ffaaaa; border:1px solid #943636; }
+    .sev { display:inline-block; font-size:10px; border-radius:999px; padding:2px 7px; }
+    .sev-critical { background:#4d0f0f; color:#ffb4b4; border:1px solid #ad3434; }
+    .sev-high { background:#5a2f0d; color:#ffd9a1; border:1px solid #9b5d2f; }
+    .sev-medium { background:#2b2b2b; color:#d7d7d7; border:1px solid #5a5a5a; }
+    .dup { display:inline-block; font-size:10px; border-radius:999px; padding:2px 7px; margin-top:4px; background:#2d1435; color:#f3c4ff; border:1px solid #6c3d7a; }
+    .panel { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:8px; }
+    .panel h2 { margin: 4px 0 8px; font-size: 15px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { padding: 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    .mono { font-family: ui-monospace,Consolas,monospace; }
+    .ok { color:var(--ok); }
+    .warn { color:var(--warn); }
+    .goal { display:inline-block; font-size:11px; border-radius:999px; padding:2px 8px; border:1px solid transparent; }
+    .goal-good { color:#b8ffd7; background:#143123; border-color:#2f7a55; }
+    .goal-risk { color:#ffe1ae; background:#3a2a14; border-color:#80653a; }
+    .goal-bad { color:#ffb4b4; background:#3a1414; border-color:#943636; }
+    .goal-info { color:#d6deed; background:#1d2531; border-color:#3a4a63; }
+    .hint { color:var(--muted); font-size: 12px; }
+    .meta-cell { min-width: 220px; }
+    .meta-cell textarea { min-height: 52px; }
+    .sticky { position: sticky; top: 0; z-index: 30; background: linear-gradient(180deg, rgba(11,17,24,0.98), rgba(11,17,24,0.95)); border:1px solid var(--line); border-radius:10px; padding:8px; margin-bottom:10px; }
+    .section-nav { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+    .section-nav button { font-size:12px; padding:6px 10px; }
+    .view-pill { display:inline-block; font-size:11px; border:1px solid var(--line); border-radius:999px; padding:2px 8px; color:var(--muted); }
+    .recruiter-only-note { display:none; margin-top:6px; }
+    body.view-recruiter .ops-only { display:none !important; }
+    body.view-recruiter .recruiter-only-note { display:block; }
+    body.view-presentation .ops-only { display:none !important; }
+    body.view-presentation .recruiter-only-note { display:block; }
+    body.view-presentation .cards .v { font-size: 28px; }
+    body.view-presentation .panel h2 { font-size: 18px; }
+    body.view-presentation table { font-size: 13px; }
+    body.view-presentation #status { display:none; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Admin CRM</h1>
+    <div class="sticky">
+    <div class="row">
+      <input id="apiBase" value="http://127.0.0.1:8000" style="min-width:240px" />
+      <input id="token" placeholder="ADMIN_TOKEN" style="min-width:260px" />
+      <input id="adminActor" placeholder="operator@email" style="min-width:220px" />
+      <select id="viewMode" style="min-width:170px">
+        <option value="ops">view: ops</option>
+        <option value="recruiter">view: recruiter</option>
+        <option value="presentation">view: presentation</option>
+      </select>
+      <select id="days">
+        <option value="1">1d</option>
+        <option value="3">3d</option>
+        <option value="7" selected>7d</option>
+        <option value="14">14d</option>
+        <option value="30">30d</option>
+      </select>
+      <select id="formFilter">
+        <option value="">form: all</option>
+        <option value="audyt">audyt</option>
+        <option value="kontakt">kontakt</option>
+      </select>
+      <select id="statusFilter">
+        <option value="">status: all</option>
+        <option value="new">new</option>
+        <option value="in_progress">in_progress</option>
+        <option value="won">won</option>
+        <option value="lost">lost</option>
+      </select>
+      <select id="tierFilter">
+        <option value="">tier: all</option>
+        <option value="hot">hot</option>
+        <option value="warm">warm</option>
+        <option value="cold">cold</option>
+      </select>
+      <select id="autopilotPriorityFilter">
+        <option value="">priority: all</option>
+        <option value="P1">P1</option>
+        <option value="P2">P2</option>
+        <option value="P3">P3</option>
+      </select>
+      <select id="autopilotActionFilter">
+        <option value="">action: all</option>
+        <option value="call_now">call_now</option>
+        <option value="send_intro_email">send_intro_email</option>
+        <option value="follow_up_today">follow_up_today</option>
+        <option value="await_reply">await_reply</option>
+        <option value="enrich_contact">enrich_contact</option>
+        <option value="review">review</option>
+      </select>
+      <select id="winRecoFilter">
+        <option value="">win reco: all</option>
+        <option value="push">push</option>
+        <option value="nurture">nurture</option>
+        <option value="drop">drop</option>
+      </select>
+      <label style="display:flex;align-items:center;gap:5px" class="hint">
+        <input id="dupOnly" type="checkbox" />
+        dup only
+      </label>
+      <select id="leadLimit">
+        <option value="20">20</option>
+        <option value="40" selected>40</option>
+        <option value="80">80</option>
+        <option value="120">120</option>
+      </select>
+      <button id="refresh">Odswiez</button>
+      <button id="exportLeads">Eksport CSV</button>
+      <label style="display:flex;align-items:center;gap:5px" class="hint">
+        <input id="autoRefresh" type="checkbox" checked />
+        auto 30s
+      </label>
+      <span class="view-pill">Story flow: KPI -> Pipeline -> Forecast -> Risks -> Execution</span>
+      <span id="status" class="hint"></span>
+    </div>
+    <div class="section-nav">
+      <button data-jump="#sec-kpi">KPI</button>
+      <button data-jump="#sec-leads">Leady</button>
+      <button data-jump="#sec-revenue">Revenue</button>
+      <button data-jump="#sec-risk">Risk</button>
+      <button data-jump="#sec-auto">Autonomous</button>
+      <button data-jump="#sec-followup">Follow-up</button>
+    </div>
+    <div class="recruiter-only-note hint">Recruiter/Presentation view ukrywa operacyjne detale i zostawia kluczowy obraz systemu.</div>
+    </div>
+
+    <section class="panel ops-only" style="margin-top:10px">
+      <h2>Feature flags + backfill</h2>
+      <div class="row" style="margin-top:8px">
+        <label class="hint">AUTOPILOT
+          <select id="flagAutopilot" style="min-width:110px">
+            <option value="true">true</option>
+            <option value="false">false</option>
+          </select>
+        </label>
+        <label class="hint">WIN_MODEL
+          <select id="flagWinModel" style="min-width:110px">
+            <option value="true">true</option>
+            <option value="false">false</option>
+          </select>
+        </label>
+        <label class="hint">ROI
+          <select id="flagRoi" style="min-width:110px">
+            <option value="true">true</option>
+            <option value="false">false</option>
+          </select>
+        </label>
+        <label style="display:flex;align-items:center;gap:5px" class="hint">
+          <input id="flagPersist" type="checkbox" checked />
+          persist .env
+        </label>
+        <button id="refreshFlags">Refresh flags</button>
+        <button id="saveFlags">Save flags</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <input id="backfillLimit" type="number" min="1" max="50000" value="5000" style="max-width:120px" />
+        <label style="display:flex;align-items:center;gap:5px" class="hint"><input id="backfillIncludeTest" type="checkbox" /> include_test</label>
+        <label style="display:flex;align-items:center;gap:5px" class="hint"><input id="backfillIncludeSpam" type="checkbox" /> include_spam</label>
+        <label style="display:flex;align-items:center;gap:5px" class="hint"><input id="backfillAutopilot" type="checkbox" checked /> refresh_autopilot</label>
+        <label style="display:flex;align-items:center;gap:5px" class="hint"><input id="backfillWin" type="checkbox" checked /> refresh_win</label>
+        <button id="runBackfill">Run backfill</button>
+        <span id="flagsStatus" class="hint"></span>
+      </div>
+    </section>
+
+    <section class="cards" id="sec-kpi">
+      <article class="card"><div class="k">Leads</div><div class="v" id="kpiLeads">-</div></article>
+      <article class="card"><div class="k">Form submit</div><div class="v" id="kpiForm">-</div></article>
+      <article class="card"><div class="k">Conv%</div><div class="v" id="kpiConv">-</div></article>
+      <article class="card"><div class="k">Page view</div><div class="v" id="kpiPv">-</div></article>
+      <article class="card"><div class="k">CTA</div><div class="v" id="kpiCta">-</div></article>
+      <article class="card"><div class="k">Events</div><div class="v" id="kpiEvents">-</div></article>
+      <article class="card"><div class="k">Hot leads</div><div class="v" id="kpiHot">-</div></article>
+      <article class="card"><div class="k">Duplicates</div><div class="v" id="kpiDupes">-</div></article>
+      <article class="card"><div class="k">Follow-up due</div><div class="v" id="kpiDue">-</div></article>
+      <article class="card"><div class="k">P1 due now</div><div class="v" id="kpiP1DueNow">-</div></article>
+      <article class="card"><div class="k">Revenue (ROI)</div><div class="v" id="kpiRevenue">-</div></article>
+      <article class="card"><div class="k">Cost (ROI)</div><div class="v" id="kpiCost">-</div></article>
+      <article class="card"><div class="k">Flag test</div><div class="v" id="kpiTest">-</div></article>
+      <article class="card"><div class="k">Flag spam</div><div class="v" id="kpiSpam">-</div></article>
+      <article class="card"><div class="k">Win rate (resolved)</div><div class="v" id="kpiWinRate">-</div></article>
+      <article class="card"><div class="k">Data complete (resolved)</div><div class="v" id="kpiDataComplete">-</div></article>
+      <article class="card"><div class="k">1st contact &lt;24h</div><div class="v" id="kpiContact24h">-</div></article>
+    </section>
+    <section class="panel" style="margin-top:10px">
+      <h2>Long-term targets tracker (proxy)</h2>
+      <div class="hint" style="margin-bottom:8px">Metryki liczone z aktualnego summary/ROI. To szybki tracker wykonania planu 12m.</div>
+      <table id="longTermTargetsTable">
+        <thead><tr><th>Metric</th><th>Current</th><th>Target</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="grid" style="margin-top:10px" id="sec-leads">
+      <article class="panel">
+        <h2>Autopilot queue (dzisiaj)</h2>
+        <table id="autopilotQueueTable">
+          <thead><tr><th>Lead</th><th>Priorytet</th><th>Win%</th><th>Akcja</th><th>Due</th><th>Status</th><th>Akcja</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="kanban ops-only">
+      <article class="kb-col" data-kb-col="new">
+        <div class="kb-head"><span>new</span><strong id="kbCntNew">0</strong></div>
+        <div class="kb-body" id="kbNew"></div>
+      </article>
+      <article class="kb-col" data-kb-col="in_progress">
+        <div class="kb-head"><span>in_progress</span><strong id="kbCntProgress">0</strong></div>
+        <div class="kb-body" id="kbProgress"></div>
+      </article>
+      <article class="kb-col" data-kb-col="won">
+        <div class="kb-head"><span>won</span><strong id="kbCntWon">0</strong></div>
+        <div class="kb-body" id="kbWon"></div>
+      </article>
+      <article class="kb-col" data-kb-col="lost">
+        <div class="kb-head"><span>lost</span><strong id="kbCntLost">0</strong></div>
+        <div class="kb-body" id="kbLost"></div>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="panel ops-only">
+        <h2>Leady CRM</h2>
+        <table id="leadsTable">
+          <thead>
+            <tr>
+              <th>ID</th><th>Form</th><th>Email</th><th>Data</th><th>Tier</th><th>Priorytet</th><th>Win%</th><th>Nastepny krok</th><th>Seq 0-7</th><th>Status</th><th>Follow-up</th><th>Deal</th><th>Notatki</th><th>Akcje</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </article>
+      <article class="panel ops-only">
+        <h2>Jakosc / status</h2>
+        <table id="leadsByStatusTable"><thead><tr><th>Status</th><th>Ile</th></tr></thead><tbody></tbody></table>
+        <h2 style="margin-top:12px">Leads by form</h2>
+        <table id="leadsByFormTable"><thead><tr><th>Form</th><th>Ile</th></tr></thead><tbody></tbody></table>
+        <h2 style="margin-top:12px">Top eventy</h2>
+        <table id="topEventsTable"><thead><tr><th>Event</th><th>Ile</th></tr></thead><tbody></tbody></table>
+        <h2 style="margin-top:12px">Top lost_reason</h2>
+        <table id="lostReasonsTable"><thead><tr><th>Reason</th><th>Ile</th></tr></thead><tbody></tbody></table>
+        <h2 style="margin-top:12px">Trend vs poprzednie okno</h2>
+        <table id="trendTable"><thead><tr><th>KPI</th><th>Teraz</th><th>Poprzednio</th><th>Delta%</th></tr></thead><tbody></tbody></table>
+      </article>
+    </section>
+
+
+    <section class="grid" style="margin-top:10px" id="sec-revenue">
+      <article class="panel">
+        <h2>Sales Cockpit (dzis)</h2>
+        <table id="cockpitTable">
+          <thead><tr><th>Lead</th><th>Email</th><th>Status</th><th>SLA h</th><th>Akcje</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </article>
+      <article class="panel">
+        <h2>Pipeline - ranking stron</h2>
+        <table id="pipelinePagesTable">
+          <thead><tr><th>Strona</th><th>Leads</th><th>Won</th><th>Lost</th><th>Win%</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <h2 style="margin-top:12px">Pipeline - ranking CTA</h2>
+        <table id="pipelineCtaTable">
+          <thead><tr><th>CTA</th><th>Leads</th><th>Won</th><th>Lost</th><th>Win%</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <h2 style="margin-top:12px">Analytics segments</h2>
+        <table id="analyticsAreaTable">
+          <thead><tr><th>CTA area</th><th>Events</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <table id="analyticsKindTable" style="margin-top:8px">
+          <thead><tr><th>CTA kind</th><th>Events</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <table id="analyticsFormNameTable" style="margin-top:8px">
+          <thead><tr><th>Form name</th><th>Submits</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <table id="analyticsMatrixTable" style="margin-top:8px">
+          <thead><tr><th>Label</th><th>Area</th><th>Kind</th><th>Events</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <h2 style="margin-top:12px">ROI per kanal</h2>
+        <table id="roiTable">
+          <thead><tr><th>Kanal</th><th>Leads</th><th>Won</th><th>Revenue</th><th>Cost</th><th>CAC</th><th>Payback</th><th>ROI%</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="row" style="margin-top:8px">
+          <input id="roiCostDate" type="date" style="min-width:140px" />
+          <input id="roiCostChannel" placeholder="kanal (np. google_ads)" style="min-width:180px" />
+          <input id="roiCostValue" type="number" min="0" step="0.01" placeholder="koszt" style="min-width:120px" />
+          <button id="saveRoiCost">Zapisz koszt</button>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <textarea id="roiCostCsv" placeholder="date_iso,channel,cost&#10;2026-02-18,google_ads,120.50" style="min-height:64px;min-width:420px"></textarea>
+          <button id="importRoiCsv">Import CSV kosztow</button>
+        </div>
+        <table id="roiCostsRecentTable" style="margin-top:8px">
+          <thead><tr><th>Data</th><th>Kanal</th><th>Koszt</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <h2 style="margin-top:12px">Budget allocator</h2>
+        <div class="row" style="margin-top:8px">
+          <input id="allocatorSpendPct" type="number" min="1" max="80" step="1" value="20" style="max-width:120px" />
+          <button id="refreshAllocator">Przelicz allocator</button>
+        </div>
+        <table id="allocatorTable" style="margin-top:8px">
+          <thead><tr><th>Kanal</th><th>Decyzja</th><th>Win%</th><th>ROI%</th><th>Payback</th><th>Spend delta</th><th>Est. profit delta</th><th>Powod</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <h2 style="margin-top:12px">Budget plans</h2>
+        <div class="row" style="margin-top:8px">
+          <input id="planDays" type="number" min="7" max="365" value="30" style="max-width:120px" />
+          <input id="planSpendPct" type="number" min="1" max="80" value="20" style="max-width:120px" />
+          <input id="planNote" placeholder="notatka planu" style="min-width:220px" />
+          <button id="createBudgetPlan">Utworz plan</button>
+        </div>
+        <table id="budgetPlansTable" style="margin-top:8px">
+          <thead><tr><th>ID</th><th>Data</th><th>Days</th><th>Spend%</th><th>Status</th><th>Note</th><th>Akcja</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <table id="budgetPlanItemsTable" style="margin-top:8px">
+          <thead><tr><th>Channel</th><th>Action</th><th>Delta cost</th><th>Exp. profit delta</th><th>Status</th><th>Akcja</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <table id="budgetPlanRunsTable" style="margin-top:8px">
+          <thead><tr><th>Date</th><th>Channel</th><th>Prev cost</th><th>New cost</th><th>Applied</th><th>Reverted</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <h2 style="margin-top:12px">Forecast lab</h2>
+        <div class="row" style="margin-top:8px">
+          <input id="forecastHistoryDays" type="number" min="14" max="365" value="60" style="max-width:120px" />
+          <input id="forecastHorizonDays" type="number" min="7" max="365" value="30" style="max-width:120px" />
+          <input id="forecastTargetRevenue" type="number" min="0" step="100" value="50000" style="max-width:140px" />
+          <input id="forecastBudgetPct" type="number" min="-80" max="300" step="1" value="0" style="max-width:120px" />
+          <input id="forecastConvPct" type="number" min="-80" max="300" step="1" value="0" style="max-width:120px" />
+          <button id="runForecast">Run forecast</button>
+        </div>
+        <table id="forecastSummaryTable" style="margin-top:8px">
+          <thead><tr><th>Forecast revenue</th><th>Forecast cost</th><th>Forecast profit</th><th>Forecast wins</th><th>Target gap</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <table id="forecastTable" style="margin-top:8px">
+          <thead><tr><th>Channel</th><th>Hist win%</th><th>Hist avg deal</th><th>Fc leads</th><th>Fc wins</th><th>Fc revenue</th><th>Fc cost</th><th>Fc profit</th><th>Payback</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <table id="forecastTargetPlanTable" style="margin-top:8px">
+          <thead><tr><th>Channel</th><th>Add. revenue needed</th><th>Est. add. cost</th><th>Assumed payback</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <h2 style="margin-top:12px" id="sec-risk">Incident center</h2>
+        <div class="row" style="margin-top:8px">
+          <select id="incidentStatusFilter">
+            <option value="open">open</option>
+            <option value="ack">ack</option>
+            <option value="resolved">resolved</option>
+            <option value="">all</option>
+          </select>
+          <button id="scanGuardrails">Scan guardrails</button>
+          <select id="incidentTaskStatusFilter">
+            <option value="pending">task: pending</option>
+            <option value="in_progress">task: in_progress</option>
+            <option value="done">task: done</option>
+            <option value="cancelled">task: cancelled</option>
+            <option value="">task: all</option>
+          </select>
+          <button id="syncIncidentTasks">Sync tasks</button>
+          <button id="batchTaskDone">Batch done (filtered)</button>
+          <button id="batchTaskPostpone">Batch +24h (filtered)</button>
+        </div>
+        <table id="incidentsTable" style="margin-top:8px">
+          <thead><tr><th>ID</th><th>Severity</th><th>Type</th><th>Channel</th><th>Title</th><th>Status</th><th>Updated</th><th>Akcja</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <table id="incidentTasksTable" style="margin-top:8px">
+          <thead><tr><th>ID</th><th>Incident</th><th>Owner</th><th>Prio</th><th>Task</th><th>Due</th><th>Overdue since</th><th>SLA</th><th>Status</th><th>Retry/Reopen</th><th>Akcja</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <table id="incidentTaskAuditTable" style="margin-top:8px">
+          <thead><tr><th>When</th><th>Task</th><th>Actor</th><th>Action</th><th>Change</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <h2 style="margin-top:12px">Ops review pack</h2>
+        <div class="row" style="margin-top:8px">
+          <input id="opsReviewDays" type="number" min="3" max="60" value="7" style="max-width:120px" />
+          <input id="opsReviewTargetRevenue" type="number" min="0" step="100" value="50000" style="max-width:140px" />
+          <button id="runOpsReview">Run ops review</button>
+        </div>
+        <table id="opsReviewSummaryTable" style="margin-top:8px">
+          <thead><tr><th>Events d%</th><th>Leads d%</th><th>Conv d%</th><th>Inc open</th><th>Tasks pending</th><th>Forecast gap</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <table id="opsReviewPrioritiesTable" style="margin-top:8px">
+          <thead><tr><th>Priority</th><th>Action</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <h2 style="margin-top:12px">Scenario vault</h2>
+        <div class="row" style="margin-top:8px">
+          <input id="scenarioName" placeholder="scenario name" style="min-width:220px" />
+          <button id="saveScenario">Save scenario</button>
+        </div>
+        <table id="scenarioTable" style="margin-top:8px">
+          <thead><tr><th>ID</th><th>Name</th><th>Created</th><th>Budget%</th><th>Conv%</th><th>Target</th><th>Forecast revenue</th><th>Akcja</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="row" style="margin-top:8px">
+          <input id="compareBaseId" type="number" min="1" placeholder="base id" style="max-width:120px" />
+          <input id="compareCandidateId" type="number" min="1" placeholder="candidate id" style="max-width:140px" />
+          <button id="compareScenarios">Compare</button>
+        </div>
+        <table id="scenarioCompareTable" style="margin-top:8px">
+          <thead><tr><th>Metric</th><th>Base</th><th>Candidate</th><th>Delta</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <h2 style="margin-top:12px" id="sec-auto">Autonomous engine</h2>
+        <div class="row" style="margin-top:8px">
+          <button id="runAutoDaily">Run daily</button>
+          <button id="submitPlanApprovals">Submit top plan approvals</button>
+          <button id="applyApprovedPlan">Apply approved (top plan)</button>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <input id="targetStart" type="date" style="min-width:140px" />
+          <input id="targetEnd" type="date" style="min-width:140px" />
+          <input id="targetRevenue" type="number" min="0" step="100" value="80000" style="max-width:140px" />
+          <button id="saveTargetCommit">Set target</button>
+        </div>
+        <table id="targetCurrentTable" style="margin-top:8px">
+          <thead><tr><th>Period</th><th>Target</th><th>Actual</th><th>Expected</th><th>Gap</th><th>Risk</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <table id="connectorsTable" style="margin-top:8px">
+          <thead><tr><th>Channel</th><th>Provider</th><th>Mode</th><th>Status</th><th>Limit %</th><th>Last sync</th><th>Action</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <table id="approvalsTable" style="margin-top:8px">
+          <thead><tr><th>ID</th><th>Entity</th><th>Action</th><th>Status</th><th>Payload</th><th>Created</th><th>Action</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <table id="executionRunsTable" style="margin-top:8px">
+          <thead><tr><th>ID</th><th>Channel</th><th>Action</th><th>Status</th><th>Created</th><th>Finished</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="row" style="margin-top:8px">
+          <input id="expName" placeholder="experiment name" style="min-width:220px" />
+          <button id="createDemoExperiment">Create demo A/B</button>
+        </div>
+        <table id="experimentsTable" style="margin-top:8px">
+          <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Scope</th><th>Primary metric</th><th>Action</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </article>
+    </section>    <section class="grid ops-only" style="margin-top:10px" id="sec-followup">
+      <article class="panel">
+        <h2>Szablon follow-up 24h</h2>
+        <input id="tpl24Subj" placeholder="Subject 24h" style="width:100%;margin-bottom:6px" />
+        <textarea id="tpl24Body"></textarea>
+        <button id="saveTpl24" style="margin-top:6px">Zapisz 24h</button>
+
+        <h2 style="margin-top:14px">Szablon follow-up 72h</h2>
+        <input id="tpl72Subj" placeholder="Subject 72h" style="width:100%;margin-bottom:6px" />
+        <textarea id="tpl72Body"></textarea>
+        <button id="saveTpl72" style="margin-top:6px">Zapisz 72h</button>
+        <p class="hint">Placeholders: {{lead_id}}, {{form_type}}, {{source_path}}, {{created_at}}, {{step_hours}}</p>
+      </article>
+      <article class="panel">
+        <h2>Log follow-up (ostatnie)</h2>
+        <table id="followupLogsTable">
+          <thead><tr><th>Data</th><th>Lead</th><th>Step</th><th>Email</th><th>Status</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <h2 style="margin-top:12px">Follow-up do zrobienia</h2>
+        <table id="followupDueTable">
+          <thead><tr><th>Lead</th><th>Due</th><th>Tier</th><th>Akcja</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <h2 style="margin-top:12px">Sekwencja 0-7 (due)</h2>
+        <table id="sequenceDueTable">
+          <thead><tr><th>Lead</th><th>Krok</th><th>Due</th><th>Overdue h</th><th>Akcja</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const tokenKey = "dz_admin_token";
+    const baseKey = "dz_admin_base";
+    const autoKey = "dz_admin_auto_refresh";
+    const includeTestKey = "dz_admin_include_test";
+    const includeSpamKey = "dz_admin_include_spam";
+    const viewModeKey = "dz_admin_view_mode";
+    const actorKey = "dz_admin_actor";
+    let currentLeads = [];
+    let currentIncidentTasks = [];
+    let lostReasonCatalog = [
+      { code: "budget_too_low", label: "Budzet za niski" },
+      { code: "no_response", label: "Brak odpowiedzi" },
+      { code: "not_ready_timing", label: "Zly timing / nie teraz" },
+      { code: "chose_competitor", label: "Wybral konkurencje" },
+      { code: "no_decision_maker", label: "Brak decydenta" },
+      { code: "scope_mismatch", label: "Niedopasowany zakres" },
+      { code: "low_lead_quality", label: "Niska jakosc leada" },
+      { code: "invalid_contact", label: "Bledny kontakt" },
+      { code: "duplicate_lead", label: "Duplikat" },
+      { code: "test_or_spam", label: "Test lub spam" },
+      { code: "other", label: "Inny powod" }
+    ];
+    let isLoading = false;
+    let retryTimer = null;
+    let autoTimer = null;
+
+    $("token").value = localStorage.getItem(tokenKey) || "";
+    $("apiBase").value = localStorage.getItem(baseKey) || $("apiBase").value;
+    $("adminActor").value = localStorage.getItem(actorKey) || "ops@local";
+    $("autoRefresh").checked = (localStorage.getItem(autoKey) || "1") === "1";
+    $("viewMode").value = (localStorage.getItem(viewModeKey) || "presentation");
+    $("includeTest").checked = (localStorage.getItem(includeTestKey) || "0") === "1";
+    $("includeSpam").checked = (localStorage.getItem(includeSpamKey) || "0") === "1";
+    $("roiCostDate").value = new Date().toISOString().slice(0, 10);
+    const todayIso = new Date().toISOString().slice(0, 10);
+    const end = new Date();
+    end.setDate(28);
+    const endIso = `${end.getFullYear()}-${String(end.getMonth() + 1).padStart(2, "0")}-${String(end.getDate()).padStart(2, "0")}`;
+    $("targetStart").value = todayIso;
+    $("targetEnd").value = endIso;
+
+    function headers() {
+      const h = { "Content-Type": "application/json" };
+      const t = $("token").value.trim();
+      if (t) h["x-admin-token"] = t;
+      const actor = $("adminActor").value.trim();
+      if (actor) h["x-admin-actor"] = actor;
+      return h;
+    }
+
+    function applyViewMode() {
+      const raw = $("viewMode").value;
+      const mode = (raw === "recruiter" || raw === "presentation") ? raw : "ops";
+      document.body.classList.toggle("view-recruiter", mode === "recruiter");
+      document.body.classList.toggle("view-presentation", mode === "presentation");
+
+      const tableHideForRecruiter = [
+        "roiCostsRecentTable",
+        "budgetPlanItemsTable",
+        "budgetPlanRunsTable",
+        "incidentTasksTable",
+        "incidentTaskAuditTable",
+        "approvalsTable",
+        "executionRunsTable"
+      ];
+      const hideControlsForPresentation = [
+        "apiBase",
+        "token",
+        "adminActor",
+        "days",
+        "formFilter",
+        "statusFilter",
+        "tierFilter",
+        "autopilotPriorityFilter",
+        "autopilotActionFilter",
+        "winRecoFilter",
+        "dupOnly",
+        "leadLimit",
+        "exportLeads",
+        "autoRefresh",
+        "includeTest",
+        "includeSpam",
+        "scanGuardrails",
+        "syncIncidentTasks",
+        "batchTaskDone",
+        "batchTaskPostpone",
+        "flagAutopilot",
+        "flagWinModel",
+        "flagRoi",
+        "flagPersist",
+        "refreshFlags",
+        "saveFlags",
+        "backfillLimit",
+        "backfillIncludeTest",
+        "backfillIncludeSpam",
+        "backfillAutopilot",
+        "backfillWin",
+        "runBackfill",
+        "refreshAllocator",
+        "roiCostCsv",
+        "importRoiCsv",
+        "planDays",
+        "planSpendPct",
+        "planNote",
+        "createBudgetPlan",
+        "compareBaseId",
+        "compareCandidateId",
+        "compareScenarios"
+      ];
+
+      tableHideForRecruiter.forEach((id) => {
+        const el = $(id);
+        if (!el) return;
+        el.style.display = (mode === "ops") ? "" : "none";
+      });
+
+      hideControlsForPresentation.forEach((id) => {
+        const el = $(id);
+        if (!el) return;
+        if (mode === "presentation") {
+          if (el.parentElement && el.parentElement.tagName === "LABEL") el.parentElement.style.display = "none";
+          else el.style.display = "none";
+        } else {
+          if (el.parentElement && el.parentElement.tagName === "LABEL") el.parentElement.style.display = "";
+          else el.style.display = "";
+        }
+      });
+    }
+
+    function setupSectionNav() {
+      document.querySelectorAll("[data-jump]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const sel = btn.getAttribute("data-jump");
+          if (!sel) return;
+          const target = document.querySelector(sel);
+          if (!target) return;
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+    }
+
+    function setRows(tableId, rows) {
+      const tbody = document.querySelector(`#${tableId} tbody`);
+      tbody.innerHTML = rows.join("");
+    }
+
+    function byStatus(s) {
+      const x = (s || "new").toLowerCase();
+      if (x === "in_progress" || x === "won" || x === "lost") return x;
+      return "new";
+    }
+
+    function emailFromLead(lead) {
+      const p = lead.payload || {};
+      const fields = p.fields || {};
+      return fields.email || "-";
+    }
+
+    function tierClass(t) {
+      const x = String(t || "").toLowerCase();
+      if (x === "hot") return "tier tier-hot";
+      if (x === "warm") return "tier tier-warm";
+      return "tier tier-cold";
+    }
+
+    function priorityClass(p) {
+      const x = String(p || "P3").toUpperCase();
+      if (x === "P1") return "prio prio-p1";
+      if (x === "P2") return "prio prio-p2";
+      return "prio prio-p3";
+    }
+
+    function recoClass(r) {
+      const x = String(r || "nurture").toLowerCase();
+      if (x === "push") return "reco reco-push";
+      if (x === "drop") return "reco reco-drop";
+      return "reco reco-nurture";
+    }
+
+    function allocClass(a) {
+      const x = String(a || "hold").toLowerCase();
+      if (x === "scale") return "alloc alloc-scale";
+      if (x === "cut") return "alloc alloc-cut";
+      return "alloc alloc-hold";
+    }
+
+    function sevClass(s) {
+      const x = String(s || "medium").toLowerCase();
+      if (x === "critical") return "sev sev-critical";
+      if (x === "high") return "sev sev-high";
+      return "sev sev-medium";
+    }
+
+    function dueState(iso) {
+      if (!iso) return { label: "-", css: "due-pill due-ok", rank: 9 };
+      const t = Date.parse(iso);
+      if (Number.isNaN(t)) return { label: "n/a", css: "due-pill due-ok", rank: 9 };
+      const diffHours = (t - Date.now()) / 3600000;
+      if (diffHours <= 0) return { label: "overdue", css: "due-pill due-overdue", rank: 1 };
+      if (diffHours <= 6) return { label: "risk", css: "due-pill due-risk", rank: 2 };
+      return { label: "ok", css: "due-pill due-ok", rank: 3 };
+    }
+
+    function updateAutopilotKpis() {
+      const p1DueNow = (currentLeads || []).filter((x) => {
+        if (String(x.autopilot_priority || "").toUpperCase() !== "P1") return false;
+        const st = dueState(x.autopilot_next_action_due_at || "");
+        return st.label === "overdue" || st.label === "risk";
+      }).length;
+      $("kpiP1DueNow").textContent = String(p1DueNow);
+    }
+
+    function escHtml(v) {
+      return String(v == null ? "" : v)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    function fmtPct(v) {
+      return (v == null || Number.isNaN(Number(v))) ? "-" : `${Number(v).toFixed(2)}%`;
+    }
+
+    function fmtMoney(v) {
+      const n = Number(v);
+      if (!Number.isFinite(n)) return "-";
+      return n.toLocaleString("pl-PL", { maximumFractionDigits: 0 });
+    }
+
+    function goalBadge(kind, label) {
+      const safe = String(kind || "info");
+      const txt = escHtml(label || "info");
+      return `<span class="goal goal-${safe}">${txt}</span>`;
+    }
+
+    function renderLongTermTargets(summary, roiReport) {
+      const trend = (summary || {}).trend || {};
+      const delta = trend.delta_pct || {};
+      const leadsByStatusRows = (summary || {}).leads_by_status || [];
+      const leadsByStatus = {};
+      leadsByStatusRows.forEach((x) => {
+        const key = String((x || {}).status || "").toLowerCase();
+        leadsByStatus[key] = Number((x || {}).cnt || 0);
+      });
+
+      const totalLeads = Number(((summary || {}).totals || {}).leads || 0);
+      const touched = Number(leadsByStatus.in_progress || 0) + Number(leadsByStatus.won || 0) + Number(leadsByStatus.lost || 0);
+      const touchedRate = totalLeads > 0 ? (touched / totalLeads) * 100.0 : null;
+      const resolved = Number(leadsByStatus.won || 0) + Number(leadsByStatus.lost || 0);
+      const winRateResolved = resolved > 0 ? (Number(leadsByStatus.won || 0) / resolved) * 100.0 : null;
+
+      const leadsGrowth = Number(delta.leads);
+      const revenueGrowth = Number(delta.revenue);
+
+      const roiTotals = (roiReport || {}).totals || {};
+      const roiCost = Number(roiTotals.cost || 0);
+      const roiWon = Number(roiTotals.won || 0);
+      const cac = roiWon > 0 ? (roiCost / roiWon) : null;
+
+      const mqlState = Number.isFinite(leadsGrowth) ? (leadsGrowth >= 8 ? "good" : (leadsGrowth >= 4 ? "risk" : "bad")) : "info";
+      const touchState = touchedRate == null ? "info" : (touchedRate >= 35 ? "good" : (touchedRate >= 25 ? "risk" : "bad"));
+      const winState = winRateResolved == null ? "info" : (winRateResolved >= 20 ? "good" : (winRateResolved >= 12 ? "risk" : "bad"));
+      const revState = Number.isFinite(revenueGrowth) ? (revenueGrowth >= 5 ? "good" : (revenueGrowth >= 2 ? "risk" : "bad")) : "info";
+      const cacState = (roiWon <= 0 && roiCost > 0) ? "bad" : ((roiWon > 0) ? "good" : "info");
+
+      const rows = [
+        {
+          metric: "MQL growth m/m (proxy: leads delta)",
+          current: fmtPct(leadsGrowth),
+          target: "+8% do +12% m/m",
+          status: goalBadge(mqlState, mqlState),
+          notes: "Long-term plan KPI 1"
+        },
+        {
+          metric: "Lead-to-call rate (proxy: touched status)",
+          current: fmtPct(touchedRate),
+          target: ">= 35%",
+          status: goalBadge(touchState, touchState),
+          notes: `${touched}/${totalLeads} leadow przeszlo przez kontakt`
+        },
+        {
+          metric: "Call-to-client rate (proxy: won/resolved)",
+          current: fmtPct(winRateResolved),
+          target: ">= 20%",
+          status: goalBadge(winState, winState),
+          notes: `${Number(leadsByStatus.won || 0)}/${resolved} resolved`
+        },
+        {
+          metric: "Revenue growth m/m (proxy dla +15% kwartalnie)",
+          current: fmtPct(revenueGrowth),
+          target: ">= 5% m/m",
+          status: goalBadge(revState, revState),
+          notes: "Approx. monthly pace to hit +15% QoQ"
+        },
+        {
+          metric: "CAC baseline (cost / won)",
+          current: cac == null ? "-" : `${fmtMoney(cac)} PLN`,
+          target: "Trend malejacy QoQ",
+          status: goalBadge(cacState, cacState),
+          notes: `Cost ${fmtMoney(roiCost)} / Won ${roiWon}`
+        }
+      ];
+
+      setRows("longTermTargetsTable", rows.map((r) =>
+        `<tr><td>${escHtml(r.metric)}</td><td>${escHtml(r.current)}</td><td>${escHtml(r.target)}</td><td>${r.status}</td><td>${escHtml(r.notes)}</td></tr>`
+      ));
+    }
+
+    function pickLostReason(currentValue) {
+      const options = lostReasonCatalog.map((x, i) => `${i + 1}. ${x.code} - ${x.label}`).join("\n");
+      const raw = (prompt(`Wybierz lost_reason (numer lub code):\n${options}`, String(currentValue || "")) || "").trim().toLowerCase();
+      if (!raw) return "";
+      if (/^\d+$/.test(raw)) {
+        const idx = Number(raw) - 1;
+        if (idx >= 0 && idx < lostReasonCatalog.length) return lostReasonCatalog[idx].code;
+      }
+      const matched = lostReasonCatalog.find((x) => x.code.toLowerCase() === raw);
+      if (matched) return matched.code;
+      return "other";
+    }
+
+    function toLocalDatetimeInput(iso) {
+      if (!iso) return "";
+      const d = new Date(iso);
+      if (Number.isNaN(d.getTime())) return "";
+      const p = (n) => String(n).padStart(2, "0");
+      return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+    }
+
+    function csvEscape(value) {
+      const s = String(value == null ? "" : value);
+      if (s.includes(",") || s.includes('"') || s.includes("\n")) return '"' + s.replace(/"/g, '""') + '"';
+      return s;
+    }
+
+    function exportLeadsCsv() {
+      if (!currentLeads.length) {
+        $("status").textContent = "Brak leadow do eksportu.";
+        return;
+      }
+      const header = ["id","form_type","email","source_path","created_at","lead_status","lead_follow_up_at","lead_notes"];
+      const rows = [header.join(",")];
+      currentLeads.forEach((x) => {
+        const p = x.payload || {};
+        const fields = p.fields || {};
+        const row = [
+          x.id || "",
+          x.form_type || "",
+          fields.email || "",
+          x.source_path || "",
+          x.created_at || "",
+          x.lead_status || "new",
+          x.lead_follow_up_at || "",
+          x.lead_notes || ""
+        ];
+        rows.push(row.map(csvEscape).join(","));
+      });
+      const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `leads-crm-${new Date().toISOString().replace(/[:.]/g,"-")}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      $("status").textContent = "CSV zapisany.";
+    }
+
+    async function saveLeadMeta(leadId) {
+      const statusEl = document.querySelector(`[data-status='${leadId}']`);
+      const notesEl = document.querySelector(`[data-notes='${leadId}']`);
+      const fuEl = document.querySelector(`[data-fu='${leadId}']`);
+      if (!statusEl || !notesEl || !fuEl) return;
+
+      let follow_up_at = null;
+      if (fuEl.value) {
+        const d = new Date(fuEl.value);
+        if (!Number.isNaN(d.getTime())) follow_up_at = d.toISOString();
+      }
+
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/leads/${encodeURIComponent(leadId)}/meta`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({
+          status: statusEl.value,
+          notes: notesEl.value || "",
+          follow_up_at
+        })
+      });
+      if (!res.ok) throw new Error(`save meta ${res.status}`);
+      $("status").innerHTML = `<span class='ok'>Saved</span> ${leadId}`;
+      const idx = currentLeads.findIndex((x) => String(x.id) === String(leadId));
+      if (idx >= 0) {
+        currentLeads[idx].lead_status = statusEl.value;
+        currentLeads[idx].lead_notes = notesEl.value || "";
+        currentLeads[idx].lead_follow_up_at = follow_up_at;
+      }
+      renderKanban();
+    }
+
+    async function moveLeadStatus(leadId, nextStatus) {
+      const lead = currentLeads.find((x) => String(x.id) === String(leadId));
+      if (!lead) return;
+      if (nextStatus === "won" && Number(lead.deal_value || 0) <= 0) {
+        throw new Error("Ustaw deal_value > 0 przed statusem won");
+      }
+      let lostReason = "";
+      if (nextStatus === "lost") {
+        lostReason = pickLostReason(String(lead.lost_reason || ""));
+        if (!lostReason) throw new Error("lost_reason wymagany dla status=lost");
+      }
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/leads/${encodeURIComponent(leadId)}/meta`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({
+          status: nextStatus,
+          notes: lead.lead_notes || "",
+          follow_up_at: lead.lead_follow_up_at || null,
+          lost_reason: lostReason
+        })
+      });
+      if (!res.ok) throw new Error(`move status ${res.status}`);
+      lead.lead_status = nextStatus;
+      $("status").innerHTML = `<span class='ok'>Moved</span> ${leadId} -> ${nextStatus}`;
+      await loadDashboard();
+    }
+
+    async function saveLeadValue(leadId) {
+      const valEl = document.querySelector(`[data-deal='${leadId}']`);
+      if (!valEl) return;
+      const dealValue = Number(valEl.value || 0);
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/leads/${encodeURIComponent(leadId)}/value`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ deal_value: Number.isFinite(dealValue) ? Math.max(0, dealValue) : 0 })
+      });
+      if (!res.ok) throw new Error(`save value ${res.status}`);
+      $("status").innerHTML = `<span class='ok'>Value saved</span> ${leadId}`;
+      await loadDashboard();
+    }
+
+    async function executeAutopilot(leadId) {
+      const lead = currentLeads.find((x) => String(x.id) === String(leadId));
+      if (!lead) return;
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/leads/${encodeURIComponent(leadId)}/autopilot/execute`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ action: lead.autopilot_next_action || null })
+      });
+      if (!res.ok) throw new Error(`autopilot execute ${res.status}`);
+      const d = await res.json();
+      $("status").innerHTML = `<span class='ok'>Autopilot</span> ${leadId} -> ${(d.action_executed || "done")}`;
+      await loadDashboard();
+    }
+
+    function sequenceLabel(stepCode) {
+      const x = String(stepCode || "").toLowerCase();
+      if (x === "d0_contact") return "D0 telefon/mail";
+      if (x === "d1_followup") return "D1 follow-up";
+      if (x === "d3_reminder") return "D3 przypomnienie";
+      if (x === "d7_close_loop") return "D7 zamkniecie";
+      return x || "-";
+    }
+
+    async function markSequenceDone(leadId, stepCode) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/leads/${encodeURIComponent(leadId)}/sequence/${encodeURIComponent(stepCode)}/done`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ note: "done_from_admin" })
+      });
+      if (!res.ok) throw new Error(`sequence done ${res.status}`);
+      $("status").innerHTML = `<span class='ok'>Seq done</span> ${leadId} ${stepCode}`;
+      await loadDashboard();
+    }
+
+    async function postponeSequence(leadId, stepCode, hours) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/leads/${encodeURIComponent(leadId)}/sequence/${encodeURIComponent(stepCode)}/postpone`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ hours })
+      });
+      if (!res.ok) throw new Error(`sequence postpone ${res.status}`);
+      $("status").innerHTML = `<span class='ok'>Seq +${hours}h</span> ${leadId} ${stepCode}`;
+      await loadDashboard();
+    }
+
+    function renderAutopilotQueue() {
+      const priorityRank = { P1: 1, P2: 2, P3: 3 };
+      const rows = (currentLeads || [])
+        .filter((x) => String(x.lead_status || "new") !== "won" && String(x.lead_status || "new") !== "lost")
+        .slice()
+        .sort((a, b) => {
+          const pa = String(a.autopilot_priority || "P3").toUpperCase();
+          const pb = String(b.autopilot_priority || "P3").toUpperCase();
+          const ra = priorityRank[pa] || 9;
+          const rb = priorityRank[pb] || 9;
+          if (ra !== rb) return ra - rb;
+          const wa = Number(a.win_probability ?? a.win_probability_pct ?? 0);
+          const wb = Number(b.win_probability ?? b.win_probability_pct ?? 0);
+          if (wa !== wb) return wb - wa;
+          const da = Date.parse(a.autopilot_next_action_due_at || "") || Number.MAX_SAFE_INTEGER;
+          const db = Date.parse(b.autopilot_next_action_due_at || "") || Number.MAX_SAFE_INTEGER;
+          return da - db;
+        })
+        .slice(0, 40);
+
+      setRows("autopilotQueueTable", rows.map((x) => {
+        const id = escHtml(x.id || "");
+        const prio = escHtml(x.autopilot_priority || "P3");
+        const prioCss = priorityClass(x.autopilot_priority || "P3");
+        const winPct = Number(x.win_probability ?? x.win_probability_pct ?? 0);
+        const winReco = escHtml(x.win_recommendation || "nurture");
+        const winRecoCss = recoClass(x.win_recommendation || "nurture");
+        const due = dueState(x.autopilot_next_action_due_at || "");
+        return `<tr>
+          <td class='mono'>${id}</td>
+          <td><span class="${prioCss}">${prio}</span></td>
+          <td><strong>${winPct.toFixed(1)}%</strong> <span class="${winRecoCss}">${winReco}</span></td>
+          <td class='mono'>${escHtml(x.autopilot_next_action || "review")}</td>
+          <td class='mono'>${escHtml(x.autopilot_next_action_due_at || "-")} <span class="${due.css}">${due.label}</span></td>
+          <td>${escHtml(x.lead_status || "new")}</td>
+          <td><button data-autoq="${id}">Wykonaj</button></td>
+        </tr>`;
+      }));
+      document.querySelectorAll("[data-autoq]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          try {
+            await executeAutopilot(btn.getAttribute("data-autoq"));
+          } catch (err) {
+            $("status").textContent = "Autopilot queue error: " + String(err.message || err);
+          }
+        });
+      });
+    }
+
+    function renderKanban() {
+      const buckets = { new: [], in_progress: [], won: [], lost: [] };
+      currentLeads.forEach((lead) => {
+        buckets[byStatus(lead.lead_status)].push(lead);
+      });
+
+      function cardHtml(lead) {
+        const id = escHtml(lead.id || "");
+        const email = escHtml(emailFromLead(lead));
+        const form = escHtml(lead.form_type || "");
+        const dt = escHtml(lead.created_at || "");
+        const tier = escHtml(lead.lead_tier || "cold");
+        const score = Number(lead.lead_score || 0);
+        const tierCss = tierClass(lead.lead_tier || "cold");
+        const prio = escHtml(lead.autopilot_priority || "P3");
+        const prioCss = priorityClass(lead.autopilot_priority || "P3");
+        const nextAction = escHtml(lead.autopilot_next_action || "review");
+        const dup = lead.is_duplicate ? `<span class="dup">dup x${Number(lead.duplicate_count || 0)}</span>` : "";
+        return `<article class="kb-card" draggable="true" data-kb-id="${id}">
+          <div class="t">${id}</div>
+          <div class="s">${form} - ${email}</div>
+          <div><span class="${tierCss}">${tier}</span> <span class="hint">(${score})</span> <span class="${prioCss}">${prio}</span> ${dup}</div>
+          <div class="s">${nextAction}</div>
+          <div class="s">${dt}</div>
+        </article>`;
+      }
+
+      $("kbNew").innerHTML = buckets.new.map(cardHtml).join("");
+      $("kbProgress").innerHTML = buckets.in_progress.map(cardHtml).join("");
+      $("kbWon").innerHTML = buckets.won.map(cardHtml).join("");
+      $("kbLost").innerHTML = buckets.lost.map(cardHtml).join("");
+
+      $("kbCntNew").textContent = String(buckets.new.length);
+      $("kbCntProgress").textContent = String(buckets.in_progress.length);
+      $("kbCntWon").textContent = String(buckets.won.length);
+      $("kbCntLost").textContent = String(buckets.lost.length);
+
+      let dragLeadId = "";
+      document.querySelectorAll(".kb-card").forEach((el) => {
+        el.addEventListener("dragstart", () => { dragLeadId = el.getAttribute("data-kb-id") || ""; });
+      });
+      document.querySelectorAll("[data-kb-col]").forEach((col) => {
+        col.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          col.classList.add("kb-drop");
+        });
+        col.addEventListener("dragleave", () => col.classList.remove("kb-drop"));
+        col.addEventListener("drop", async (e) => {
+          e.preventDefault();
+          col.classList.remove("kb-drop");
+          const nextStatus = col.getAttribute("data-kb-col");
+          if (!dragLeadId || !nextStatus) return;
+          try {
+            await moveLeadStatus(dragLeadId, nextStatus);
+          } catch (err) {
+            $("status").textContent = "Move error: " + String(err.message || err);
+          } finally {
+            dragLeadId = "";
+          }
+        });
+      });
+    }
+
+    async function saveTemplate(step) {
+      const subj = step === 24 ? $("tpl24Subj").value : $("tpl72Subj").value;
+      const body = step === 24 ? $("tpl24Body").value : $("tpl72Body").value;
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/followups/templates/${step}`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ subject_template: subj, body_template: body })
+      });
+      if (!res.ok) throw new Error(`save template ${res.status}`);
+      $("status").innerHTML = `<span class='ok'>Template saved</span> ${step}h`;
+    }
+
+    async function saveRoiCost() {
+      const dateIso = ($("roiCostDate").value || "").trim();
+      const channel = ($("roiCostChannel").value || "").trim().toLowerCase();
+      const cost = Number($("roiCostValue").value || 0);
+      if (!dateIso || !channel) throw new Error("date/channel required");
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/channel-costs`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ date_iso: dateIso, channel, cost: Number.isFinite(cost) ? Math.max(0, cost) : 0 })
+      });
+      if (!res.ok) throw new Error(`save roi cost ${res.status}`);
+      $("status").innerHTML = `<span class='ok'>ROI cost saved</span> ${dateIso} ${channel}`;
+      await loadDashboard();
+    }
+
+    async function importRoiCostsCsv() {
+      const csvText = ($("roiCostCsv").value || "").trim();
+      if (!csvText) throw new Error("wklej CSV");
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/channel-costs/import-csv`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ csv_text: csvText })
+      });
+      if (!res.ok) throw new Error(`import roi csv ${res.status}`);
+      const out = await res.json();
+      $("status").innerHTML = `<span class='ok'>ROI CSV import</span> imported=${Number(out.imported || 0)} errors=${(out.errors || []).length}`;
+      await loadDashboard();
+    }
+
+    async function createBudgetPlan() {
+      const days = Number($("planDays").value || 30);
+      const spend = Number($("planSpendPct").value || 20);
+      const note = ($("planNote").value || "").trim();
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/budget-plans/propose`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ days, spend_change_pct: spend, note })
+      });
+      if (!res.ok) throw new Error(`create budget plan ${res.status}`);
+      const j = await res.json();
+      $("status").innerHTML = `<span class='ok'>Plan created</span> #${j.plan_id}`;
+      await loadDashboard();
+    }
+
+    async function setBudgetPlanItemStatus(planId, itemId, statusValue) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/budget-plans/${encodeURIComponent(planId)}/items/${encodeURIComponent(itemId)}/status`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ status: statusValue })
+      });
+      if (!res.ok) throw new Error(`plan item status ${res.status}`);
+      await loadBudgetPlanDetails(planId);
+      $("status").innerHTML = `<span class='ok'>Plan item</span> ${itemId} -> ${statusValue}`;
+    }
+
+    async function applyBudgetPlanItemCosts(planId, itemId, days) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/budget-plans/${encodeURIComponent(planId)}/items/${encodeURIComponent(itemId)}/apply-costs`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ days: Number(days || 7) })
+      });
+      if (!res.ok) throw new Error(`apply costs ${res.status}`);
+      await loadBudgetPlanDetails(planId);
+      $("status").innerHTML = `<span class='ok'>Costs applied</span> item ${itemId}`;
+    }
+
+    async function rollbackBudgetPlanItemCosts(planId, itemId) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/budget-plans/${encodeURIComponent(planId)}/items/${encodeURIComponent(itemId)}/rollback-costs`, {
+        method: "POST",
+        headers: headers()
+      });
+      if (!res.ok) throw new Error(`rollback costs ${res.status}`);
+      await loadBudgetPlanDetails(planId);
+      $("status").innerHTML = `<span class='ok'>Costs rollback</span> item ${itemId}`;
+    }
+
+    async function loadBudgetPlanRuns(planId) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/budget-plans/${encodeURIComponent(planId)}/cost-runs?limit=120`, { headers: headers() });
+      if (!res.ok) throw new Error(`plan runs ${res.status}`);
+      const d = await res.json();
+      const rows = Array.isArray(d.rows) ? d.rows : [];
+      setRows("budgetPlanRunsTable", rows.map((x) =>
+        `<tr><td class='mono'>${escHtml(x.date_iso || "")}</td><td class='mono'>${escHtml(x.channel || "")}</td><td>${x.prev_cost ?? 0}</td><td>${x.new_cost ?? 0}</td><td class='mono'>${escHtml(x.applied_at || "")}</td><td class='mono'>${escHtml(x.reverted_at || "-")}</td></tr>`
+      ));
+    }
+
+    async function scanGuardrails(days) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/guardrails/scan?days=${Number(days || 30)}`, {
+        method: "POST",
+        headers: headers()
+      });
+      if (!res.ok) throw new Error(`scan guardrails ${res.status}`);
+      const d = await res.json();
+      $("status").innerHTML = `<span class='ok'>Guardrails scan</span> detected=${d.detected} open=${d.open_total} tasks=${d.tasks_created || 0}`;
+    }
+
+    async function setIncidentStatus(incidentId, statusValue) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/guardrails/incidents/${encodeURIComponent(incidentId)}/status`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ status: statusValue })
+      });
+      if (!res.ok) throw new Error(`incident status ${res.status}`);
+    }
+
+    async function syncIncidentTasks() {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/guardrails/tasks/sync`, {
+        method: "POST",
+        headers: headers()
+      });
+      if (!res.ok) throw new Error(`sync incident tasks ${res.status}`);
+      const d = await res.json();
+      $("status").innerHTML = `<span class='ok'>Incident tasks sync</span> created=${d.created || 0}`;
+    }
+
+    function renderFeatureFlags(features) {
+      const f = features || {};
+      $("flagAutopilot").value = String(Boolean(f.AUTOPILOT_ENABLED));
+      $("flagWinModel").value = String(Boolean(f.WIN_MODEL_ENABLED));
+      $("flagRoi").value = String(Boolean(f.ROI_ENABLED));
+      $("flagsStatus").textContent = `AUTOPILOT=${Boolean(f.AUTOPILOT_ENABLED)} WIN_MODEL=${Boolean(f.WIN_MODEL_ENABLED)} ROI=${Boolean(f.ROI_ENABLED)}`;
+    }
+
+    async function refreshFeatureFlags() {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/features`, { headers: headers() });
+      if (!res.ok) throw new Error(`features ${res.status}`);
+      const d = await res.json();
+      renderFeatureFlags((d || {}).features || {});
+      $("status").innerHTML = "<span class='ok'>Flags refreshed</span>";
+      return d;
+    }
+
+    async function saveFeatureFlags() {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const payload = {
+        AUTOPILOT_ENABLED: $("flagAutopilot").value === "true",
+        WIN_MODEL_ENABLED: $("flagWinModel").value === "true",
+        ROI_ENABLED: $("flagRoi").value === "true",
+        persist: $("flagPersist").checked
+      };
+      const res = await fetch(`${base}/api/admin/features`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(`save flags ${res.status}`);
+      const d = await res.json();
+      renderFeatureFlags((d || {}).features || {});
+      $("status").innerHTML = "<span class='ok'>Flags saved</span>";
+      return d;
+    }
+
+    async function runLeadsBackfill() {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const payload = {
+        limit: Number($("backfillLimit").value || 5000),
+        include_test: $("backfillIncludeTest").checked,
+        include_spam: $("backfillIncludeSpam").checked,
+        refresh_autopilot: $("backfillAutopilot").checked,
+        refresh_win: $("backfillWin").checked
+      };
+      const res = await fetch(`${base}/api/admin/leads/backfill`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(`backfill ${res.status}`);
+      const d = await res.json();
+      $("status").innerHTML = `<span class='ok'>Backfill</span> processed=${d.processed || 0} auto=${d.autopilot_updates || 0} win=${d.win_updates || 0}`;
+      return d;
+    }
+
+    async function setIncidentTaskStatus(taskId, statusValue, opts = {}) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/guardrails/tasks/${encodeURIComponent(taskId)}/status`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({
+          status: statusValue,
+          owner: opts.owner || "",
+          priority: opts.priority || "",
+          actor: $("adminActor").value.trim() || "",
+          reason: opts.reason || "",
+          expected_updated_at: opts.expectedUpdatedAt || ""
+        })
+      });
+      if (!res.ok) throw new Error(`incident task status ${res.status}`);
+    }
+
+    async function batchIncidentTasksDone(items) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/guardrails/tasks/batch/done`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({
+          items: items,
+          actor: $("adminActor").value.trim() || "",
+          reason: "batch_done_filtered"
+        })
+      });
+      if (!res.ok) throw new Error(`batch done ${res.status}`);
+      return res.json();
+    }
+
+    async function batchIncidentTasksPostpone(items) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/guardrails/tasks/batch/postpone`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({
+          items: items,
+          actor: $("adminActor").value.trim() || "",
+          reason: "batch_postpone_24h_filtered"
+        })
+      });
+      if (!res.ok) throw new Error(`batch postpone ${res.status}`);
+      return res.json();
+    }
+
+    async function saveScenarioSnapshot() {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const name = ($("scenarioName").value || "").trim();
+      if (!name) throw new Error("scenario name required");
+      const payload = {
+        name,
+        days: Number($("days").value || 30),
+        history_days: Number($("forecastHistoryDays").value || 60),
+        horizon_days: Number($("forecastHorizonDays").value || 30),
+        target_revenue: Number($("forecastTargetRevenue").value || 0),
+        budget_change_pct: Number($("forecastBudgetPct").value || 0),
+        conv_uplift_pct: Number($("forecastConvPct").value || 0),
+        spend_change_pct: Number($("allocatorSpendPct").value || 20),
+        include_test: $("includeTest").checked,
+        include_spam: $("includeSpam").checked
+      };
+      const res = await fetch(`${base}/api/admin/scenarios`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(`save scenario ${res.status}`);
+      const j = await res.json();
+      $("status").innerHTML = `<span class='ok'>Scenario saved</span> #${j.scenario_id}`;
+      await loadDashboard();
+    }
+
+    async function compareScenarios() {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const a = Number($("compareBaseId").value || 0);
+      const b = Number($("compareCandidateId").value || 0);
+      if (!a || !b) throw new Error("base/candidate ids required");
+      const res = await fetch(`${base}/api/admin/scenarios-compare?base_id=${a}&candidate_id=${b}`, { headers: headers() });
+      if (!res.ok) throw new Error(`compare scenarios ${res.status}`);
+      const d = await res.json();
+      const bm = (d.base || {}).metrics || {};
+      const cm = (d.candidate || {}).metrics || {};
+      const dd = d.delta || {};
+      setRows("scenarioCompareTable", [
+        `<tr><td>forecast_revenue</td><td>${bm.forecast_revenue ?? 0}</td><td>${cm.forecast_revenue ?? 0}</td><td>${dd.forecast_revenue ?? 0}</td></tr>`,
+        `<tr><td>forecast_cost</td><td>${bm.forecast_cost ?? 0}</td><td>${cm.forecast_cost ?? 0}</td><td>${dd.forecast_cost ?? 0}</td></tr>`,
+        `<tr><td>forecast_profit</td><td>${bm.forecast_profit ?? 0}</td><td>${cm.forecast_profit ?? 0}</td><td>${dd.forecast_profit ?? 0}</td></tr>`,
+        `<tr><td>target_gap</td><td>${bm.target_gap ?? 0}</td><td>${cm.target_gap ?? 0}</td><td>${dd.target_gap ?? 0}</td></tr>`
+      ]);
+      $("status").innerHTML = `<span class='ok'>Scenario compare</span> ${a} vs ${b}`;
+    }
+
+    async function runAutonomousDaily() {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/autonomous/run-daily`, {
+        method: "POST",
+        headers: headers()
+      });
+      if (!res.ok) throw new Error(`auto daily ${res.status}`);
+      const d = await res.json();
+      const s = d.summary || {};
+      $("status").innerHTML = `<span class='ok'>Autonomous daily</span> incidents=${s.incidents_upserted || 0} tasks=${s.incident_tasks_created || 0}`;
+      await loadDashboard();
+    }
+
+    async function saveTargetCommit() {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const period_start = ($("targetStart").value || "").trim();
+      const period_end = ($("targetEnd").value || "").trim();
+      const target_revenue = Number($("targetRevenue").value || 0);
+      if (!period_start || !period_end) throw new Error("target dates required");
+      const res = await fetch(`${base}/api/admin/targets/commit`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ period_start, period_end, target_revenue })
+      });
+      if (!res.ok) throw new Error(`target commit ${res.status}`);
+      const d = await res.json();
+      $("status").innerHTML = `<span class='ok'>Target commit</span> #${d.commit_id}`;
+      await loadDashboard();
+    }
+
+    async function submitTopPlanApprovals() {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const plansRes = await fetch(`${base}/api/admin/budget-plans?limit=1`, { headers: headers() });
+      if (!plansRes.ok) throw new Error(`plans ${plansRes.status}`);
+      const p = await plansRes.json();
+      const top = (p.plans || [])[0];
+      if (!top) throw new Error("no budget plan");
+      const planId = Number(top.id || 0);
+      const res = await fetch(`${base}/api/admin/autonomous/plans/${encodeURIComponent(planId)}/submit`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ threshold_abs_delta_cost: 500, requested_by: "ops", note: "auto submit from admin" })
+      });
+      if (!res.ok) throw new Error(`submit approvals ${res.status}`);
+      const d = await res.json();
+      $("status").innerHTML = `<span class='ok'>Approvals submitted</span> plan=${planId} created=${d.approvals_created || 0}`;
+      await loadDashboard();
+    }
+
+    async function applyApprovedTopPlan() {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const plansRes = await fetch(`${base}/api/admin/budget-plans?limit=1`, { headers: headers() });
+      if (!plansRes.ok) throw new Error(`plans ${plansRes.status}`);
+      const p = await plansRes.json();
+      const top = (p.plans || [])[0];
+      if (!top) throw new Error("no budget plan");
+      const planId = Number(top.id || 0);
+      const res = await fetch(`${base}/api/admin/autonomous/plans/${encodeURIComponent(planId)}/apply-approved`, {
+        method: "POST",
+        headers: headers()
+      });
+      if (!res.ok) throw new Error(`apply approved ${res.status}`);
+      const d = await res.json();
+      $("status").innerHTML = `<span class='ok'>Apply approved</span> applied=${d.applied || 0} blocked=${d.blocked || 0}`;
+      await loadDashboard();
+    }
+
+    async function setApprovalDecision(approvalId, decision) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/autonomous/approvals/${encodeURIComponent(approvalId)}/decision`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ decision, decided_by: "admin", note: "" })
+      });
+      if (!res.ok) throw new Error(`approval decision ${res.status}`);
+      await loadDashboard();
+    }
+
+    async function syncConnector(channel) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/autonomous/connectors/${encodeURIComponent(channel)}/sync`, {
+        method: "POST",
+        headers: headers()
+      });
+      if (!res.ok) throw new Error(`connector sync ${res.status}`);
+      await loadDashboard();
+    }
+
+    async function createDemoExperiment() {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const name = ($("expName").value || "").trim() || `Offer Headline Test ${new Date().toISOString().slice(0, 10)}`;
+      const payload = {
+        name,
+        scope: "landing_headline",
+        metric_primary: "win_rate",
+        allocation_mode: "equal",
+        arms: [
+          { arm_key: "a", label: "Control", weight: 1, config: { headline: "AI Automations dla firm" } },
+          { arm_key: "b", label: "Variant", weight: 1, config: { headline: "Autonomous RevOps dla wzrostu" } }
+        ]
+      };
+      const res = await fetch(`${base}/api/admin/experiments`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(`create experiment ${res.status}`);
+      const d = await res.json();
+      await fetch(`${base}/api/admin/experiments/${encodeURIComponent(d.experiment_id)}/status`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ status: "running" })
+      });
+      $("status").innerHTML = `<span class='ok'>Experiment created</span> #${d.experiment_id}`;
+      await loadDashboard();
+    }
+
+    async function setExperimentStatus(experimentId, status) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/experiments/${encodeURIComponent(experimentId)}/status`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ status })
+      });
+      if (!res.ok) throw new Error(`experiment status ${res.status}`);
+      await loadDashboard();
+    }
+
+    async function loadBudgetPlanDetails(planId) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/budget-plans/${encodeURIComponent(planId)}`, { headers: headers() });
+      if (!res.ok) throw new Error(`plan details ${res.status}`);
+      const d = await res.json();
+      const items = d.items || [];
+      setRows("budgetPlanItemsTable", items.map((x) => {
+        const id = Number(x.id || 0);
+        const st = escHtml(x.status || "pending");
+        return `<tr>
+          <td class='mono'>${escHtml(x.channel || "")}</td>
+          <td><span class="${allocClass(x.action || "hold")}">${escHtml(x.action || "hold")}</span></td>
+          <td>${x.delta_cost == null ? "-" : x.delta_cost}</td>
+          <td>${x.expected_profit_delta == null ? "-" : x.expected_profit_delta}</td>
+          <td>${st}</td>
+          <td>
+            <button data-plan-apply="${id}" data-plan-id="${planId}">applied</button>
+            <button data-plan-skip="${id}" data-plan-id="${planId}">skipped</button>
+            <button data-plan-cost-apply="${id}" data-plan-id="${planId}">Apply 7d</button>
+            <button data-plan-cost-rollback="${id}" data-plan-id="${planId}">Rollback</button>
+          </td>
+        </tr>`;
+      }));
+      document.querySelectorAll("[data-plan-apply]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          try {
+            const pid = Number(btn.getAttribute("data-plan-id") || 0);
+            const iid = Number(btn.getAttribute("data-plan-apply") || 0);
+            if (!pid || !iid) return;
+            await setBudgetPlanItemStatus(pid, iid, "applied");
+          } catch (err) {
+            $("status").textContent = "Plan apply error: " + String(err.message || err);
+          }
+        });
+      });
+      document.querySelectorAll("[data-plan-skip]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          try {
+            const pid = Number(btn.getAttribute("data-plan-id") || 0);
+            const iid = Number(btn.getAttribute("data-plan-skip") || 0);
+            if (!pid || !iid) return;
+            await setBudgetPlanItemStatus(pid, iid, "skipped");
+          } catch (err) {
+            $("status").textContent = "Plan skip error: " + String(err.message || err);
+          }
+        });
+      });
+      document.querySelectorAll("[data-plan-cost-apply]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          try {
+            const pid = Number(btn.getAttribute("data-plan-id") || 0);
+            const iid = Number(btn.getAttribute("data-plan-cost-apply") || 0);
+            if (!pid || !iid) return;
+            await applyBudgetPlanItemCosts(pid, iid, 7);
+          } catch (err) {
+            $("status").textContent = "Plan cost apply error: " + String(err.message || err);
+          }
+        });
+      });
+      document.querySelectorAll("[data-plan-cost-rollback]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          try {
+            const pid = Number(btn.getAttribute("data-plan-id") || 0);
+            const iid = Number(btn.getAttribute("data-plan-cost-rollback") || 0);
+            if (!pid || !iid) return;
+            await rollbackBudgetPlanItemCosts(pid, iid);
+          } catch (err) {
+            $("status").textContent = "Plan rollback error: " + String(err.message || err);
+          }
+        });
+      });
+      await loadBudgetPlanRuns(planId);
+    }
+
+    async function postponeFollowup(leadId, hours) {
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const res = await fetch(`${base}/api/admin/leads/${encodeURIComponent(leadId)}/followup/postpone`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ hours })
+      });
+      if (!res.ok) throw new Error(`postpone ${res.status}`);
+      $("status").innerHTML = `<span class='ok'>Follow-up +${hours}h</span> ${leadId}`;
+      await loadDashboard();
+    }
+
+    async function loadDashboard() {
+      if (isLoading) return;
+      isLoading = true;
+      $("status").textContent = "Ladowanie...";
+      localStorage.setItem(tokenKey, $("token").value.trim());
+      localStorage.setItem(baseKey, $("apiBase").value.trim());
+      localStorage.setItem(actorKey, $("adminActor").value.trim());
+      localStorage.setItem(autoKey, $("autoRefresh").checked ? "1" : "0");
+      const rawMode = $("viewMode").value;
+      const safeMode = (rawMode === "recruiter" || rawMode === "presentation") ? rawMode : "ops";
+      localStorage.setItem(viewModeKey, safeMode);
+      localStorage.setItem(includeTestKey, $("includeTest").checked ? "1" : "0");
+      localStorage.setItem(includeSpamKey, $("includeSpam").checked ? "1" : "0");
+      applyViewMode();
+      const base = $("apiBase").value.trim().replace(/\/$/, "");
+      const days = Number($("days").value || 7);
+      const leadLimit = Number($("leadLimit").value || 40);
+      const formType = $("formFilter").value;
+      const status = $("statusFilter").value;
+      const tier = $("tierFilter").value;
+      const autopilotPriority = $("autopilotPriorityFilter").value;
+      const autopilotAction = $("autopilotActionFilter").value;
+      const winReco = $("winRecoFilter").value;
+      const dupOnly = $("dupOnly").checked;
+      const includeTest = $("includeTest").checked;
+      const includeSpam = $("includeSpam").checked;
+
+      const q = new URLSearchParams({ limit: String(leadLimit) });
+      if (formType) q.set("form_type", formType);
+      if (status) q.set("status", status);
+      if (tier) q.set("tier", tier);
+      if (autopilotPriority) q.set("autopilot_priority", autopilotPriority);
+      if (autopilotAction) q.set("autopilot_action", autopilotAction);
+      if (winReco) q.set("win_recommendation", winReco);
+      q.set("include_win", "true");
+      if (dupOnly) q.set("duplicates_only", "true");
+      if (includeTest) q.set("include_test", "true");
+      if (includeSpam) q.set("include_spam", "true");
+
+      try {
+        const spendPct = Number($("allocatorSpendPct").value || 20);
+        const safeSpendPct = Number.isFinite(spendPct) ? Math.min(80, Math.max(1, spendPct)) : 20;
+        const forecastHistoryDays = Number($("forecastHistoryDays").value || 60);
+        const forecastHorizonDays = Number($("forecastHorizonDays").value || 30);
+        const forecastTargetRevenue = Number($("forecastTargetRevenue").value || 0);
+        const forecastBudgetPct = Number($("forecastBudgetPct").value || 0);
+        const forecastConvPct = Number($("forecastConvPct").value || 0);
+        const opsReviewDays = Number($("opsReviewDays").value || 7);
+        const opsReviewTargetRevenue = Number($("opsReviewTargetRevenue").value || 0);
+        const incidentStatus = $("incidentStatusFilter").value;
+        const incidentTaskStatus = $("incidentTaskStatusFilter").value;
+        const [summaryRes, leadsRes, tplRes, logsRes, dueRes, sequenceRes, cockpitRes, pipelineRes, analyticsSegmentsRes, roiRes, roiCostsRes, allocatorRes, plansRes, forecastRes, incidentsRes, incidentTasksRes, incidentTaskAuditRes, featuresRes, opsReviewRes, scenariosRes, connectorsRes, approvalsRes, executionRunsRes, targetCurrentRes, experimentsRes, runLogRes] = await Promise.all([
+          fetch(`${base}/api/admin/summary?days=${days}&include_test=${includeTest ? "true" : "false"}&include_spam=${includeSpam ? "true" : "false"}`, { headers: headers() }),
+          fetch(`${base}/api/admin/leads?${q.toString()}`, { headers: headers() }),
+          fetch(`${base}/api/admin/followups/templates`, { headers: headers() }),
+          fetch(`${base}/api/admin/followups/logs?limit=40`, { headers: headers() }),
+          fetch(`${base}/api/admin/followups/due?limit=40`, { headers: headers() }),
+          fetch(`${base}/api/admin/sequence/due?limit=60`, { headers: headers() }),
+          fetch(`${base}/api/admin/cockpit/today?limit=50`, { headers: headers() }),
+          fetch(`${base}/api/admin/reports/pipeline?days=1&include_test=${includeTest ? "true" : "false"}&include_spam=${includeSpam ? "true" : "false"}`, { headers: headers() }),
+          fetch(`${base}/api/admin/reports/analytics-segments?days=${days}`, { headers: headers() }),
+          fetch(`${base}/api/admin/reports/roi?days=${days}&include_test=${includeTest ? "true" : "false"}&include_spam=${includeSpam ? "true" : "false"}`, { headers: headers() }),
+          fetch(`${base}/api/admin/channel-costs?days=${days}`, { headers: headers() }),
+          fetch(`${base}/api/admin/reports/roi/recommendations?days=${days}&spend_change_pct=${safeSpendPct}&include_test=${includeTest ? "true" : "false"}&include_spam=${includeSpam ? "true" : "false"}`, { headers: headers() }),
+          fetch(`${base}/api/admin/budget-plans?limit=12`, { headers: headers() }),
+          fetch(`${base}/api/admin/reports/forecast?history_days=${forecastHistoryDays}&horizon_days=${forecastHorizonDays}&target_revenue=${forecastTargetRevenue}&budget_change_pct=${forecastBudgetPct}&conv_uplift_pct=${forecastConvPct}&include_test=${includeTest ? "true" : "false"}&include_spam=${includeSpam ? "true" : "false"}`, { headers: headers() }),
+          fetch(`${base}/api/admin/guardrails/incidents?status=${encodeURIComponent(incidentStatus)}&limit=80`, { headers: headers() }),
+          fetch(`${base}/api/admin/guardrails/tasks?status=${encodeURIComponent(incidentTaskStatus)}&limit=120`, { headers: headers() }),
+          fetch(`${base}/api/admin/guardrails/tasks/audit?limit=120`, { headers: headers() }),
+          fetch(`${base}/api/admin/features`, { headers: headers() }),
+          fetch(`${base}/api/admin/reports/ops-review?days=${opsReviewDays}&target_revenue=${opsReviewTargetRevenue}&include_test=${includeTest ? "true" : "false"}&include_spam=${includeSpam ? "true" : "false"}`, { headers: headers() }),
+          fetch(`${base}/api/admin/scenarios?limit=40`, { headers: headers() }),
+          fetch(`${base}/api/admin/autonomous/connectors`, { headers: headers() }),
+          fetch(`${base}/api/admin/autonomous/approvals?status=pending&limit=80`, { headers: headers() }),
+          fetch(`${base}/api/admin/autonomous/execution-runs?limit=80`, { headers: headers() }),
+          fetch(`${base}/api/admin/targets/current?include_test=${includeTest ? "true" : "false"}&include_spam=${includeSpam ? "true" : "false"}`, { headers: headers() }),
+          fetch(`${base}/api/admin/experiments?limit=40`, { headers: headers() }),
+          fetch(`${base}/api/admin/autonomous/run-log?limit=20`, { headers: headers() })
+        ]);
+        if (!summaryRes.ok) throw new Error(`summary ${summaryRes.status}`);
+        if (!leadsRes.ok) throw new Error(`leads ${leadsRes.status}`);
+        if (!tplRes.ok) throw new Error(`templates ${tplRes.status}`);
+        if (!logsRes.ok) throw new Error(`logs ${logsRes.status}`);
+        if (!dueRes.ok) throw new Error(`due ${dueRes.status}`);
+        if (!sequenceRes.ok) throw new Error(`sequence ${sequenceRes.status}`);
+        if (!cockpitRes.ok) throw new Error(`cockpit ${cockpitRes.status}`);
+        if (!pipelineRes.ok) throw new Error(`pipeline ${pipelineRes.status}`);
+        if (!analyticsSegmentsRes.ok) throw new Error(`analytics segments ${analyticsSegmentsRes.status}`);
+        if (!roiRes.ok) throw new Error(`roi ${roiRes.status}`);
+        if (!roiCostsRes.ok) throw new Error(`roi costs ${roiCostsRes.status}`);
+        if (!allocatorRes.ok) throw new Error(`allocator ${allocatorRes.status}`);
+        if (!plansRes.ok) throw new Error(`plans ${plansRes.status}`);
+        if (!forecastRes.ok) throw new Error(`forecast ${forecastRes.status}`);
+        if (!incidentsRes.ok) throw new Error(`incidents ${incidentsRes.status}`);
+        if (!incidentTasksRes.ok) throw new Error(`incident tasks ${incidentTasksRes.status}`);
+        if (!incidentTaskAuditRes.ok) throw new Error(`incident task audit ${incidentTaskAuditRes.status}`);
+        if (!featuresRes.ok) throw new Error(`features ${featuresRes.status}`);
+        if (!opsReviewRes.ok) throw new Error(`ops review ${opsReviewRes.status}`);
+        if (!scenariosRes.ok) throw new Error(`scenarios ${scenariosRes.status}`);
+        if (!connectorsRes.ok) throw new Error(`connectors ${connectorsRes.status}`);
+        if (!approvalsRes.ok) throw new Error(`approvals ${approvalsRes.status}`);
+        if (!executionRunsRes.ok) throw new Error(`execution runs ${executionRunsRes.status}`);
+        if (!targetCurrentRes.ok) throw new Error(`target current ${targetCurrentRes.status}`);
+        if (!experimentsRes.ok) throw new Error(`experiments ${experimentsRes.status}`);
+        if (!runLogRes.ok) throw new Error(`run log ${runLogRes.status}`);
+
+        const summary = await summaryRes.json();
+        const leads = await leadsRes.json();
+        const templates = await tplRes.json();
+        const logs = await logsRes.json();
+        const due = await dueRes.json();
+        const sequence = await sequenceRes.json();
+        const cockpit = await cockpitRes.json();
+        const pipeline = await pipelineRes.json();
+        const analyticsSegments = await analyticsSegmentsRes.json();
+        const roi = await roiRes.json();
+        const roiCosts = await roiCostsRes.json();
+        const allocator = await allocatorRes.json();
+        const plans = await plansRes.json();
+        const forecast = await forecastRes.json();
+        const incidents = await incidentsRes.json();
+        const incidentTasks = await incidentTasksRes.json();
+        const incidentTaskAudit = await incidentTaskAuditRes.json();
+        const features = await featuresRes.json();
+        const opsReview = await opsReviewRes.json();
+        const scenarios = await scenariosRes.json();
+        const connectors = await connectorsRes.json();
+        const approvals = await approvalsRes.json();
+        const executionRuns = await executionRunsRes.json();
+        const targetCurrent = await targetCurrentRes.json();
+        const experiments = await experimentsRes.json();
+        const runLog = await runLogRes.json();
+        if (Array.isArray(summary.lost_reason_catalog) && summary.lost_reason_catalog.length > 0) {
+          lostReasonCatalog = summary.lost_reason_catalog;
+        }
+        renderFeatureFlags((features || {}).features || {});
+
+        $("kpiLeads").textContent = String(summary.totals.leads || 0);
+        $("kpiForm").textContent = String(summary.totals.form_submit || 0);
+        $("kpiConv").textContent = summary.quality && summary.quality.lead_to_submit_conversion_pct != null
+          ? String(summary.quality.lead_to_submit_conversion_pct) + "%"
+          : "-";
+        $("kpiPv").textContent = String(summary.totals.page_view || 0);
+        $("kpiCta").textContent = String(summary.totals.cta_click || 0);
+        $("kpiEvents").textContent = String(summary.totals.events || 0);
+        const tc = (summary.quality && summary.quality.lead_tier_counts) || {};
+        $("kpiHot").textContent = String(tc.hot || 0);
+        $("kpiDupes").textContent = String((summary.quality && summary.quality.duplicates_total) || 0);
+        $("kpiDue").textContent = String((due.due || []).length);
+        $("kpiRevenue").textContent = String((((roi.report || {}).totals || {}).revenue ?? 0));
+        $("kpiCost").textContent = String((((roi.report || {}).totals || {}).cost ?? 0));
+        $("kpiTest").textContent = String((summary.totals && summary.totals.flagged_test) || 0);
+        $("kpiSpam").textContent = String((summary.totals && summary.totals.flagged_spam) || 0);
+        $("kpiWinRate").textContent = fmtPct((((summary || {}).trend || {}).current || {}).win_rate_pct);
+        $("kpiDataComplete").textContent = fmtPct((((summary || {}).quality) || {}).resolved_with_required_data_pct);
+        $("kpiContact24h").textContent = fmtPct((((summary || {}).quality) || {}).first_contact_within_24h_pct);
+        renderLongTermTargets(summary, roi.report || {});
+
+        setRows("leadsByStatusTable", (summary.leads_by_status || []).map((x) =>
+          `<tr><td class='mono'>${escHtml(x.status)}</td><td>${x.cnt}</td></tr>`
+        ));
+        setRows("leadsByFormTable", (summary.leads_by_form || []).map((x) =>
+          `<tr><td class='mono'>${escHtml(x.form_type)}</td><td>${x.cnt}</td></tr>`
+        ));
+        setRows("topEventsTable", (summary.top_events || []).map((x) =>
+          `<tr><td class='mono'>${escHtml(x.event_name)}</td><td>${x.cnt}</td></tr>`
+        ));
+        setRows("lostReasonsTable", (summary.lost_reason_top || []).map((x) =>
+          `<tr><td class='mono'>${escHtml(x.reason || "")}</td><td>${Number(x.cnt || 0)}</td></tr>`
+        ));
+        const trend = summary.trend || {};
+        const trendRows = [
+          { key: "leads", label: "Leads" },
+          { key: "resolved", label: "Resolved" },
+          { key: "win_rate_pct", label: "Win rate %" },
+          { key: "lead_to_submit_conversion_pct", label: "Lead/submit %" },
+          { key: "revenue", label: "Revenue" }
+        ];
+        setRows("trendTable", trendRows.map((row) => {
+          const cur = (trend.current || {})[row.key];
+          const prev = (trend.previous || {})[row.key];
+          const del = (trend.delta_pct || {})[row.key];
+          const curFmt = row.key.endsWith("_pct") ? fmtPct(cur) : String(cur == null ? "-" : cur);
+          const prevFmt = row.key.endsWith("_pct") ? fmtPct(prev) : String(prev == null ? "-" : prev);
+          const delFmt = fmtPct(del);
+          return `<tr><td>${escHtml(row.label)}</td><td>${escHtml(curFmt)}</td><td>${escHtml(prevFmt)}</td><td>${escHtml(delFmt)}</td></tr>`;
+        }));
+
+        currentLeads = Array.isArray(leads.leads) ? leads.leads : [];
+        updateAutopilotKpis();
+        renderAutopilotQueue();
+        renderKanban();
+        setRows("leadsTable", currentLeads.map((x) => {
+          const p = x.payload || {};
+          const fields = p.fields || {};
+          const email = fields.email || "-";
+          const id = escHtml(x.id || "");
+          const tierLabel = escHtml(x.lead_tier || "cold");
+          const tierCss = tierClass(x.lead_tier || "cold");
+          const score = Number(x.lead_score || 0);
+          const prio = escHtml(x.autopilot_priority || "P3");
+          const prioCss = priorityClass(x.autopilot_priority || "P3");
+          const winPct = Number(x.win_probability ?? x.win_probability_pct ?? 0);
+          const winReco = escHtml(x.win_recommendation || "nurture");
+          const winRecoCss = recoClass(x.win_recommendation || "nurture");
+          const nextAction = escHtml(x.autopilot_next_action || "review");
+          const nextActionDue = escHtml(x.autopilot_next_action_due_at || "");
+          const sp = x.sequence_progress || {};
+          const seqDone = Number(sp.done || 0);
+          const seqPending = Number(sp.pending || 0);
+          const seqSkipped = Number(sp.skipped || 0);
+          const seqTotal = Number(sp.total || 0);
+          const seqNextCode = x.sequence_next_step_code || "";
+          const seqNextDue = x.sequence_next_due_at || "";
+          const seqLabel = seqNextCode ? sequenceLabel(seqNextCode) : "-";
+          const dup = x.is_duplicate ? `<span class="dup">dup x${Number(x.duplicate_count || 0)}</span>` : "";
+          return `<tr>
+            <td class='mono'>${id}</td>
+            <td>${escHtml(x.form_type || "")}</td>
+            <td>${escHtml(email)}</td>
+            <td class='mono'>${escHtml(x.created_at || "")}</td>
+            <td><span class="${tierCss}">${tierLabel}</span> <span class="hint">(${score})</span> ${dup}</td>
+            <td><span class="${prioCss}">${prio}</span></td>
+            <td><strong>${winPct.toFixed(1)}%</strong> <span class="${winRecoCss}">${winReco}</span></td>
+            <td class="mono">${nextAction}<div class="hint">${nextActionDue || "-"}</div></td>
+            <td class="mono">${seqDone}/${seqTotal} done<div class="hint">pending:${seqPending} skip:${seqSkipped}<br/>${escHtml(seqLabel)} ${escHtml(seqNextDue || "")}</div></td>
+            <td>
+              <select data-status="${id}">
+                <option value="new" ${x.lead_status==="new"?"selected":""}>new</option>
+                <option value="in_progress" ${x.lead_status==="in_progress"?"selected":""}>in_progress</option>
+                <option value="won" ${x.lead_status==="won"?"selected":""}>won</option>
+                <option value="lost" ${x.lead_status==="lost"?"selected":""}>lost</option>
+              </select>
+            </td>
+            <td><input data-fu="${id}" type="datetime-local" value="${toLocalDatetimeInput(x.lead_follow_up_at)}" /></td>
+            <td><input data-deal="${id}" type="number" min="0" step="0.01" value="${Number(x.deal_value || 0).toFixed(2)}" style="max-width:110px" /></td>
+            <td class="meta-cell"><textarea data-notes="${id}">${escHtml(x.lead_notes || "")}</textarea></td>
+            <td><button data-save="${id}">Save</button> <button data-value="${id}">Value</button> <button data-auto="${id}">Autopilot</button></td>
+          </tr>`;
+        }));
+        document.querySelectorAll("[data-save]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              await saveLeadMeta(btn.getAttribute("data-save"));
+            } catch (err) {
+              $("status").textContent = "Save error: " + String(err.message || err);
+            }
+          });
+        });
+
+        const tList = Array.isArray(templates.templates) ? templates.templates : [];
+        const t24 = tList.find((x) => Number(x.step_hours) === 24);
+        const t72 = tList.find((x) => Number(x.step_hours) === 72);
+        $("tpl24Subj").value = t24 ? t24.subject_template : "";
+        $("tpl24Body").value = t24 ? t24.body_template : "";
+        $("tpl72Subj").value = t72 ? t72.subject_template : "";
+        $("tpl72Body").value = t72 ? t72.body_template : "";
+
+        setRows("followupLogsTable", (logs.logs || []).map((x) =>
+          `<tr>
+            <td class='mono'>${escHtml(x.sent_at || "")}</td>
+            <td class='mono'>${escHtml(x.lead_id || "")}</td>
+            <td>${escHtml(String(x.step_hours || ""))}h</td>
+            <td>${escHtml(x.to_email || "")}</td>
+            <td>${escHtml(x.status || "")}</td>
+          </tr>`
+        ));
+        setRows("followupDueTable", (due.due || []).map((x) => {
+          const id = escHtml(x.id || "");
+          const tier = escHtml(x.lead_tier || "cold");
+          const score = Number(x.lead_score || 0);
+          const tierCss = tierClass(x.lead_tier || "cold");
+          return `<tr>
+            <td class='mono'>${id}</td>
+            <td class='mono'>${escHtml(x.follow_up_at || "")}</td>
+            <td><span class="${tierCss}">${tier}</span> <span class="hint">(${score})</span></td>
+            <td>
+              <button data-postpone="${id}" data-hours="24">+24h</button>
+              <button data-postpone="${id}" data-hours="72">+72h</button>
+            </td>
+          </tr>`;
+        }));
+        document.querySelectorAll("[data-postpone]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const id = btn.getAttribute("data-postpone");
+            const hrs = Number(btn.getAttribute("data-hours") || "24");
+            try {
+              await postponeFollowup(id, hrs);
+            } catch (err) {
+              $("status").textContent = "Postpone error: " + String(err.message || err);
+            }
+          });
+        });
+
+        setRows("sequenceDueTable", (sequence.items || []).map((x) => {
+          const leadId = escHtml(x.lead_id || "");
+          const stepCode = escHtml(x.step_code || "");
+          return `<tr>
+            <td class='mono'>${leadId}</td>
+            <td>${escHtml(sequenceLabel(stepCode))}</td>
+            <td class='mono'>${escHtml(x.due_at || "")}</td>
+            <td>${Number(x.overdue_hours || 0).toFixed(1)}</td>
+            <td>
+              <button data-seq-done='${leadId}' data-seq-step='${stepCode}'>done</button>
+              <button data-seq-postpone='${leadId}' data-seq-step='${stepCode}'>+24h</button>
+            </td>
+          </tr>`;
+        }));
+        document.querySelectorAll("[data-seq-done]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const leadId = btn.getAttribute("data-seq-done");
+              const stepCode = btn.getAttribute("data-seq-step");
+              if (!leadId || !stepCode) return;
+              await markSequenceDone(leadId, stepCode);
+            } catch (err) {
+              $("status").textContent = "Sequence done error: " + String(err.message || err);
+            }
+          });
+        });
+        document.querySelectorAll("[data-seq-postpone]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const leadId = btn.getAttribute("data-seq-postpone");
+              const stepCode = btn.getAttribute("data-seq-step");
+              if (!leadId || !stepCode) return;
+              await postponeSequence(leadId, stepCode, 24);
+            } catch (err) {
+              $("status").textContent = "Sequence postpone error: " + String(err.message || err);
+            }
+          });
+        });
+        document.querySelectorAll("[data-auto]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              await executeAutopilot(btn.getAttribute("data-auto"));
+            } catch (err) {
+              $("status").textContent = "Autopilot error: " + String(err.message || err);
+            }
+          });
+        });
+        document.querySelectorAll("[data-value]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              await saveLeadValue(btn.getAttribute("data-value"));
+            } catch (err) {
+              $("status").textContent = "Value error: " + String(err.message || err);
+            }
+          });
+        });
+
+        setRows("cockpitTable", (cockpit.items || []).map((x) => {
+          const id = escHtml(x.id || "");
+          const state = escHtml(x.sla_state || "ok");
+          return `<tr>
+            <td class='mono'>${id}</td>
+            <td>${escHtml(x.email || "-")}</td>
+            <td>${escHtml(x.lead_status || "new")}</td>
+            <td><strong>${Number(x.wait_hours || 0).toFixed(1)}</strong> <span class='hint'>${state}</span></td>
+            <td>
+              <button data-cockpit='${id}' data-action='call_done'>call done</button>
+              <button data-cockpit='${id}' data-action='awaiting_reply'>awaiting reply</button>
+              <button data-cockpit='${id}' data-action='lost'>lost</button>
+            </td>
+          </tr>`;
+        }));
+
+        const p = (pipeline && pipeline.report) ? pipeline.report : {};
+        setRows("pipelinePagesTable", (p.ranking_pages || []).slice(0, 12).map((x) =>
+          `<tr><td class='mono'>${escHtml(x.label || "")}</td><td>${x.leads || 0}</td><td>${x.won || 0}</td><td>${x.lost || 0}</td><td>${x.win_rate_pct || 0}%</td></tr>`
+        ));
+        setRows("pipelineCtaTable", (p.ranking_cta || []).slice(0, 12).map((x) =>
+          `<tr><td class='mono'>${escHtml(x.label || "")}</td><td>${x.leads || 0}</td><td>${x.won || 0}</td><td>${x.lost || 0}</td><td>${x.win_rate_pct || 0}%</td></tr>`
+        ));
+        const seg =
+          (((analyticsSegments || {}).report || {}).segments) ||
+          (summary.analytics_segments) ||
+          (p.event_segments) ||
+          {};
+        setRows("analyticsAreaTable", (seg.top_cta_area || []).slice(0, 12).map((x) =>
+          `<tr><td class='mono'>${escHtml(x.cta_area || "unknown")}</td><td>${Number(x.cnt || 0)}</td></tr>`
+        ));
+        setRows("analyticsKindTable", (seg.top_cta_kind || []).slice(0, 12).map((x) =>
+          `<tr><td class='mono'>${escHtml(x.cta_kind || "unknown")}</td><td>${Number(x.cnt || 0)}</td></tr>`
+        ));
+        setRows("analyticsFormNameTable", (seg.top_form_name || []).slice(0, 12).map((x) =>
+          `<tr><td class='mono'>${escHtml(x.form_name || "unknown")}</td><td>${Number(x.cnt || 0)}</td></tr>`
+        ));
+        setRows("analyticsMatrixTable", (seg.top_cta_matrix || []).slice(0, 20).map((x) =>
+          `<tr><td class='mono'>${escHtml(x.label || "")}</td><td class='mono'>${escHtml(x.cta_area || "unknown")}</td><td class='mono'>${escHtml(x.cta_kind || "unknown")}</td><td>${Number(x.cnt || 0)}</td></tr>`
+        ));
+
+        const roiReport = (roi && roi.report) ? roi.report : {};
+        setRows("roiTable", (roiReport.rows || []).slice(0, 16).map((x) =>
+          `<tr><td class='mono'>${escHtml(x.channel || "")}</td><td>${x.leads || 0}</td><td>${x.won || 0}</td><td>${x.revenue || 0}</td><td>${x.cost || 0}</td><td>${x.cac == null ? "-" : x.cac}</td><td>${x.payback_ratio == null ? "-" : x.payback_ratio}</td><td>${x.roi_pct == null ? "-" : x.roi_pct + "%"}</td></tr>`
+        ));
+        setRows("roiCostsRecentTable", (roiCosts.items || []).slice(0, 20).map((x) =>
+          `<tr><td class='mono'>${escHtml(x.date_iso || "")}</td><td class='mono'>${escHtml(x.channel || "")}</td><td>${x.cost || 0}</td></tr>`
+        ));
+        const allocReport = (allocator && allocator.report) ? allocator.report : {};
+        setRows("allocatorTable", (allocReport.rows || []).slice(0, 20).map((x) => {
+          const action = escHtml(x.action || "hold");
+          const actionCss = allocClass(x.action || "hold");
+          const sim = x.simulation || {};
+          return `<tr>
+            <td class='mono'>${escHtml(x.channel || "")}</td>
+            <td><span class="${actionCss}">${action}</span></td>
+            <td>${x.win_rate_pct == null ? "-" : x.win_rate_pct + "%"}</td>
+            <td>${x.roi_pct == null ? "-" : x.roi_pct + "%"}</td>
+            <td>${x.payback_ratio == null ? "-" : x.payback_ratio}</td>
+            <td>${sim.spend_delta == null ? "-" : sim.spend_delta}</td>
+            <td>${sim.estimated_profit_delta == null ? "-" : sim.estimated_profit_delta}</td>
+            <td class='mono'>${escHtml(x.reason || "")}</td>
+          </tr>`;
+        }));
+
+        const pList = Array.isArray(plans.plans) ? plans.plans : [];
+        setRows("budgetPlansTable", pList.map((x) => {
+          const pid = Number(x.id || 0);
+          return `<tr>
+            <td class='mono'>${pid}</td>
+            <td class='mono'>${escHtml(x.created_at || "")}</td>
+            <td>${x.days || 0}</td>
+            <td>${x.spend_change_pct || 0}</td>
+            <td>${escHtml(x.status || "proposed")}</td>
+            <td>${escHtml(x.note || "")}</td>
+            <td><button data-open-plan="${pid}">Otworz</button></td>
+          </tr>`;
+        }));
+        document.querySelectorAll("[data-open-plan]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const pid = Number(btn.getAttribute("data-open-plan") || 0);
+              if (!pid) return;
+              await loadBudgetPlanDetails(pid);
+            } catch (err) {
+              $("status").textContent = "Plan details error: " + String(err.message || err);
+            }
+          });
+        });
+        if (pList.length > 0) {
+          await loadBudgetPlanDetails(Number(pList[0].id || 0));
+        } else {
+          setRows("budgetPlanItemsTable", []);
+          setRows("budgetPlanRunsTable", []);
+        }
+
+        const fr = (forecast && forecast.report) ? forecast.report : {};
+        const ft = fr.totals || {};
+        setRows("forecastSummaryTable", [
+          `<tr><td>${ft.forecast_revenue ?? 0}</td><td>${ft.forecast_cost ?? 0}</td><td>${ft.forecast_profit ?? 0}</td><td>${ft.forecast_wins ?? 0}</td><td>${ft.target_gap ?? 0}</td></tr>`
+        ]);
+        setRows("forecastTable", (fr.rows || []).slice(0, 20).map((x) => {
+          const h = x.history || {};
+          const f = x.forecast || {};
+          return `<tr>
+            <td class='mono'>${escHtml(x.channel || "")}</td>
+            <td>${h.win_rate_pct == null ? "-" : h.win_rate_pct + "%"}</td>
+            <td>${h.avg_deal == null ? "-" : h.avg_deal}</td>
+            <td>${f.leads == null ? "-" : f.leads}</td>
+            <td>${f.wins == null ? "-" : f.wins}</td>
+            <td>${f.revenue == null ? "-" : f.revenue}</td>
+            <td>${f.cost == null ? "-" : f.cost}</td>
+            <td>${f.profit == null ? "-" : f.profit}</td>
+            <td>${f.payback_ratio == null ? "-" : f.payback_ratio}</td>
+          </tr>`;
+        }));
+        setRows("forecastTargetPlanTable", (fr.target_plan || []).map((x) =>
+          `<tr><td class='mono'>${escHtml(x.channel || "")}</td><td>${x.additional_revenue_needed ?? 0}</td><td>${x.estimated_additional_cost ?? 0}</td><td>${x.assumed_payback ?? "-"}</td></tr>`
+        ));
+
+        const or = (opsReview && opsReview.report) ? opsReview.report : {};
+        const okpi = or.kpi || {};
+        const odelta = okpi.delta_pct || {};
+        const oi = or.incident_health || {};
+        const ofc = or.forecast || {};
+        setRows("opsReviewSummaryTable", [
+          `<tr><td>${odelta.events == null ? "-" : odelta.events + "%"}</td><td>${odelta.leads == null ? "-" : odelta.leads + "%"}</td><td>${odelta.conversion_pct == null ? "-" : odelta.conversion_pct + "%"}</td><td>${oi.open || 0}</td><td>${oi.tasks_pending || 0}</td><td>${ofc.target_gap || 0}</td></tr>`
+        ]);
+        setRows("opsReviewPrioritiesTable", (or.top_priorities || []).map((x) =>
+          `<tr><td><span class="${String(x.priority || '') === 'P1' ? 'prio prio-p1' : 'prio prio-p2'}">${escHtml(x.priority || "P2")}</span></td><td>${escHtml(x.title || "")}</td></tr>`
+        ));
+
+        setRows("scenarioTable", (scenarios.items || []).map((x) => {
+          const sid = Number(x.id || 0);
+          const s = x.summary || {};
+          const f = s.forecast_totals || {};
+          return `<tr>
+            <td class='mono'>${sid}</td>
+            <td>${escHtml(x.name || "")}</td>
+            <td class='mono'>${escHtml(x.created_at || "")}</td>
+            <td>${x.budget_change_pct ?? 0}</td>
+            <td>${x.conv_uplift_pct ?? 0}</td>
+            <td>${x.target_revenue ?? 0}</td>
+            <td>${f.forecast_revenue ?? 0}</td>
+            <td><button data-scenario-pick="${sid}">Pick</button></td>
+          </tr>`;
+        }));
+        document.querySelectorAll("[data-scenario-pick]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const sid = Number(btn.getAttribute("data-scenario-pick") || 0);
+            if (!sid) return;
+            if (!$("compareBaseId").value) $("compareBaseId").value = String(sid);
+            else $("compareCandidateId").value = String(sid);
+          });
+        });
+
+        const tSnap = targetCurrent.snapshot || null;
+        if (!tSnap) {
+          setRows("targetCurrentTable", [`<tr><td colspan="6" class="hint">No active target commit</td></tr>`]);
+        } else {
+          const c = tSnap.commit || {};
+          setRows("targetCurrentTable", [
+            `<tr><td class='mono'>${escHtml(c.period_start || "")} .. ${escHtml(c.period_end || "")}</td><td>${tSnap.target_revenue ?? 0}</td><td>${tSnap.actual_revenue ?? 0}</td><td>${tSnap.expected_revenue ?? 0}</td><td>${tSnap.gap ?? 0}</td><td>${escHtml(tSnap.risk_level || "low")}</td></tr>`
+          ]);
+        }
+
+        setRows("connectorsTable", (connectors.items || []).map((x) => {
+          const ch = escHtml(x.channel || "");
+          return `<tr>
+            <td class='mono'>${ch}</td>
+            <td>${escHtml(x.provider || "simulator")}</td>
+            <td>${escHtml(x.mode || "simulate")}</td>
+            <td>${escHtml(x.status || "enabled")}</td>
+            <td>${x.daily_change_limit_pct ?? 0}</td>
+            <td class='mono'>${escHtml(x.last_sync_at || "-")}</td>
+            <td><button data-conn-sync='${ch}'>sync</button></td>
+          </tr>`;
+        }));
+        document.querySelectorAll("[data-conn-sync]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const ch = btn.getAttribute("data-conn-sync");
+              if (!ch) return;
+              await syncConnector(ch);
+            } catch (err) {
+              $("status").textContent = "Connector sync error: " + String(err.message || err);
+            }
+          });
+        });
+
+        setRows("approvalsTable", (approvals.items || []).map((x) => {
+          const id = Number(x.id || 0);
+          const pl = x.payload || {};
+          const entity = `${escHtml(x.entity_type || "")}:${escHtml(x.entity_id || "")}`;
+          return `<tr>
+            <td class='mono'>${id}</td>
+            <td class='mono'>${entity}</td>
+            <td>${escHtml(x.action || "")}</td>
+            <td>${escHtml(x.status || "pending")}</td>
+            <td class='mono'>plan:${pl.plan_id || "-"} item:${pl.item_id || "-"}</td>
+            <td class='mono'>${escHtml(x.created_at || "")}</td>
+            <td>
+              <button data-appr-ok='${id}'>approve</button>
+              <button data-appr-no='${id}'>reject</button>
+            </td>
+          </tr>`;
+        }));
+        document.querySelectorAll("[data-appr-ok]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-appr-ok") || 0);
+              if (!id) return;
+              await setApprovalDecision(id, "approved");
+            } catch (err) {
+              $("status").textContent = "Approval error: " + String(err.message || err);
+            }
+          });
+        });
+        document.querySelectorAll("[data-appr-no]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-appr-no") || 0);
+              if (!id) return;
+              await setApprovalDecision(id, "rejected");
+            } catch (err) {
+              $("status").textContent = "Approval reject error: " + String(err.message || err);
+            }
+          });
+        });
+
+        setRows("executionRunsTable", (executionRuns.items || []).map((x) =>
+          `<tr><td class='mono'>${x.id || ""}</td><td class='mono'>${escHtml(x.connector_channel || "")}</td><td>${escHtml(x.action || "")}</td><td>${escHtml(x.status || "")}</td><td class='mono'>${escHtml(x.created_at || "")}</td><td class='mono'>${escHtml(x.finished_at || "-")}</td></tr>`
+        ));
+
+        setRows("experimentsTable", (experiments.items || []).map((x) => {
+          const id = Number(x.id || 0);
+          return `<tr>
+            <td class='mono'>${id}</td>
+            <td>${escHtml(x.name || "")}</td>
+            <td>${escHtml(x.status || "draft")}</td>
+            <td>${escHtml(x.scope || "landing")}</td>
+            <td>${escHtml(x.metric_primary || "win_rate")}</td>
+            <td>
+              <button data-exp-run='${id}'>run</button>
+              <button data-exp-pause='${id}'>pause</button>
+              <button data-exp-done='${id}'>done</button>
+            </td>
+          </tr>`;
+        }));
+        document.querySelectorAll("[data-exp-run]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-exp-run") || 0);
+              if (!id) return;
+              await setExperimentStatus(id, "running");
+            } catch (err) {
+              $("status").textContent = "Experiment run error: " + String(err.message || err);
+            }
+          });
+        });
+        document.querySelectorAll("[data-exp-pause]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-exp-pause") || 0);
+              if (!id) return;
+              await setExperimentStatus(id, "paused");
+            } catch (err) {
+              $("status").textContent = "Experiment pause error: " + String(err.message || err);
+            }
+          });
+        });
+        document.querySelectorAll("[data-exp-done]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-exp-done") || 0);
+              if (!id) return;
+              await setExperimentStatus(id, "completed");
+            } catch (err) {
+              $("status").textContent = "Experiment done error: " + String(err.message || err);
+            }
+          });
+        });
+
+        const runItems = runLog.items || [];
+        if (runItems.length > 0) {
+          const rs = runItems[0].summary || {};
+          if (rs && rs.target_snapshot && rs.target_snapshot.gap != null) {
+            $("status").innerHTML = `<span class='ok'>Auto run log</span> gap=${rs.target_snapshot.gap}`;
+          }
+        }
+
+        setRows("incidentsTable", (incidents.items || []).map((x) => {
+          const id = Number(x.id || 0);
+          const sev = escHtml(x.severity || "medium");
+          const sevCss = sevClass(x.severity || "medium");
+          return `<tr>
+            <td class='mono'>${id}</td>
+            <td><span class="${sevCss}">${sev}</span></td>
+            <td class='mono'>${escHtml(x.incident_type || "")}</td>
+            <td class='mono'>${escHtml(x.channel || "")}</td>
+            <td>${escHtml(x.title || "")}</td>
+            <td>${escHtml(x.status || "open")}</td>
+            <td class='mono'>${escHtml(x.updated_at || "")}</td>
+            <td>
+              <button data-inc-ack="${id}">ack</button>
+              <button data-inc-resolve="${id}">resolve</button>
+              <button data-inc-open="${id}">reopen</button>
+            </td>
+          </tr>`;
+        }));
+        document.querySelectorAll("[data-inc-ack]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-inc-ack") || 0);
+              if (!id) return;
+              await setIncidentStatus(id, "ack");
+              await loadDashboard();
+            } catch (err) {
+              $("status").textContent = "Incident ack error: " + String(err.message || err);
+            }
+          });
+        });
+        document.querySelectorAll("[data-inc-resolve]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-inc-resolve") || 0);
+              if (!id) return;
+              await setIncidentStatus(id, "resolved");
+              await loadDashboard();
+            } catch (err) {
+              $("status").textContent = "Incident resolve error: " + String(err.message || err);
+            }
+          });
+        });
+        document.querySelectorAll("[data-inc-open]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-inc-open") || 0);
+              if (!id) return;
+              await setIncidentStatus(id, "open");
+              await loadDashboard();
+            } catch (err) {
+              $("status").textContent = "Incident reopen error: " + String(err.message || err);
+            }
+          });
+        });
+
+        currentIncidentTasks = (incidentTasks.items || []).slice();
+        setRows("incidentTasksTable", currentIncidentTasks.map((x) => {
+          const id = Number(x.id || 0);
+          const prio = String(x.priority || "P2").toUpperCase();
+          const prioCss = priorityClass(prio);
+          return `<tr>
+            <td class='mono'>${id}</td>
+            <td class='mono'>${x.incident_id || ""}</td>
+            <td>${escHtml(x.owner || "ops")}</td>
+            <td><span class="${prioCss}">${escHtml(prio)}</span></td>
+            <td>${escHtml(x.title || "")}</td>
+            <td class='mono'>${escHtml(x.due_at || "")}</td>
+            <td class='mono'>${escHtml(x.overdue_since || "-")}</td>
+            <td>${escHtml(x.sla_bucket || "on_time")}</td>
+            <td>${escHtml(x.status || "pending")}</td>
+            <td>${Number(x.retry_count || 0)}/${Number(x.reopen_count || 0)}</td>
+            <td>
+              <button data-task-start="${id}">start</button>
+              <button data-task-reopen="${id}">reopen</button>
+              <button data-task-done="${id}">done</button>
+              <button data-task-cancel="${id}">cancel</button>
+              <button data-task-owner="${id}">owner</button>
+              <button data-task-priority="${id}">prio</button>
+            </td>
+          </tr>`;
+        }));
+        setRows("incidentTaskAuditTable", (incidentTaskAudit.items || []).map((x) => {
+          const change = JSON.stringify(x.change || {});
+          return `<tr>
+            <td class='mono'>${escHtml(x.created_at || "")}</td>
+            <td class='mono'>${escHtml(x.task_id || "")}</td>
+            <td>${escHtml(x.actor || "")}</td>
+            <td>${escHtml(x.action || "")}</td>
+            <td class='mono'>${escHtml(change)}</td>
+          </tr>`;
+        }));
+        if (Number(incidentTasks.sla_alerts_sent || 0) > 0) {
+          $("status").innerHTML = `<span class='warn'>SLA alerts</span> sent=${Number(incidentTasks.sla_alerts_sent || 0)}`;
+        }
+        document.querySelectorAll("[data-task-start]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-task-start") || 0);
+              if (!id) return;
+              const task = currentIncidentTasks.find((x) => Number(x.id || 0) === id) || {};
+              await setIncidentTaskStatus(id, "in_progress", { reason: "manual_start", expectedUpdatedAt: String(task.updated_at || "") });
+              await loadDashboard();
+            } catch (err) {
+              $("status").textContent = "Task start error: " + String(err.message || err);
+            }
+          });
+        });
+        document.querySelectorAll("[data-task-reopen]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-task-reopen") || 0);
+              if (!id) return;
+              const task = currentIncidentTasks.find((x) => Number(x.id || 0) === id) || {};
+              await setIncidentTaskStatus(id, "in_progress", { reason: "manual_reopen", expectedUpdatedAt: String(task.updated_at || "") });
+              await loadDashboard();
+            } catch (err) {
+              $("status").textContent = "Task reopen error: " + String(err.message || err);
+            }
+          });
+        });
+        document.querySelectorAll("[data-task-done]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-task-done") || 0);
+              if (!id) return;
+              const task = currentIncidentTasks.find((x) => Number(x.id || 0) === id) || {};
+              await setIncidentTaskStatus(id, "done", { reason: "manual_done", expectedUpdatedAt: String(task.updated_at || "") });
+              await loadDashboard();
+            } catch (err) {
+              $("status").textContent = "Task done error: " + String(err.message || err);
+            }
+          });
+        });
+        document.querySelectorAll("[data-task-cancel]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-task-cancel") || 0);
+              if (!id) return;
+              const task = currentIncidentTasks.find((x) => Number(x.id || 0) === id) || {};
+              await setIncidentTaskStatus(id, "cancelled", { reason: "manual_cancel", expectedUpdatedAt: String(task.updated_at || "") });
+              await loadDashboard();
+            } catch (err) {
+              $("status").textContent = "Task cancel error: " + String(err.message || err);
+            }
+          });
+        });
+        document.querySelectorAll("[data-task-owner]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-task-owner") || 0);
+              if (!id) return;
+              const task = currentIncidentTasks.find((x) => Number(x.id || 0) === id) || {};
+              const owner = (prompt("Owner taska:", String(task.owner || "ops")) || "").trim();
+              if (!owner) return;
+              await setIncidentTaskStatus(id, String(task.status || "pending"), { owner, reason: "owner_update", expectedUpdatedAt: String(task.updated_at || "") });
+              await loadDashboard();
+            } catch (err) {
+              $("status").textContent = "Task owner error: " + String(err.message || err);
+            }
+          });
+        });
+        document.querySelectorAll("[data-task-priority]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            try {
+              const id = Number(btn.getAttribute("data-task-priority") || 0);
+              if (!id) return;
+              const task = currentIncidentTasks.find((x) => Number(x.id || 0) === id) || {};
+              const selected = (prompt("Priority (P1/P2/P3):", String(task.priority || "P2")) || "").trim().toUpperCase();
+              if (!selected) return;
+              if (!["P1", "P2", "P3"].includes(selected)) throw new Error("priority must be P1/P2/P3");
+              await setIncidentTaskStatus(id, String(task.status || "pending"), { priority: selected, reason: "priority_update", expectedUpdatedAt: String(task.updated_at || "") });
+              await loadDashboard();
+            } catch (err) {
+              $("status").textContent = "Task priority error: " + String(err.message || err);
+            }
+          });
+        });
+
+        document.querySelectorAll("[data-cockpit]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const id = btn.getAttribute("data-cockpit");
+            const action = btn.getAttribute("data-action");
+            let lost_reason = "";
+            if (action === "lost") lost_reason = pickLostReason("");
+            try {
+              const res = await fetch(`${base}/api/admin/leads/${encodeURIComponent(id)}/cockpit-action`, {
+                method: "POST",
+                headers: headers(),
+                body: JSON.stringify({ action, lost_reason })
+              });
+              if (!res.ok) throw new Error(`cockpit action ${res.status}`);
+              await loadDashboard();
+            } catch (err) {
+              $("status").textContent = "Cockpit action error: " + String(err.message || err);
+            }
+          });
+        });
+
+        if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
+        $("status").innerHTML = `<span class='ok'>OK</span> ${new Date().toLocaleTimeString()}`;
+      } catch (err) {
+        $("status").innerHTML = `<span class='warn'>Blad</span>: ${String(err.message || err)} (retry 5s)`;
+        if (!retryTimer) {
+          retryTimer = setTimeout(() => { retryTimer = null; loadDashboard(); }, 5000);
+        }
+      } finally {
+        isLoading = false;
+      }
+    }
+
+    function setupAutoRefresh() {
+      if (autoTimer) clearInterval(autoTimer);
+      autoTimer = null;
+      if ($("autoRefresh").checked) autoTimer = setInterval(loadDashboard, 30000);
+    }
+
+    $("refresh").addEventListener("click", loadDashboard);
+    $("exportLeads").addEventListener("click", exportLeadsCsv);
+    $("refreshFlags").addEventListener("click", async () => { try { await refreshFeatureFlags(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("saveFlags").addEventListener("click", async () => { try { await saveFeatureFlags(); await loadDashboard(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("runBackfill").addEventListener("click", async () => { try { await runLeadsBackfill(); await loadDashboard(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("saveRoiCost").addEventListener("click", async () => { try { await saveRoiCost(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("importRoiCsv").addEventListener("click", async () => { try { await importRoiCostsCsv(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("refreshAllocator").addEventListener("click", loadDashboard);
+    $("createBudgetPlan").addEventListener("click", async () => { try { await createBudgetPlan(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("runForecast").addEventListener("click", loadDashboard);
+    $("scanGuardrails").addEventListener("click", async () => { try { await scanGuardrails(Number($("days").value || 30)); await loadDashboard(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("incidentStatusFilter").addEventListener("change", loadDashboard);
+    $("incidentTaskStatusFilter").addEventListener("change", loadDashboard);
+    $("syncIncidentTasks").addEventListener("click", async () => { try { await syncIncidentTasks(); await loadDashboard(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("batchTaskDone").addEventListener("click", async () => {
+      try {
+        const items = currentIncidentTasks
+          .map((x) => ({ task_id: Number(x.id || 0), expected_updated_at: String(x.updated_at || "") }))
+          .filter((x) => x.task_id > 0);
+        if (!items.length) throw new Error("brak taskow w aktualnym filtrze");
+        const out = await batchIncidentTasksDone(items);
+        const conflicts = (out.conflicts || []).length;
+        $("status").innerHTML = `<span class='ok'>Batch done</span> changed=${out.changed || 0} conflicts=${conflicts}`;
+        await loadDashboard();
+      } catch (e) { $("status").textContent = String(e.message || e); }
+    });
+    $("batchTaskPostpone").addEventListener("click", async () => {
+      try {
+        const items = currentIncidentTasks
+          .map((x) => ({ task_id: Number(x.id || 0), expected_updated_at: String(x.updated_at || "") }))
+          .filter((x) => x.task_id > 0);
+        if (!items.length) throw new Error("brak taskow w aktualnym filtrze");
+        const out = await batchIncidentTasksPostpone(items);
+        const conflicts = (out.conflicts || []).length;
+        $("status").innerHTML = `<span class='ok'>Batch +24h</span> changed=${out.changed || 0} conflicts=${conflicts}`;
+        await loadDashboard();
+      } catch (e) { $("status").textContent = String(e.message || e); }
+    });
+    $("runOpsReview").addEventListener("click", loadDashboard);
+    $("saveScenario").addEventListener("click", async () => { try { await saveScenarioSnapshot(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("compareScenarios").addEventListener("click", async () => { try { await compareScenarios(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("runAutoDaily").addEventListener("click", async () => { try { await runAutonomousDaily(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("saveTargetCommit").addEventListener("click", async () => { try { await saveTargetCommit(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("submitPlanApprovals").addEventListener("click", async () => { try { await submitTopPlanApprovals(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("applyApprovedPlan").addEventListener("click", async () => { try { await applyApprovedTopPlan(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("createDemoExperiment").addEventListener("click", async () => { try { await createDemoExperiment(); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("saveTpl24").addEventListener("click", async () => { try { await saveTemplate(24); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("saveTpl72").addEventListener("click", async () => { try { await saveTemplate(72); } catch (e) { $("status").textContent = String(e.message || e); } });
+    $("autoRefresh").addEventListener("change", setupAutoRefresh);
+    $("viewMode").addEventListener("change", () => { applyViewMode(); loadDashboard(); });
+    $("formFilter").addEventListener("change", loadDashboard);
+    $("statusFilter").addEventListener("change", loadDashboard);
+    $("tierFilter").addEventListener("change", loadDashboard);
+    $("autopilotPriorityFilter").addEventListener("change", loadDashboard);
+    $("autopilotActionFilter").addEventListener("change", loadDashboard);
+    $("winRecoFilter").addEventListener("change", loadDashboard);
+    $("dupOnly").addEventListener("change", loadDashboard);
+    $("includeTest").addEventListener("change", loadDashboard);
+    $("includeSpam").addEventListener("change", loadDashboard);
+    $("leadLimit").addEventListener("change", loadDashboard);
+    setupSectionNav();
+    applyViewMode();
+    setupAutoRefresh();
+    loadDashboard();
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

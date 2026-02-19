@@ -1,4 +1,4 @@
-﻿/* p036 — Focus mode (hides extra panels if present) */
+/* p036 — Focus mode (hides extra panels if present) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p036"] = {

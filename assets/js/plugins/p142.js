@@ -1,4 +1,4 @@
-﻿/* p142 — STUB plugin (safe no-op) */
+/* p142 — STUB plugin (safe no-op) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p142"] = {

@@ -1,4 +1,4 @@
-﻿/* p040 — Scroll to top button */
+/* p040 — Scroll to top button */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p040"] = {

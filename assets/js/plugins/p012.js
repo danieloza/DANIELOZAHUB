@@ -1,4 +1,4 @@
-﻿/* p012 — Copy image_url */
+/* p012 — Copy image_url */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p012"] = {

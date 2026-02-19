@@ -1,4 +1,4 @@
-﻿/* demo.extras.js — 12 add-ons (frontend-only safe) */
+/* demo.extras.js — 12 add-ons (frontend-only safe) */
 (function(){
   const $ = (id) => document.getElementById(id);
   const STORE_KEY = "danieloza_demo_state_v2";

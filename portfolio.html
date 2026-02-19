@@ -3,9 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://danieloza.ai/portfolio.html" />
   <title>Portfolio Hub - DANIELOZA.AI</title>
   <meta name="description" content="Portfolio hub: Product, Automation, Web Presence. Problem -> Decyzje -> Wynik + Moja rola." />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/analytics.config.js" defer></script>
   <script src="assets/js/main.js" defer></script>
   <style>
     .hub-wrap { max-width: 1120px; margin: 0 auto; padding: 22px 14px 70px; }
@@ -14,35 +17,28 @@
     .hub-hero p { margin: 0; opacity: .86; max-width: 900px; }
     .hub-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
     .hub-tag { border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: 6px 10px; font-size: 12px; opacity: .9; }
-
     .case-grid { display: grid; gap: 14px; }
     .case-card { border: 1px solid rgba(255,255,255,.15); border-radius: 16px; padding: 16px; background: rgba(0,0,0,.24); }
     .case-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
     .case-head h2 { margin: 0; font-size: clamp(22px, 3vw, 30px); }
     .case-role { font-size: 13px; opacity: .8; }
-
     .line-grid { display: grid; gap: 10px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .line { border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 12px; background: rgba(255,255,255,.03); }
     .line h3 { margin: 0 0 8px; font-size: 13px; letter-spacing: .2px; text-transform: uppercase; opacity: .88; }
     .line p { margin: 0; opacity: .9; line-height: 1.46; }
-
     .results { margin-top: 12px; display: grid; gap: 8px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .kpi { border: 1px dashed rgba(255,255,255,.2); border-radius: 10px; padding: 9px 10px; }
     .kpi strong { font-size: 18px; display: block; margin-bottom: 2px; }
     .kpi span { opacity: .8; font-size: 12px; }
-
     .links { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
     .links a { text-decoration: none; border: 1px solid rgba(255,255,255,.2); border-radius: 10px; padding: 8px 10px; font-size: 13px; }
-
     .note-box { margin-top: 14px; border: 1px solid rgba(255,255,255,.14); border-radius: 12px; padding: 12px; background: rgba(255,255,255,.03); }
     .note-box h3 { margin: 0 0 8px; font-size: 14px; text-transform: uppercase; opacity: .88; }
     .note-box ul { margin: 0; padding-left: 18px; opacity: .9; }
-
     @media (max-width: 980px) {
       .line-grid { grid-template-columns: 1fr 1fr; }
       .results { grid-template-columns: 1fr 1fr; }
     }
-
     @media (max-width: 620px) {
       .line-grid { grid-template-columns: 1fr; }
       .results { grid-template-columns: 1fr; }
@@ -58,11 +54,12 @@
     <strong>DANIELOZA.AI</strong>
   </a>
   <nav>
-    <a href="oferta.html">OFERTA</a>
-    <a href="demo.html">DEMO</a>
-    <a href="audyt.html">AUDYT</a>
-    <a href="portfolio.html">PORTFOLIO</a>
-    <a href="kontakt.html">KONTAKT</a>
+    <a href="oferta.html" data-track="cta_click" data-track-label="portfolio_nav_oferta">OFERTA</a>
+    <a href="demo.html" data-track="cta_click" data-track-label="portfolio_nav_demo">DEMO</a>
+    <a href="audyt.html" data-track="cta_click" data-track-label="portfolio_nav_audyt">AUDYT</a>
+    <a href="portfolio.html" data-track="cta_click" data-track-label="portfolio_nav_portfolio">PORTFOLIO</a>
+    <a href="case-studies.html" data-track="cta_click" data-track-label="portfolio_nav_case_studies">CASE STUDIES</a>
+    <a href="kontakt.html" data-track="cta_click" data-track-label="portfolio_nav_kontakt">KONTAKT</a>
     <a href="faq.html">FAQ</a>
   </nav>
 </header>
@@ -88,8 +85,8 @@
   <section class="hub-hero">
     <h1>Portfolio Hub</h1>
     <p>
-      Jeden przekroj: Product + Automation + Web Presence. Kazdy case ma ten sam standard:
-      <strong>Problem -> Decyzje -> Wynik -> Linki</strong> oraz jawna sekcje <strong>Moja rola</strong>.
+      Jeden przekrj: Product + Automation + Web Presence. Kady case ma ten sam standard:
+      <strong>Problem -> Decyzje -> Wynik -> Linki</strong> oraz jawn sekcj <strong>Moja rola</strong>.
     </p>
     <div class="hub-tags">
       <span class="hub-tag">Backend Product</span>
@@ -109,33 +106,38 @@
       <div class="line-grid">
         <div class="line">
           <h3>Problem</h3>
-          <p>Brak jednego flow: publiczna rezerwacja, admin obslugi i monitoring po wdrozeniu. Potrzebny realny system, nie pojedynczy CRUD.</p>
+          <p>Brak jednego flow: publiczna rezerwacja, admin obsugi i monitoring po wdroeniu. Potrzebny realny system, nie pojedynczy CRUD.</p>
         </div>
         <div class="line">
           <h3>Decyzje</h3>
-          <p>Rozdzielenie na core + gateway/admin/public, cookie+CSRF, idempotency, retry+circuit breaker, smoke i cross-system E2E.</p>
+          <p>Rozdzielenie na core + gateway/admin/public, cookie+CSRF, idempotency, retry + circuit breaker, smoke i cross-system E2E.</p>
         </div>
         <div class="line">
           <h3>Wynik</h3>
-          <p>Dzialajacy end-to-end: formularz -> gateway -> SalonOS -> admin status/convert -> status page, z artefaktami quality gate.</p>
+          <p>Dziaajcy end-to-end: formularz -> gateway -> SalonOS -> admin status/convert -> status page, z artefaktami quality gate.</p>
         </div>
         <div class="line">
           <h3>Linki</h3>
-          <p>Repo: <code>C:\Users\syfsy\projekty\danex-business-api</code> i <code>C:\Users\syfsy\projekty\salonos</code></p>
+          <p>
+            Repo:
+            <a href="https://github.com/danieloza/DANIELOZAHUB" target="_blank" rel="noreferrer" data-track="cta_click" data-track-label="portfolio_case1_repo_hub">DANIELOZAHUB</a>
+            +
+            <a href="https://github.com/danieloza/DANIELOZAHUB3" target="_blank" rel="noreferrer" data-track="cta_click" data-track-label="portfolio_case1_repo_hub3">DANIELOZAHUB3</a>
+          </p>
         </div>
       </div>
 
       <div class="results">
-        <div class="kpi"><strong>52</strong><span>testy lacznie</span></div>
+        <div class="kpi"><strong>52</strong><span>testy cznie</span></div>
         <div class="kpi"><strong>8/8</strong><span>smoke flow OK</span></div>
         <div class="kpi"><strong>0</strong><span>alert_count (artifact)</span></div>
         <div class="kpi"><strong>2-system</strong><span>core + gateway</span></div>
       </div>
 
       <div class="links">
-        <a href="https://salondanex.pl/" target="_blank" rel="noreferrer">Strona publiczna</a>
-        <a href="demo.html">Zobacz demo</a>
-        <a href="audyt.html">Um?w audyt</a>
+        <a href="https://salondanex.pl/" target="_blank" rel="noreferrer" data-track="cta_click" data-track-label="portfolio_case1_public_url">Strona publiczna</a>
+        <a href="demo.html" data-track="cta_click" data-track-label="portfolio_case1_zobacz_demo">Zobacz demo</a>
+        <a href="audyt.html" data-track="cta_click" data-track-label="portfolio_case1_umow_audyt">Umw audyt</a>
       </div>
     </article>
 
@@ -148,11 +150,11 @@
       <div class="line-grid">
         <div class="line">
           <h3>Problem</h3>
-          <p>Reczne przepisywanie faktur jest wolne i bledogenne. Potrzebny prosty bot z kontrola jakosci i rolami dostepu.</p>
+          <p>Rczne przepisywanie faktur jest wolne i bdogenne. Potrzebny prosty bot z kontrol jakoci i rolami dostpu.</p>
         </div>
         <div class="line">
           <h3>Decyzje</h3>
-          <p>Telegram bot z OCR, idempotencja, retry queue, audit log, role admin/operator/viewer i prosty tryb Mama.</p>
+          <p>Telegram bot z OCR, idempotencj, retry queue, audit logiem, rolami admin/operator/viewer i prostym trybem Mama.</p>
         </div>
         <div class="line">
           <h3>Wynik</h3>
@@ -160,14 +162,17 @@
         </div>
         <div class="line">
           <h3>Linki</h3>
-          <p>Repo: <code>C:\Users\syfsy\danex-faktury-bot</code></p>
+          <p>
+            Repo:
+            <a href="https://github.com/danieloza/DANIELOZAHUB2" target="_blank" rel="noreferrer" data-track="cta_click" data-track-label="portfolio_case2_repo_hub2">DANIELOZAHUB2</a>
+          </p>
         </div>
       </div>
 
       <div class="results">
         <div class="kpi"><strong>OCR</strong><span>PDF/JPG/PNG ingest</span></div>
         <div class="kpi"><strong>Retry</strong><span>queue + maintenance</span></div>
-        <div class="kpi"><strong>Audit</strong><span>trace akcji i statusow</span></div>
+        <div class="kpi"><strong>Audit</strong><span>trace akcji i statusw</span></div>
         <div class="kpi"><strong>Roles</strong><span>admin/operator/viewer</span></div>
       </div>
     </article>
@@ -181,7 +186,7 @@
       <div class="line-grid">
         <div class="line">
           <h3>Problem</h3>
-          <p>Techniczne projekty bez czytelnej strony nie zamykaja odbioru biznesowego i nie pokazuja calej wartosci.</p>
+          <p>Techniczne projekty bez czytelnej strony nie zamykaj odbioru biznesowego i nie pokazuj caej wartoci.</p>
         </div>
         <div class="line">
           <h3>Decyzje</h3>
@@ -189,11 +194,15 @@
         </div>
         <div class="line">
           <h3>Wynik</h3>
-          <p>Publiczny punkt wejscia z czytelnym mapowaniem: co jest produktem, co automatyzacja i jaki jest efekt koncowy.</p>
+          <p>Publiczny punkt wejcia z czytelnym mapowaniem: co jest produktem, co automatyzacj i jaki jest efekt kocowy.</p>
         </div>
         <div class="line">
           <h3>Linki</h3>
-          <p>Repo: <code>C:\Users\syfsy\OneDrive\Desktop\DANIELOZA_AI_site</code><br>URL: <a href="https://salondanex.pl/" target="_blank" rel="noreferrer">salondanex.pl</a></p>
+          <p>
+            Repo:
+            <a href="https://github.com/danieloza/DANIELOZAHUB" target="_blank" rel="noreferrer" data-track="cta_click" data-track-label="portfolio_case3_repo_hub">DANIELOZAHUB</a><br>
+            URL: <a href="https://salondanex.pl/" target="_blank" rel="noreferrer" data-track="cta_click" data-track-label="portfolio_case3_public_url">salondanex.pl</a>
+          </p>
         </div>
       </div>
 
@@ -209,9 +218,9 @@
   <section class="note-box">
     <h3>Moja rola - podsumowanie</h3>
     <ul>
-      <li>Projektuje i dowoze architekture end-to-end (core + gateway + public/admin).</li>
-      <li>Buduje i utrzymuje quality gates: testy, smoke, E2E, monitoring, backup drill.</li>
-      <li>Spinam warstwe techniczna z warstwa biznesowa i publiczna prezentacja rozwiazania.</li>
+      <li>Projektuj i dowo architektur end-to-end (core + gateway + public/admin).</li>
+      <li>Buduj i utrzymuj quality gates: testy, smoke, E2E, monitoring, backup drill.</li>
+      <li>Spinam warstw techniczn z warstw biznesow i publiczn prezentacj rozwizania.</li>
     </ul>
   </section>
 </main>

@@ -1,4 +1,4 @@
-﻿/* p035 — Compact mode toggle (adds body class) */
+/* p035 — Compact mode toggle (adds body class) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p035"] = {

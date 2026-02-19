@@ -1,4 +1,4 @@
-﻿/* p011 — Prompt stats (chars/words) */
+/* p011 — Prompt stats (chars/words) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p011"] = {

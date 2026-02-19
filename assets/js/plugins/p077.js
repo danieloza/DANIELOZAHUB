@@ -1,4 +1,4 @@
-﻿/* p077 — STUB plugin (safe no-op) */
+/* p077 — STUB plugin (safe no-op) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p077"] = {

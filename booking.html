@@ -1,0 +1,111 @@
+﻿<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Self-booking rozmowy | DANIELOZA.AI</title>
+  <style>
+    :root { --bg:#0c1118; --panel:#151f2d; --line:#2a3a50; --txt:#eef4ff; --muted:#95a8c0; --ok:#70e7a8; --err:#ffb6b6; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: radial-gradient(circle at 20% 10%, #1a2638, #0a1017 55%); color: var(--txt); font-family: "Segoe UI", system-ui, sans-serif; }
+    main { max-width: 680px; margin: 36px auto; padding: 0 12px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+    h1 { margin: 0 0 8px; font-size: 25px; }
+    p { margin: 0 0 12px; color: var(--muted); }
+    .row { display: grid; gap: 8px; margin-top: 10px; }
+    label { font-size: 13px; color: var(--muted); }
+    input, button { width: 100%; border-radius: 10px; border: 1px solid var(--line); background: #0f1723; color: var(--txt); padding: 10px 11px; font: inherit; }
+    button { cursor: pointer; background: linear-gradient(90deg, #1e9e73, #2ab57d); border: none; color: #062316; font-weight: 700; }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 8px; }
+    .ok { color: var(--ok); }
+    .err { color: var(--err); }
+    .mono { font-family: ui-monospace, Consolas, monospace; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="card">
+      <h1>Wybierz termin rozmowy</h1>
+      <p>Po zatwierdzeniu termin zapisze się w CRM i lead przejdzie automatycznie na <span class="mono">in_progress</span>.</p>
+      <div id="meta" class="hint"></div>
+      <div class="row">
+        <label for="slot">Termin rozmowy (czas lokalny)</label>
+        <input id="slot" type="datetime-local" />
+      </div>
+      <div class="row">
+        <button id="save">Potwierdz termin</button>
+      </div>
+      <div id="status" class="hint"></div>
+    </section>
+  </main>
+
+  <script>
+    const q = new URLSearchParams(window.location.search);
+    const leadId = (q.get("lead_id") || "").trim();
+    const token = (q.get("token") || "").trim();
+    const apiBase = (q.get("api") || "http://127.0.0.1:8000").replace(/\/$/, "");
+
+    const $ = (id) => document.getElementById(id);
+
+    function show(msg, ok) {
+      const el = $("status");
+      el.textContent = msg;
+      el.className = ok ? "hint ok" : "hint err";
+    }
+
+    async function load() {
+      if (!leadId || !token) {
+        show("Brak lead_id lub token w linku.", false);
+        return;
+      }
+      try {
+        const res = await fetch(`${apiBase}/api/public/booking/${encodeURIComponent(leadId)}?token=${encodeURIComponent(token)}`);
+        const json = await res.json();
+        if (!res.ok || !json.ok) throw new Error(json.detail || `HTTP ${res.status}`);
+        $("meta").innerHTML = `Lead: <span class='mono'>${json.lead_id || "-"}</span> | formularz: ${json.form_type || "-"}`;
+        if (json.booked_slot) {
+          const d = new Date(json.booked_slot);
+          if (!Number.isNaN(d.getTime())) {
+            const p = (n) => String(n).padStart(2, "0");
+            $("slot").value = `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+          }
+        }
+      } catch (err) {
+        show("Nie udalo sie zaladowac danych bookingu: " + String(err.message || err), false);
+      }
+    }
+
+    $("save").addEventListener("click", async () => {
+      const val = $("slot").value;
+      if (!val) {
+        show("Wybierz termin.", false);
+        return;
+      }
+      const d = new Date(val);
+      if (Number.isNaN(d.getTime())) {
+        show("Niepoprawny termin.", false);
+        return;
+      }
+      if (d.getTime() < Date.now() - 60000) {
+        show("Termin musi byc w przyszlosci.", false);
+        return;
+      }
+
+      try {
+        const res = await fetch(`${apiBase}/api/public/booking/${encodeURIComponent(leadId)}/confirm`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token, booked_slot: d.toISOString() })
+        });
+        const json = await res.json();
+        if (!res.ok || !json.ok) throw new Error(json.detail || `HTTP ${res.status}`);
+        show("Termin zapisany. Dzieki, do uslyszenia.", true);
+      } catch (err) {
+        show("Nie udalo sie zapisac terminu: " + String(err.message || err), false);
+      }
+    });
+
+    load();
+  </script>
+</body>
+</html>

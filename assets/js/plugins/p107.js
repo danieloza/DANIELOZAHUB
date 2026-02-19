@@ -1,4 +1,4 @@
-﻿/* p107 — STUB plugin (safe no-op) */
+/* p107 — STUB plugin (safe no-op) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p107"] = {

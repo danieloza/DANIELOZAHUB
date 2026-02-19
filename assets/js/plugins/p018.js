@@ -1,4 +1,4 @@
-﻿/* p018 — Toggle LOG visibility */
+/* p018 — Toggle LOG visibility */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p018"] = {

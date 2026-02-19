@@ -1,0 +1,416 @@
+﻿<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Simple - DANIELOZA.AI</title>
+  <style>
+    :root {
+      --bg: #0b1118;
+      --panel: #121b26;
+      --line: #26394f;
+      --txt: #eef4ff;
+      --muted: #a9b8cc;
+      --ok: #66e2a0;
+      --warn: #ffd37a;
+      --bad: #ff9c9c;
+      --cta: #2f7a55;
+      --cta2: #7a4d2f;
+      --cta3: #7a2f2f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 600px at 10% -10%, #1c2d42, var(--bg));
+      color: var(--txt);
+      font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+    }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 16px 12px 50px; }
+    h1 { margin: 0 0 10px; font-size: 32px; }
+    .hint { color: var(--muted); font-size: 14px; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+    .big {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      background: #0f1621;
+      color: var(--txt);
+      font-size: 22px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      text-align: left;
+    }
+    .ok { background: var(--cta); }
+    .warn { background: var(--cta2); }
+    .bad { background: var(--cta3); }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pill {
+      display: inline-block;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-right: 6px;
+    }
+    .lead-title { font-size: 24px; font-weight: 700; margin: 6px 0; }
+    .mono { font-family: Consolas, ui-monospace, monospace; }
+    input, button {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font: inherit;
+      background: #0f1621;
+      color: var(--txt);
+    }
+    button { cursor: pointer; }
+    .status-ok { color: var(--ok); }
+    .status-warn { color: var(--warn); }
+    .status-bad { color: var(--bad); }
+    .support-btn {
+      width: 100%;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+      background: #2f4f7a;
+    }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(3, 8, 14, 0.95);
+      padding: 20px;
+    }
+    .overlay.show { display: flex; }
+    .overlay-card {
+      width: min(920px, 100%);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: linear-gradient(160deg, #132132, #0f1621);
+      padding: 22px;
+    }
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
+      background: #101927;
+    }
+    .step strong { display: block; margin-bottom: 4px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <div id="onboardingOverlay" class="overlay">
+    <div class="overlay-card">
+      <h2 style="margin:0 0 8px">Szybki start: 3 kroki</h2>
+      <div class="hint">Ten ekran jest dla osoby nietechnicznej. Pracujesz tylko tutaj, bez admin.html.</div>
+      <div class="step"><strong>KROK 1</strong>Sprawdz leada u gory i wybierz jedna akcje.</div>
+      <div class="step"><strong>KROK 2</strong>Jesli wygrany: wpisz kwote. Jesli przegrany: wpisz powod.</div>
+      <div class="step"><strong>KROK 3</strong>System sam przelaczy na nastepnego leada.</div>
+      <button id="startWork" class="big ok" style="text-align:center;margin-top:16px">ROZPOCZNIJ PRACE</button>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <h1>Admin SIMPLE</h1>
+    <div class="hint">Tryb dla poczatkujacych: 1 lead na raz, duze przyciski, minimum techniki, auto-przejscie do kolejnego leada.</div>
+
+    <section class="card">
+      <div class="row">
+        <input id="apiBase" value="http://127.0.0.1:8000" style="min-width:220px" />
+        <input id="token" placeholder="ADMIN_TOKEN" style="min-width:240px" />
+        <input id="operator" placeholder="operator@email" style="min-width:200px" />
+        <input id="supportPhone" placeholder="Telefon pomocy, np. +48..." style="min-width:220px" />
+        <button id="saveCfg">Zapisz ustawienia</button>
+        <button id="refreshNow">Odswiez</button>
+      </div>
+      <div id="connStatus" class="hint" style="margin-top:8px">Status: -</div>
+    </section>
+
+    <section class="card">
+      <div class="hint">KROK 1/2/3: obsluz biezacego leada. Po akcji system automatycznie poda nastepnego.</div>
+      <div id="leadBox" style="margin-top:8px"></div>
+    </section>
+
+    <section class="card">
+      <div class="hint">Potrzebujesz wsparcia? Zadzwon i przeczytaj kroki z instrukcji.</div>
+      <button id="helpCall" class="big support-btn">ZADZWON PO POMOC</button>
+      <div id="helpHint" class="hint" style="margin-top:8px"></div>
+    </section>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const tokenKey = "dz_admin_token";
+    const baseKey = "dz_admin_base";
+    const actorKey = "dz_admin_actor";
+    const supportKey = "dz_admin_support_phone";
+    const onboardingKey = "dz_admin_simple_onboarding_done";
+    const lostReasonCatalog = [
+      { code: "budget_too_low", label: "Budzet za niski" },
+      { code: "no_response", label: "Brak odpowiedzi" },
+      { code: "not_ready_timing", label: "Zly timing / nie teraz" },
+      { code: "chose_competitor", label: "Wybral konkurencje" },
+      { code: "no_decision_maker", label: "Brak decydenta" },
+      { code: "scope_mismatch", label: "Niedopasowany zakres" },
+      { code: "low_lead_quality", label: "Niska jakosc leada" },
+      { code: "invalid_contact", label: "Bledny kontakt" },
+      { code: "duplicate_lead", label: "Duplikat" },
+      { code: "test_or_spam", label: "Test lub spam" },
+      { code: "other", label: "Inny powod" }
+    ];
+    let leads = [];
+
+    $("token").value = localStorage.getItem(tokenKey) || "";
+    $("apiBase").value = localStorage.getItem(baseKey) || $("apiBase").value;
+    $("operator").value = localStorage.getItem(actorKey) || "ops@local";
+    $("supportPhone").value = localStorage.getItem(supportKey) || "+48 000 000 000";
+
+    function esc(v) {
+      return String(v == null ? "" : v)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    function headers() {
+      const h = { "Content-Type": "application/json" };
+      const token = $("token").value.trim();
+      const actor = $("operator").value.trim();
+      if (token) h["x-admin-token"] = token;
+      if (actor) h["x-admin-actor"] = actor;
+      return h;
+    }
+
+    function baseUrl() {
+      return $("apiBase").value.trim().replace(/\/$/, "");
+    }
+
+    function saveCfg() {
+      localStorage.setItem(tokenKey, $("token").value.trim());
+      localStorage.setItem(baseKey, $("apiBase").value.trim());
+      localStorage.setItem(actorKey, $("operator").value.trim() || "ops@local");
+      localStorage.setItem(supportKey, $("supportPhone").value.trim() || "+48 000 000 000");
+    }
+
+    async function tryLoadLocalToken() {
+      if ($("token").value.trim()) return;
+      try {
+        const res = await fetch("/.admin_token.local", { cache: "no-store" });
+        if (!res.ok) return;
+        const txt = (await res.text()).trim();
+        if (!txt) return;
+        $("token").value = txt;
+        localStorage.setItem(tokenKey, txt);
+      } catch (_) {}
+    }
+
+    function leadContact(x) {
+      const p = x.payload || {};
+      const f = p.fields || {};
+      const email = f.email || f["e-mail"] || f.mail || "-";
+      const phone = f.telefon || f.phone || "-";
+      return { email, phone, budget: f.budzet || f.budget || "-", scope: f.cel || f.problem || f.opis || "-" };
+    }
+
+    function sortedOpenLeads(list) {
+      const rank = { P1: 1, P2: 2, P3: 3 };
+      return (list || [])
+        .filter((x) => !["won", "lost"].includes(String(x.lead_status || "").toLowerCase()))
+        .slice()
+        .sort((a, b) => {
+          const pa = rank[String(a.autopilot_priority || "P3").toUpperCase()] || 9;
+          const pb = rank[String(b.autopilot_priority || "P3").toUpperCase()] || 9;
+          if (pa !== pb) return pa - pb;
+          const wa = Number(a.win_probability ?? a.win_probability_pct ?? 0);
+          const wb = Number(b.win_probability ?? b.win_probability_pct ?? 0);
+          if (wa !== wb) return wb - wa;
+          const da = Date.parse(a.autopilot_next_action_due_at || "") || Number.MAX_SAFE_INTEGER;
+          const db = Date.parse(b.autopilot_next_action_due_at || "") || Number.MAX_SAFE_INTEGER;
+          return da - db;
+        });
+    }
+
+    async function saveDealValue(leadId, value) {
+      const res = await fetch(`${baseUrl()}/api/admin/leads/${encodeURIComponent(leadId)}/value`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ deal_value: value })
+      });
+      if (!res.ok) throw new Error(`save value ${res.status}`);
+    }
+
+    async function updateMeta(lead, nextStatus, lostReason) {
+      const payload = {
+        status: nextStatus,
+        notes: lead.lead_notes || "",
+        follow_up_at: lead.lead_follow_up_at || null,
+        lost_reason: lostReason || ""
+      };
+      const res = await fetch(`${baseUrl()}/api/admin/leads/${encodeURIComponent(lead.id)}/meta`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        throw new Error(j.detail || `meta ${res.status}`);
+      }
+    }
+
+    async function markWon(lead) {
+      const raw = prompt("Podaj kwote wygranej (deal_value):", String(lead.deal_value || ""));
+      if (raw == null) return;
+      const v = Number(raw.replace(",", "."));
+      if (!Number.isFinite(v) || v <= 0) throw new Error("Kwota musi byc > 0");
+      await saveDealValue(lead.id, v);
+      await updateMeta(lead, "won", "");
+    }
+
+    async function markLost(lead) {
+      const options = lostReasonCatalog.map((x, i) => `${i + 1}. ${x.code} - ${x.label}`).join("\n");
+      const raw = prompt(`Wybierz powod utraty (numer lub code):\n${options}`, String(lead.lost_reason || ""));
+      if (raw == null) return;
+      const val = String(raw || "").trim().toLowerCase();
+      let rr = "";
+      if (/^\d+$/.test(val)) {
+        const idx = Number(val) - 1;
+        if (idx >= 0 && idx < lostReasonCatalog.length) rr = lostReasonCatalog[idx].code;
+      } else if (lostReasonCatalog.some((x) => x.code === val)) {
+        rr = val;
+      }
+      if (!rr) rr = "other";
+      if (!rr) throw new Error("lost_reason jest wymagany");
+      await updateMeta(lead, "lost", rr);
+    }
+
+    async function remindTomorrow(lead) {
+      const now = new Date();
+      now.setHours(now.getHours() + 24);
+      await updateMeta(
+        { ...lead, lead_follow_up_at: now.toISOString() },
+        "in_progress",
+        ""
+      );
+    }
+
+    function setBusy(v) {
+      ["btnWon", "btnLost", "btnRemind", "refreshNow", "saveCfg"].forEach((id) => {
+        const el = $(id);
+        if (el) el.disabled = !!v;
+      });
+      if (v) {
+        $("connStatus").innerHTML = "<span class='status-warn'>Zapisywanie i ladowanie nastepnego leada...</span>";
+      }
+    }
+
+    function showOnboardingIfNeeded() {
+      const done = localStorage.getItem(onboardingKey) === "1";
+      $("onboardingOverlay").classList.toggle("show", !done);
+    }
+
+    function bindHelp() {
+      const phone = $("supportPhone").value.trim() || "+48 000 000 000";
+      $("helpHint").textContent = `Numer wsparcia: ${phone}. Instrukcja: przedstaw ID leada z ekranu, opisz problem i poczekaj na potwierdzenie.`;
+      $("helpCall").onclick = () => {
+        const msg = `Instrukcja:\n1) Podaj ID leada z tego ekranu.\n2) Powiedz jaka akcje chcesz wykonac.\n3) Czekaj na potwierdzenie.\n\nTelefon: ${phone}`;
+        alert(msg);
+        window.location.href = `tel:${phone.replace(/\s+/g, "")}`;
+      };
+    }
+
+    function renderLeadCard() {
+      const open = sortedOpenLeads(leads);
+      const lead = open[0];
+      if (!lead) {
+        $("leadBox").innerHTML = "<div class='status-ok'>Brak otwartych leadow do obslugi. KROK 3 zakonczony na dzis.</div>";
+        return;
+      }
+      const c = leadContact(lead);
+      const win = Number(lead.win_probability ?? lead.win_probability_pct ?? 0).toFixed(1);
+      $("leadBox").innerHTML = `
+        <div class="pill">Priorytet: ${esc(lead.autopilot_priority || "P3")}</div>
+        <div class="pill">Win: ${esc(win)}%</div>
+        <div class="pill">Status: ${esc(lead.lead_status || "new")}</div>
+        <div class="lead-title">${esc(lead.id || "")}</div>
+        <div><strong>Email:</strong> ${esc(c.email)}</div>
+        <div><strong>Telefon:</strong> ${esc(c.phone)}</div>
+        <div><strong>Budzet:</strong> ${esc(c.budget)}</div>
+        <div><strong>Zakres:</strong> ${esc(c.scope)}</div>
+        <button class="big ok" id="btnWon">1) OZNACZ JAKO WYGRANY</button>
+        <button class="big bad" id="btnLost">2) OZNACZ JAKO PRZEGRANY</button>
+        <button class="big warn" id="btnRemind">3) PRZYPOMNIJ JUTRO</button>
+      `;
+      $("btnWon").addEventListener("click", async () => {
+        setBusy(true);
+        try { await markWon(lead); await load(); }
+        catch (e) { $("connStatus").innerHTML = `<span class="status-bad">${esc(e.message || e)}</span>`; }
+        finally { setBusy(false); }
+      });
+      $("btnLost").addEventListener("click", async () => {
+        setBusy(true);
+        try { await markLost(lead); await load(); }
+        catch (e) { $("connStatus").innerHTML = `<span class="status-bad">${esc(e.message || e)}</span>`; }
+        finally { setBusy(false); }
+      });
+      $("btnRemind").addEventListener("click", async () => {
+        setBusy(true);
+        try { await remindTomorrow(lead); await load(); }
+        catch (e) { $("connStatus").innerHTML = `<span class="status-bad">${esc(e.message || e)}</span>`; }
+        finally { setBusy(false); }
+      });
+    }
+
+    async function load() {
+      saveCfg();
+      bindHelp();
+      $("connStatus").innerHTML = "<span class='status-warn'>Ladowanie...</span>";
+      try {
+        const q = new URLSearchParams({
+          limit: "80",
+          include_win: "true",
+          include_test: "false",
+          include_spam: "false"
+        });
+        const res = await fetch(`${baseUrl()}/api/admin/leads?${q.toString()}`, { headers: headers() });
+        if (!res.ok) throw new Error(`leads ${res.status}`);
+        const data = await res.json();
+        leads = data.leads || [];
+        renderLeadCard();
+        const openCount = sortedOpenLeads(leads).length;
+        $("connStatus").innerHTML = `<span class='status-ok'>Polaczono</span> leadow: ${leads.length}, otwartych: ${openCount}`;
+      } catch (e) {
+        $("connStatus").innerHTML = `<span class='status-bad'>Blad: ${esc(e.message || e)}</span>`;
+      }
+    }
+
+    $("saveCfg").addEventListener("click", () => {
+      saveCfg();
+      bindHelp();
+      $("connStatus").innerHTML = "<span class='status-ok'>Ustawienia zapisane</span>";
+    });
+    $("refreshNow").addEventListener("click", load);
+    $("startWork").addEventListener("click", () => {
+      localStorage.setItem(onboardingKey, "1");
+      $("onboardingOverlay").classList.remove("show");
+    });
+    (async () => {
+      await tryLoadLocalToken();
+      bindHelp();
+      showOnboardingIfNeeded();
+      load();
+    })();
+  </script>
+</body>
+</html>

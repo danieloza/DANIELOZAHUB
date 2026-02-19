@@ -5,10 +5,13 @@ backend/.venv/
 
 # Secrets
 backend/.env
+.admin_token.local
 
 # Local temp/test
 backend/payload.json
 backend/warmup.json
+backend/backups/
+backend/exports/
 
 # Legacy artifacts (do not commit from root)
 *.bak

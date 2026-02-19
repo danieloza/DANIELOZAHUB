@@ -1,4 +1,4 @@
-﻿/* demo.extras2.js — 20 PRO add-ons (fail-safe, no backend changes) */
+/* demo.extras2.js — 20 PRO add-ons (fail-safe, no backend changes) */
 (function(){
   const $ = (id) => document.getElementById(id);
   const STORE_KEY = "danieloza_demo_state_v2";

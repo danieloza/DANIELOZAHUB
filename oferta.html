@@ -1,11 +1,19 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Oferta — DANIELOZA.AI</title>
-  <meta name="description" content="Oferta DANIELOZA.AI" />
+  <title>Oferta - DANIELOZA.AI</title>
+  <meta name="description" content="Pakiety DANIELOZA.AI: Starter, Standard, Pro i Scale dla short-form contentu AI." />
+    <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://danieloza.ai/oferta.html" />
+<meta property="og:title" content="Oferta - DANIELOZA.AI" />
+  <meta property="og:description" content="Sprawd pakiety i wybierz plan wdroenia contentu AI dla Twojej marki." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://danieloza.ai/oferta.html" />
+  <meta property="og:image" content="https://danieloza.ai/assets/img/logotype.png" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/analytics.config.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 
   <!-- Oferta-only styles (nie psuje reszty strony) -->
@@ -96,7 +104,7 @@
       border:1px solid rgba(125,107,255,.35);
       flex:0 0 18px;margin-top:1px;
     }
-    .page-oferta .tick:before{content:"✓";font-size:12px;opacity:.95}
+    .page-oferta .tick:before{content:"?";font-size:12px;opacity:.95}
 
     .page-oferta .badge{
       position:absolute;right:14px;top:14px;
@@ -117,7 +125,7 @@
       font-size:12px;
     }
 
-    /* Drobne: żeby nie robiło “pustki” jak na screenie */
+    /* Drobne: eby nie robio "pustki" jak na screenie */
     .page-oferta main{padding-top:20px}
   </style>
 </head>
@@ -130,12 +138,13 @@
     <strong>DANIELOZA.AI</strong>
   </a>
   <nav>
-    <a href="oferta.html">OFERTA</a>
-    <a href="demo.html">DEMO</a>
-    <a href="audyt.html">AUDYT</a>
-    <a href="portfolio.html">PORTFOLIO</a>
-    <a href="kontakt.html">KONTAKT</a>
-    <a href="faq.html">FAQ</a>
+    <a href="oferta.html" data-track="cta_click" data-track-label="oferta_nav_oferta">OFERTA</a>
+    <a href="demo.html" data-track="cta_click" data-track-label="oferta_nav_demo">DEMO</a>
+    <a href="audyt.html" data-track="cta_click" data-track-label="oferta_nav_audyt">AUDYT</a>
+    <a href="portfolio.html" data-track="cta_click" data-track-label="oferta_nav_portfolio">PORTFOLIO</a>
+    <a href="case-studies.html" data-track="cta_click" data-track-label="oferta_nav_case_studies">CASE STUDIES</a>
+    <a href="kontakt.html" data-track="cta_click" data-track-label="oferta_nav_kontakt">KONTAKT</a>
+    <a href="faq.html" data-track="cta_click" data-track-label="oferta_nav_faq">FAQ</a>
 </nav>
 </header>
 
@@ -161,12 +170,12 @@
     <div class="pricing-top">
       <div class="kicker">DANIELOZA.AI</div>
       <h1>Oferta</h1>
-      <p>Układ “jak platforma” — proste pakiety, czytelne benefity i szybki start pod short-form.</p>
+      <p>Cennik bazowy dla staej wsppracy monthly/quarterly/yearly. Finalna wycena zaley od liczby kreacji, iteracji i zakresu kanaw.</p>
 
-      <div class="billing-toggle" role="group" aria-label="Wybór rozliczenia">
-        <button class="bill-btn" data-billing="yearly" aria-pressed="true">Rocznie −20%</button>
-        <button class="bill-btn" data-billing="quarterly" aria-pressed="false">Kwartalnie −10%</button>
-        <button class="bill-btn" data-billing="monthly" aria-pressed="false">Miesięcznie</button>
+      <div class="billing-toggle" role="group" aria-label="Wybr rozliczenia">
+        <button class="bill-btn" data-billing="yearly" aria-pressed="true" data-track="billing_toggle" data-track-label="oferta_billing_yearly">Rocznie -20%</button>
+        <button class="bill-btn" data-billing="quarterly" aria-pressed="false" data-track="billing_toggle" data-track-label="oferta_billing_quarterly">Kwartalnie -10%</button>
+        <button class="bill-btn" data-billing="monthly" aria-pressed="false" data-track="billing_toggle" data-track-label="oferta_billing_monthly">Miesicznie</button>
       </div>
     </div>
 
@@ -181,13 +190,13 @@
         data-old-yearly="1799">
         <h3>Starter</h3>
         <div class="old" data-old>199</div>
-        <div class="price"><span data-price>149</span> zł</div>
-        <p class="per" data-per>miesięcznie</p>
-        <button class="cta" data-cta>Wybieram</button>
+        <div class="price"><span data-price>149</span> z</div>
+        <p class="per" data-per>Miesicznie</p>
+        <button class="cta" data-cta data-cta-target="audyt.html?plan=starter" data-track="cta_click" data-track-label="oferta_plan_starter_rezerwuj_start">Rezerwuj start</button>
         <ul>
-          <li><span class="tick"></span><span>3 klipy (10–15s) — szybki start</span></li>
+          <li><span class="tick"></span><span>3 klipy (10-15s)  szybki start</span></li>
           <li><span class="tick"></span><span>1 runda poprawek</span></li>
-          <li><span class="tick"></span><span>Hook + CTA (pod sprzedaż lub follow)</span></li>
+          <li><span class="tick"></span><span>Hook + CTA (pod sprzeda lub follow)</span></li>
           <li><span class="tick"></span><span>Dostawa gotowa do publikacji (Reels/Shorts/TikTok)</span></li>
         </ul>
       </article>
@@ -202,13 +211,13 @@
         data-old-yearly="3599">
         <h3>Standard</h3>
         <div class="old" data-old>399</div>
-        <div class="price"><span data-price>299</span> zł</div>
-        <p class="per" data-per>miesięcznie</p>
-        <button class="cta" data-cta>Wybieram</button>
+        <div class="price"><span data-price>299</span> z</div>
+        <p class="per" data-per>Miesicznie</p>
+        <button class="cta" data-cta data-cta-target="audyt.html?plan=standard" data-track="cta_click" data-track-label="oferta_plan_standard_rezerwuj_start">Rezerwuj start</button>
         <ul>
-          <li><span class="tick"></span><span>10 klipów (10–15s)</span></li>
+          <li><span class="tick"></span><span>10 klipw (10-15s)</span></li>
           <li><span class="tick"></span><span>Lepsze tempo: hook + punchline</span></li>
-          <li><span class="tick"></span><span>Mini strategia: formaty + propozycje opisów</span></li>
+          <li><span class="tick"></span><span>Mini strategia: formaty + propozycje opisw</span></li>
           <li><span class="tick"></span><span>Priorytetowa realizacja</span></li>
         </ul>
       </article>
@@ -224,14 +233,14 @@
         <div class="badge">Best deal</div>
         <h3>Pro</h3>
         <div class="old" data-old>799</div>
-        <div class="price"><span data-price>599</span> zł</div>
-        <p class="per" data-per>miesięcznie</p>
-        <button class="cta" data-cta>Wybieram</button>
+        <div class="price"><span data-price>599</span> z</div>
+        <p class="per" data-per>Miesicznie</p>
+        <button class="cta" data-cta data-cta-target="kontakt.html?plan=pro" data-track="cta_click" data-track-label="oferta_plan_pro_konsultacja">Umw konsultacj</button>
         <ul>
-          <li><span class="tick"></span><span>20 klipów / miesiąc (short-form)</span></li>
-          <li><span class="tick"></span><span>Warianty: 2–3 wersje hooka na część klipów</span></li>
-          <li><span class="tick"></span><span>Wersje pod reklamę (UGC vibe)</span></li>
-          <li><span class="tick"></span><span>Wspólny szablon stylu marki (spójność)</span></li>
+          <li><span class="tick"></span><span>20 klipw / miesic (short-form)</span></li>
+          <li><span class="tick"></span><span>Warianty: 2-3 wersje hooka na cz klipw</span></li>
+          <li><span class="tick"></span><span>Wersje pod reklam (UGC vibe)</span></li>
+          <li><span class="tick"></span><span>Wsplny szablon stylu marki (spjno)</span></li>
         </ul>
       </article>
 
@@ -245,26 +254,24 @@
         data-old-yearly="13999">
         <h3>Scale</h3>
         <div class="old" data-old>1499</div>
-        <div class="price"><span data-price>1199</span> zł</div>
-        <p class="per" data-per>miesięcznie</p>
-        <button class="cta" data-cta>Kontakt</button>
+        <div class="price"><span data-price>1199</span> z</div>
+        <p class="per" data-per>Miesicznie</p>
+        <button class="cta" data-cta data-cta-target="kontakt.html?plan=scale" data-track="cta_click" data-track-label="oferta_plan_scale_konsultacja">Umw konsultacj</button>
         <ul>
-          <li><span class="tick"></span><span>40+ klipów / miesiąc (pipeline)</span></li>
-          <li><span class="tick"></span><span>Stały kalendarz publikacji + pakiet formatów</span></li>
-          <li><span class="tick"></span><span>Wsparcie kreatywne: pomysły + scenki</span></li>
+          <li><span class="tick"></span><span>40+ klipw / miesic (pipeline)</span></li>
+          <li><span class="tick"></span><span>Stay kalendarz publikacji + pakiet formatw</span></li>
+          <li><span class="tick"></span><span>Wsparcie kreatywne: pomysy + scenki</span></li>
           <li><span class="tick"></span><span>Priorytet + szybkie iteracje</span></li>
         </ul>
       </article>
     </div>
 
-    <div class="mini-note">
-      * Ceny przykładowe — układ i UX “jak z platformy” (switch + karty + CTA) jest tu najważniejszy.
-    </div>
+    <div class="mini-note">Ceny bazowe netto. Zakres i SLA potwierdzamy po audycie i krtkim kickoff call.</div>
   </section>
 </main>
 
 <footer>
-  <div>© <span id="y"></span> DANIELOZA.AI</div>
+  <div>&copy; <span id="y"></span> DANIELOZA.AI</div>
 
   <div class="socialbar" aria-label="Social links">
     <a class="socialbtn" href="https://www.tiktok.com/@DANIELOZA.AI" target="_blank" rel="noreferrer" aria-label="TikTok">
@@ -280,6 +287,10 @@
       <img src="assets/img/youtube_play.png" alt="">
     </a>
   </div>
+  <div class="footer-legal">
+    <a href="privacy.html">Polityka prywatnoci</a>
+    <a href="cookies.html">Polityka cookies</a>
+  </div>
 </footer>
 
 <script>
@@ -287,7 +298,7 @@
   (function(){
     const buttons = Array.from(document.querySelectorAll('.bill-btn'));
     const plans = Array.from(document.querySelectorAll('.plan'));
-    const perLabel = { monthly: 'miesięcznie', quarterly: 'na kwartał', yearly: 'rocznie' };
+    const perLabel = { monthly: 'miesicznie', quarterly: 'na kwarta', yearly: 'rocznie' };
 
     function setBilling(mode){
       buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.billing === mode)));
@@ -315,8 +326,8 @@
     // CTA (na razie: scroll do kontaktu / przekierowanie)
     document.querySelectorAll('[data-cta]').forEach(btn => {
       btn.addEventListener('click', () => {
-        // jeśli masz kontakt.html:
-        window.location.href = 'kontakt.html';
+        const target = btn.getAttribute('data-cta-target') || 'kontakt.html';
+        window.location.href = target;
       });
     });
   })();
@@ -324,6 +335,9 @@
 
 </body>
 </html>
+
+
+
 
 
 

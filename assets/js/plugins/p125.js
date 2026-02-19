@@ -1,4 +1,4 @@
-﻿/* p125 — STUB plugin (safe no-op) */
+/* p125 — STUB plugin (safe no-op) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p125"] = {

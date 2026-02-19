@@ -1,4 +1,4 @@
-﻿/* p022 — Manual job status check */
+/* p022 — Manual job status check */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p022"] = {

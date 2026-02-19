@@ -1,4 +1,4 @@
-﻿/* p099 — STUB plugin (safe no-op) */
+/* p099 — STUB plugin (safe no-op) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p099"] = {

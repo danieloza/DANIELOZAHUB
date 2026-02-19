@@ -1,4 +1,4 @@
-﻿(() => {
+(() => {
   const $ = (id) => document.getElementById(id);
 
   const dropZone = dropZone;
@@ -177,12 +177,12 @@ const p = featureCfg.params || {};
 const model = featureCfg.model || "kling-o1";
 const safe_mode = !!(p.safe_mode);
 const params = {
-  duration: p.duration ?? 5,
-  fps: p.fps ?? 30,
-  aspect: p.aspect ?? "9:16",
+  duration: p.duration ? 5,
+  fps: p.fps ? 30,
+  aspect: p.aspect ? "9:16",
   seed: (p.seed || "").toString().trim(),
-  motion: p.motion ?? 55,
-  quality: p.quality ?? 70,
+  motion: p.motion ? 55,
+  quality: p.quality ? 70,
   camera: p.camera || "slow_push",
   safe_mode
 };

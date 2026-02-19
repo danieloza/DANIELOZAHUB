@@ -1,0 +1,100 @@
+﻿<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Polityka cookies - DANIELOZA.AI</title>
+  <meta name="description" content="Polityka cookies DANIELOZA.AI." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://danieloza.ai/cookies.html" />
+<link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/analytics.config.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+  <style>
+    .legal-wrap{max-width:960px;margin:0 auto;padding:28px 14px 74px}
+    .legal-card{border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(0,0,0,.18);padding:16px}
+    .legal-card h1{margin:0 0 12px}
+    .legal-card h2{margin:18px 0 8px;font-size:18px}
+    .legal-card p,.legal-card li{opacity:.9;line-height:1.6}
+    .legal-card ul{padding-left:18px}
+    .consent-box{margin-top:16px;padding:12px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(255,255,255,.03)}
+    .consent-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .consent-actions button{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;border-radius:10px;padding:8px 12px;cursor:pointer}
+  </style>
+</head>
+<body class="sticky-header">
+<header id="hdr">
+  <a class="brand-mini" href="index.html">
+    <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
+    <strong>DANIELOZA.AI</strong>
+  </a>
+  <nav>
+    <a href="oferta.html">OFERTA</a>
+    <a href="audyt.html">AUDYT</a>
+    <a href="kontakt.html">KONTAKT</a>
+    <a href="faq.html">FAQ</a>
+  </nav>
+</header>
+
+<main class="legal-wrap">
+  <article class="legal-card">
+    <h1>Polityka cookies</h1>
+    <p>Strona używa plików cookies i podobnych technologii do działania serwisu, analityki oraz poprawy jakości obsługi.</p>
+
+    <h2>1. Czym są cookies</h2>
+    <p>Cookies to małe pliki tekstowe zapisywane na urządzeniu użytkownika, które pomagają utrzymać sesję i analizować ruch.</p>
+
+    <h2>2. Jakich cookies używamy</h2>
+    <ul>
+      <li>Niezbędne: wymagane do podstawowego działania strony.</li>
+      <li>Analityczne: mierzenie zdarzeń i skuteczności lejka (np. kliknięcia, formularze, ścieżki).</li>
+      <li>Preferencji: zapamiętanie decyzji o zgodzie analitycznej.</li>
+    </ul>
+
+    <h2>3. Zarządzanie zgodą</h2>
+    <p>Możesz zaakceptować lub odrzucić analitykę, a decyzję zmienić w dowolnym momencie.</p>
+
+    <div class="consent-box">
+      <strong>Panel zgód</strong>
+      <div class="consent-actions">
+        <button type="button" id="consentGrant">Akceptuj analitykę</button>
+        <button type="button" id="consentDeny">Odrzuć analitykę</button>
+      </div>
+      <div id="consentStatus" style="margin-top:8px;opacity:.8"></div>
+    </div>
+
+    <h2>4. Jak wyłączyć cookies w przeglądarce</h2>
+    <p>Ustawienia cookies możesz zmienić także w ustawieniach przeglądarki. Ograniczenie cookies może wpłynąć na część funkcji strony.</p>
+  </article>
+</main>
+
+<footer>
+  <div>&copy; <span id="y"></span> DANIELOZA.AI</div>
+  <div class="footer-legal">
+    <a href="privacy.html">Polityka prywatności</a>
+    <a href="cookies.html">Polityka cookies</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const status = document.getElementById('consentStatus');
+  function render(){
+    const state = (window.DANIELOZA_ANALYTICS && window.DANIELOZA_ANALYTICS.getConsent)
+      ? window.DANIELOZA_ANALYTICS.getConsent()
+      : 'pending';
+    status.textContent = 'Aktualny status zgody: ' + state;
+  }
+  document.getElementById('consentGrant')?.addEventListener('click', function(){
+    window.DANIELOZA_ANALYTICS?.setConsent('granted');
+    render();
+  });
+  document.getElementById('consentDeny')?.addEventListener('click', function(){
+    window.DANIELOZA_ANALYTICS?.setConsent('denied');
+    render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>

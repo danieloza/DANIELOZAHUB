@@ -1,10 +1,13 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DANIELOZA.AI — O mnie</title>
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://danieloza.ai/o-mnie.html" />
+  <title>DANIELOZA.AI  O mnie</title>
   <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/analytics.config.js" defer></script>
   <script src="assets/js/main.js" defer></script>
   <style>
     /* ABOUT_LAYOUT_PATCH */
@@ -26,6 +29,7 @@
     <a href="demo.html">DEMO</a>
     <a href="audyt.html">AUDYT</a>
     <a href="portfolio.html">PORTFOLIO</a>
+    <a href="case-studies.html" data-track="cta_click" data-track-label="omnie_nav_case_studies">CASE STUDIES</a>
     <a href="kontakt.html">KONTAKT</a>
     <a href="faq.html">FAQ</a>
 </nav>
@@ -51,41 +55,41 @@
 <main class="wrap" style="max-width:1200px;margin:0 auto;padding:0 24px;">
   <section class="panel" style="margin-top:18px;">
     <div class="kicker">O MNIE</div>
-    <h1 style="margin:6px 0 0;letter-spacing:.02em;">Daniel „DANIELOZA” Danek</h1>
+    <h1 style="margin:6px 0 0;letter-spacing:.02em;">Daniel "DANIELOZA" Danek</h1>
     <p class="note" style="margin-top:10px;max-width:82ch;">
-      AI video • Viral content • Social media • Landing pages
+      AI video  Viral content  Social media  Landing pages
     </p>
   </section>
 
   <section class="grid" style="margin-top:14px;display:grid;grid-template-columns:minmax(560px,1.15fr) minmax(440px,.85fr);gap:18px;align-items:start;">
     <div class="panel">
       <div class="kicker">Kim jestem</div>
-      <div id="aboutText" style="margin-top:10px;line-height:1.6;white-space:pre-wrap;font-size:16px;max-width:78ch;opacity:.95;">Nazywam się Daniel „DANIELOZA” Danek i tworzę DANIELOZA.AI — miejsce, gdzie łączę kreatywność, internetowe trendy i narzędzia AI w krótkie, skuteczne formaty wideo.
+      <div id="aboutText" style="margin-top:10px;line-height:1.6;white-space:pre-wrap;font-size:16px;max-width:78ch;opacity:.95;">Nazywam si Daniel "DANIELOZA" Danek i tworz DANIELOZA.AI  miejsce, gdzie cz kreatywno, internetowe trendy i narzdzia AI w krtkie, skuteczne formaty wideo.
 
-Na co dzień tworzę viralowe rolki i pomagam markom w social media: od pomysłu i scenariusza, przez montaż i styl, aż po gotowy materiał do publikacji. Lubię proste, premium rozwiązania: czysty design, szybki przekaz i konkretny efekt.
+Na co dzie tworz viralowe rolki i pomagam markom w social media: od pomysu i scenariusza, przez monta i styl, a po gotowy materia do publikacji. Lubi proste, premium rozwizania: czysty design, szybki przekaz i konkretny efekt.
 
-Jeśli chcesz: mogę zrobić dla Ciebie wideo reklamowe z AI, zaprojektować landing page, albo zrobić audyt social media i rozpisać plan treści pod wzrost i zaangażowanie.
+Jeli chcesz: mog zrobi dla Ciebie wideo reklamowe z AI, zaprojektowa landing page, albo zrobi audyt social media i rozpisa plan treci pod wzrost i zaangaowanie.
 
-Kliknij „Odtwórz lektora”, a głos przeczyta ten opis.</div>
+Kliknij "Odtwrz lektora", a gos przeczyta ten opis.</div>
 
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;">
-        <button class="btn" id="ttsPlay" type="button">Odtwórz lektora</button>
+        <button class="btn" id="ttsPlay" type="button">Odtwrz lektora</button>
         <button class="btn secondary" id="ttsPause" type="button" disabled>Pauza</button>
         <button class="btn secondary" id="ttsStop" type="button" disabled>Stop</button>
         <span class="pill" id="ttsState" style="padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.18);">ready</span>
       </div>
 
       <div class="note" id="ttsHint" style="margin-top:10px;">
-        Tip: jeśli nie ma polskiego głosu w systemie, lektor może brzmieć inaczej — to zależy od przeglądarki i ustawień Windows.
+        Tip: jeli nie ma polskiego gosu w systemie, lektor moe brzmie inaczej  to zaley od przegldarki i ustawie Windows.
       </div>
     </div>
 
     <div class="panel">
       <div class="kicker">W czym pomagam</div>
       <ul style="margin-top:10px;line-height:1.7;">
-        <li>AI video / reklamy w krótkim formacie (rolki, shorts)</li>
-        <li>Strategia treści i pomysły pod viral + konsekwencję</li>
-        <li>Landing page / prosta strona pod ofertę i leady</li>
+        <li>AI video / reklamy w krtkim formacie (rolki, shorts)</li>
+        <li>Strategia treci i pomysy pod viral + konsekwencj</li>
+        <li>Landing page / prosta strona pod ofert i leady</li>
         <li>Audyt social media + konkretne rekomendacje</li>
       </ul>
 
@@ -125,7 +129,7 @@ Kliknij „Odtwórz lektora”, a głos przeczyta ten opis.</div>
     utter.pitch = 1.0;
     utter.volume = 1.0;
 
-    // spróbuj wybrać polski głos, jeśli jest
+    // sprbuj wybra polski gos, jeli jest
     const voices = synth.getVoices ? synth.getVoices() : [];
     const pl = voices.find(v => (v.lang || "").toLowerCase().startsWith("pl"));
     if (pl) utter.voice = pl;
@@ -138,7 +142,7 @@ Kliknij „Odtwórz lektora”, a głos przeczyta ten opis.</div>
   playBtn.addEventListener("click", () => {
     if(!synth) return;
 
-    // jeśli było pauzowane
+    // jeli byo pauzowane
     if (synth.paused) {
       synth.resume();
       setState("speaking");
@@ -146,7 +150,7 @@ Kliknij „Odtwórz lektora”, a głos przeczyta ten opis.</div>
       return;
     }
 
-    // świeże odtwarzanie
+    // wiee odtwarzanie
     try { synth.cancel(); } catch(_){}
     buildUtter();
     synth.speak(utter);
@@ -167,7 +171,7 @@ Kliknij „Odtwórz lektora”, a głos przeczyta ten opis.</div>
     enable(false);
   });
 
-  // w niektórych przeglądarkach lista głosów ładuje się asynchronicznie
+  // w niektrych przegldarkach lista gosw aduje si asynchronicznie
   if (synth && synth.onvoiceschanged !== undefined) {
     synth.onvoiceschanged = () => {};
   }
@@ -178,6 +182,7 @@ Kliknij „Odtwórz lektora”, a głos przeczyta ten opis.</div>
 </script>
 </body>
 </html>
+
 
 
 

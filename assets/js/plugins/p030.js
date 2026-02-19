@@ -1,4 +1,4 @@
-﻿/* p030 — Open video in new tab button (fallback) */
+/* p030 — Open video in new tab button (fallback) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p030"] = {

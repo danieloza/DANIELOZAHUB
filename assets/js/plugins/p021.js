@@ -1,4 +1,4 @@
-﻿/* p021 — Copy last_job_id (from localStorage state v2) */
+/* p021 — Copy last_job_id (from localStorage state v2) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p021"] = {

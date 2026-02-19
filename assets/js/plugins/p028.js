@@ -1,4 +1,4 @@
-﻿/* p028 — Collapse/expand Plugin Manager list */
+/* p028 — Collapse/expand Plugin Manager list */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p028"] = {

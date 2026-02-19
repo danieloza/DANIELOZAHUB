@@ -1,4 +1,4 @@
-﻿/* p001 — SAFE utility plugin */
+/* p001 — SAFE utility plugin */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p001"] = {

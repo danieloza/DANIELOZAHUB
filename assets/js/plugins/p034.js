@@ -1,4 +1,4 @@
-﻿/* p034 — Network status pill inside Plugin Manager */
+/* p034 — Network status pill inside Plugin Manager */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p034"] = {

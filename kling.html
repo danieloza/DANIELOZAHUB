@@ -1,12 +1,15 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://danieloza.ai/kling.html" />
   <title>DANIELOZA.AI - Kling Studio</title>
   <meta name="description" content="DANIELOZA.AI - Kling / Video studio (mock UI)." />
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <script src="assets/js/main.js" defer></script>
+  <link rel="stylesheet" href="assets/css/style.css?v=20260219-5" />
+  <script src="assets/js/analytics.config.js" defer></script>
+  <script src="assets/js/main.js?v=20260219-topbarfix2" defer></script>
 
 
 
@@ -109,13 +112,14 @@
     <strong>DANIELOZA.AI</strong>
   </a>
   <nav>
-    <a href="oferta.html">OFERTA</a>
-    <a href="kling.html" aria-current="page">KLING</a>
-    <a href="gemini.html">GEMINI</a>
-    <a href="audyt.html">AUDYT</a>
-    <a href="portfolio.html">PORTFOLIO</a>
-    <a href="kontakt.html">KONTAKT</a>
-    <a href="faq.html">FAQ</a>
+    <a href="oferta.html" data-track="cta_click" data-track-label="kling_nav_oferta">OFERTA</a>
+    <a href="kling.html" aria-current="page" data-track="cta_click" data-track-label="kling_nav_kling">KLING</a>
+    <a href="gemini.html" data-track="cta_click" data-track-label="kling_nav_gemini">GEMINI</a>
+    <a href="audyt.html" data-track="cta_click" data-track-label="kling_nav_audyt">AUDYT</a>
+    <a href="portfolio.html" data-track="cta_click" data-track-label="kling_nav_portfolio">PORTFOLIO</a>
+    <a href="case-studies.html" data-track="cta_click" data-track-label="kling_nav_case_studies">CASE STUDIES</a>
+    <a href="kontakt.html" data-track="cta_click" data-track-label="kling_nav_kontakt">KONTAKT</a>
+    <a href="faq.html" data-track="cta_click" data-track-label="kling_nav_faq">FAQ</a>
   </nav>
 </header>
 
@@ -125,7 +129,7 @@
       <!-- LEFT SIDEBAR -->
 <aside class="sdSide" aria-label="DANIELOZA.AI Studio Sidebar">
   <div class="sdHead">
-    <div class="sdSpark">✨</div>
+    <div class="sdSpark">&#9889;</div>
     <div>
       <div class="sdTitle">KLING</div>
       <div class="sdSub">VIDEO / IMAGE</div>
@@ -133,18 +137,18 @@
   </div>
 
   <div class="sdNav">
-    <a class="sdItem is-active" href="kling.html"><span class="sdIcon">🎬</span><span class="sdLabel">Kling</span><span class="sdSpacer"></span></a>
-    <a class="sdItem " href="seedance-1-5-pro.html"><span class="sdIcon">🎞️</span><span class="sdLabel">Seedance</span><span class="sdSpacer"></span></a>
-    <a class="sdItem " href="gemini.html"><span class="sdIcon">🤖</span><span class="sdLabel">Gemini</span><span class="sdSpacer"></span></a>
-    <a class="sdItem " href="seedream-4-0.html"><span class="sdIcon">🖼️</span><span class="sdLabel">Seedream 4.0</span><span class="sdSpacer"></span></a>
-    <a class="sdItem " href="seedream-4-5.html"><span class="sdIcon">🧩</span><span class="sdLabel">Seedream 4.5</span><span class="sdSpacer"></span></a>
-    <a class="sdItem " href="demo.html"><span class="sdIcon">🧪</span><span class="sdLabel">Sora 2</span><span class="sdSpacer"></span></a>
+    <a class="sdItem is-active" href="kling.html"><span class="sdIcon">&#127909;</span><span class="sdLabel">Kling</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="seedance-1-5-pro.html"><span class="sdIcon">&#10024;</span><span class="sdLabel">Seedance</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="gemini.html"><span class="sdIcon">&#129302;</span><span class="sdLabel">Gemini</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="seedream-4-0.html"><span class="sdIcon">&#128444;&#65039;</span><span class="sdLabel">Seedream 4.0</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="seedream-4-5.html"><span class="sdIcon">&#127912;</span><span class="sdLabel">Seedream 4.5</span><span class="sdSpacer"></span></a>
+    <a class="sdItem " href="demo.html"><span class="sdIcon">&#129514;</span><span class="sdLabel">Sora 2</span><span class="sdSpacer"></span></a>
   </div>
 
   <div class="sdBottom">
-    <button class="sdGhost" type="button" id="studioBackendBtn">Backend</button>
-    <button class="sdGhost" type="button" id="studioResetBtn">Reset</button>
-    <a class="sdCta" href="kontakt.html">Zapytaj o wdrożenie</a>
+    <button class="sdGhost" type="button" id="studioBackendBtn">&#9881; Backend</button>
+    <button class="sdGhost" type="button" id="studioResetBtn">&#8635; Reset</button>
+    <a class="sdCta" href="kontakt.html" data-track="cta_click" data-track-label="kling_sidebar_wdrozenie">&#9889; Zapytaj o wdrozenie</a>
   </div>
 </aside>
 <script id="DANIELOZA_ACTIVE_NAV_JS">
@@ -166,7 +170,7 @@
           <div>
             <div class="klingKicker">VIDEO GENERATION</div>
             <h1 class="klingTitle">KLING</h1>
-            <div class="klingSub">Makieta UI pod generowanie wideo + kolejka jobów. Następny krok: podpinamy API.</div>
+            <div class="klingSub">Makieta UI pod generowanie wideo + kolejka jobow. Nastepny krok: podpinamy API.</div>
           </div>
           <div class="klingTopbarRight">
             <button class="klingBtn" type="button" id="klingOpenBtn">OPEN VIDEO</button>
@@ -190,14 +194,14 @@
 
   <div class="klingTabs" role="tablist" aria-label="Tryby">
     <button class="klingTab is-active" type="button" data-tab="video" role="tab" aria-selected="true">Video</button>
-    <button class="klingTab" type="button" data-tab="img2vid" role="tab" aria-selected="false">Image→Video</button>
+    <button class="klingTab" type="button" data-tab="img2vid" role="tab" aria-selected="false">Image->Video</button>
     <button class="klingTab" type="button" data-tab="fx" role="tab" aria-selected="false">Elements</button>
     <button class="klingTab" type="button" data-tab="xform" role="tab" aria-selected="false">Transform</button>
   </div>
 
   <div class="klingField">
     <div class="klingFieldLabel">Prompt</div>
-    <textarea id="klingPrompt" rows="6" placeholder="Co chcesz dzisiaj stworzyć?"></textarea>
+    <textarea id="klingPrompt" rows="6" placeholder="Co chcesz dzisiaj stworzyc?"></textarea>
   </div>
 
   <div class="klingRow3">
@@ -211,7 +215,7 @@
     </label>
 
     <label class="klingMiniField">
-      <span>Jakość</span>
+      <span>Jakosc</span>
       <select id="klingRes">
         <option value="720p">720p</option>
         <option value="1080p" selected>1080p</option>
@@ -238,13 +242,13 @@
 
           <!-- STAGE -->
           <div class="klingCol panel klingStageCol">
-            <div class="klingColHead">02 / PODGLĄD</div>
+            <div class="klingColHead">02 / PODGLAD</div>
 
             <div class="klingStage" id="klingStage">
               <div class="klingStageInner">
                 <div class="klingBadge" id="klingBadge">Kling 01</div>
                 <div class="klingStageTitle">Brak wideo - wygeneruj po lewej</div>
-                <div class="klingStageSub">Tu będzie player + mini-queue / progress.</div>
+                <div class="klingStageSub">Tu bedzie player + mini-queue / progress.</div>
               </div>
             </div>
 
@@ -274,7 +278,7 @@
 
             <div class="klingStatus">
               <div class="klingPill">Ready: <b id="klingState">idle</b></div>
-              <div class="klingPill">Job: <b id="klingJob">—</b></div>
+              <div class="klingPill">Job: <b id="klingJob"></b></div>
               <div class="klingPill">Tryb: <b id="klingMode">video</b></div>
             </div>
           </div>
@@ -284,12 +288,12 @@
             <div class="klingColHead">03 / KOLEJKA</div>
 
             <div class="klingQueue" id="klingQueue">
-              <div class="klingQueueEmpty">Brak jobów</div>
+              <div class="klingQueueEmpty">Brak jobow</div>
             </div>
 
             <div class="klingQueueFoot">
-              <button class="klingBtn2" type="button" id="klingClearBtn">Wyczyść</button>
-              <button class="klingBtn2" type="button" id="klingMockBtn">Dodaj przykłady</button>
+              <button class="klingBtn2" type="button" id="klingClearBtn">Wyczysc</button>
+              <button class="klingBtn2" type="button" id="klingMockBtn">Dodaj przykady</button>
             </div>
           </div>
         </div>
@@ -328,7 +332,7 @@
 
     // ===== UI actions
     function klingOpen(){
-      alert("Tu będzie otwieranie wygenerowanego pliku / player.");
+      alert("Tu bedzie otwieranie wygenerowanego pliku / player.");
     }
 
     async function klingCopyJob(){
@@ -337,7 +341,7 @@
         await navigator.clipboard.writeText(JSON.stringify(KLING_JOB, null, 2));
         alert("Skopiowano job JSON do schowka");
       }catch(e){
-        alert("Nie mogę skopiować (brak uprawnień w przeglądarce). Otwórz stronę przez http(s), nie file://.");
+        alert("Nie moge skopiowac (brak uprawnien w przegladarce). Otworz strone przez http(s), nie file://.");
       }
     }
 
@@ -351,7 +355,7 @@
       el.innerHTML = `
         <div class="klingQueueTop">
           <b>${escapeHtml(job.id)}</b>
-          <span>${escapeHtml(job.model)} • ${escapeHtml(job.res)} • ${escapeHtml(job.dur)} • ${escapeHtml(job.ar)}</span>
+          <span>${escapeHtml(job.model)}  ${escapeHtml(job.res)}  ${escapeHtml(job.dur)}  ${escapeHtml(job.ar)}</span>
         </div>
         <div class="klingQueuePrompt">${escapeHtml(job.prompt)}</div>
       `;
@@ -364,17 +368,17 @@
         <div class="klingStageInner">
           <div class="klingBadge" id="klingBadge">${escapeHtml(KLING_MODEL)}</div>
           <div class="klingStageTitle">Brak wideo - wygeneruj po lewej</div>
-          <div class="klingStageSub">Tu będzie player + mini-queue / progress.</div>
+          <div class="klingStageSub">Tu bedzie player + mini-queue / progress.</div>
         </div>
       `;
       $("#klingState").textContent = "idle";
-      $("#klingJob").textContent = "—";
+      $("#klingJob").textContent = "";
       $("#klingMode").textContent = KLING_TAB;
       KLING_JOB = null;
     }
 
     function klingClear(){
-      $("#klingQueue").innerHTML = '<div class="klingQueueEmpty">Brak jobów</div>';
+      $("#klingQueue").innerHTML = '<div class="klingQueueEmpty">Brak jobow</div>';
       klingReset();
     }
 
@@ -402,9 +406,9 @@
       stage.innerHTML = `
         <div class="klingStageInner">
           <div class="klingBadge" id="klingBadge">${escapeHtml(KLING_MODEL)}</div>
-          <div class="klingStageTitle">Generuję</div>
+          <div class="klingStageTitle">Generuje</div>
           <div class="klingStageSub">${escapeHtml(prompt)}</div>
-          <div class="klingProgress" aria-label="Postęp">
+          <div class="klingProgress" aria-label="Postep">
             <div class="klingBar" id="klingBar" style="width:0%"></div>
           </div>
         </div>
@@ -424,7 +428,7 @@
             <div class="klingStageInner">
               <div class="klingBadge" id="klingBadge">${escapeHtml(KLING_MODEL)}</div>
               <div class="klingStageTitle">Gotowe (mock)</div>
-              <div class="klingStageSub">Tu będzie player / link do wideo + download.</div>
+              <div class="klingStageSub">Tu bedzie player / link do wideo + download.</div>
               <div class="klingStageBtns">
                 <button class="klingPrimary" type="button" id="klingOpenBtn2">OPEN VIDEO</button>
                 <button class="klingBtn2" type="button" id="klingCopyBtn2">KOPIUJ JOB</button>
@@ -463,7 +467,7 @@
   </script>
 <!-- KLING_BACKEND_OVERRIDE_START -->
 <script>
-  // === Backend override (nadpisuje klingGenerate w bezpieczny sposób)
+  // === Backend override (nadpisuje klingGenerate w bezpieczny sposob)
   const API_BASE = "http://127.0.0.1:8000";
 
   async function apiCreateJob(payload){
@@ -493,7 +497,7 @@
       const r = await fetch(`${API_BASE}/api/health`, { cache: "no-store" });
       const ok = r.ok;
       const btn = document.getElementById("klingBackendBtn");
-      if(btn) btn.textContent = ok ? "Backend: online" : "Backend: offline";
+      if(btn) btn.textContent = ok - "Backend: online" : "Backend: offline";
       return ok;
     }catch(e){
       const btn = document.getElementById("klingBackendBtn");
@@ -508,7 +512,7 @@
   window.klingGenerate = function klingGenerate(){
     (async ()=>{
       const promptEl = document.getElementById("klingPrompt");
-      const prompt = (promptEl ? promptEl.value : "").trim();
+      const prompt = (promptEl - promptEl.value : "").trim();
       if(!prompt){ alert("Wpisz prompt."); return; }
 
       const ok = await apiHealth();
@@ -532,7 +536,7 @@
         stage.innerHTML = `
           <div class="klingStageInner">
             <div class="klingBadge">${model}</div>
-            <div class="klingStageTitle">Wysyłam job do backendu...</div>
+            <div class="klingStageTitle">Wysyam job do backendu...</div>
             <div class="klingStageSub">${prompt}</div>
             <div class="klingProgress"><div class="klingBar" id="klingBar" style="width:12%"></div></div>
           </div>
@@ -557,7 +561,7 @@
         if(job.status === "done"){
           if(bar) bar.style.width = "100%";
           if(stage){
-            const msg = job.result?.message || "Backend: done";
+            const msg = job.result-.message || "Backend: done";
             stage.innerHTML = `
               <div class="klingStageInner">
                 <div class="klingBadge">${model}</div>
@@ -576,12 +580,12 @@
       }
 
       if(stateEl) stateEl.textContent = "timeout";
-      alert("Timeout - worker trwa albo stoi. Sprawdź backend.");
+      alert("Timeout - worker trwa albo stoi. Sprawd- backend.");
     })().catch(e=>{
       console.error(e);
       const stateEl = document.getElementById("klingState");
       if(stateEl) stateEl.textContent = "error";
-      alert("Błąd: " + (e?.message || e));
+      alert("Bad: " + (e-.message || e));
     });
   };
 </script>
@@ -600,7 +604,7 @@
         activeSlot = slot;
         const kind = slot.getAttribute("data-kind");
         fileInp.value = "";
-        fileInp.accept = kind === "video" ? "video/*" : "image/*";
+        fileInp.accept = kind === "video" - "video/*" : "image/*";
         fileInp.click();
       });
     });
@@ -637,6 +641,11 @@
 </script>
 </body>
 </html>
+
+
+
+
+
 
 
 

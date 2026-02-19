@@ -1,4 +1,4 @@
-﻿/* p039 — Intro overlay failsafe (remove if stuck) */
+/* p039 — Intro overlay failsafe (remove if stuck) */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p039"] = {

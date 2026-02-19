@@ -1,4 +1,4 @@
-﻿/* p032 — Prompt punctuation sanitizer */
+/* p032 — Prompt punctuation sanitizer */
 (function(){
   window.DANIELOZA_PLUGINS = window.DANIELOZA_PLUGINS || {};
   window.DANIELOZA_PLUGINS["p032"] = {
