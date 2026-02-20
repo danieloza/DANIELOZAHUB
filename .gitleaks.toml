@@ -1,0 +1,15 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Demo/test placeholder values"
+regexes = [
+  '''test-token''',
+  '''ADMIN_TOKEN''',
+  '''WEEKLY_REPORT_TOKEN'''
+]
+paths = [
+  '''backend/.*''',
+  '''admin\.html''',
+  '''admin-simple\.html'''
+]
