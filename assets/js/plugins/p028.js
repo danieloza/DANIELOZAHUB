@@ -17,15 +17,15 @@
         const top = mgr.querySelector(".pm-top");
         top?.appendChild(btn);
 
-        const KEY = "danieloza_pm_collapsed_v1";
+        const COLLAPSE_PREF = "danieloza_pm_collapsed_v1";
         function apply(){
-          const on = localStorage.getItem(KEY) === "1";
+          const on = localStorage.getItem(COLLAPSE_PREF) === "1";
           list.style.display = on ? "none" : "grid";
           btn.textContent = on ? "Expand" : "Collapse";
         }
         btn.addEventListener("click", ()=>{
-          const on = localStorage.getItem(KEY) === "1";
-          localStorage.setItem(KEY, on ? "0" : "1");
+          const on = localStorage.getItem(COLLAPSE_PREF) === "1";
+          localStorage.setItem(COLLAPSE_PREF, on ? "0" : "1");
           apply();
         });
         apply();
