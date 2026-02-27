@@ -1,0 +1,95 @@
+name: Backend Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Deploy target"
+        required: true
+        type: choice
+        options:
+          - render
+          - fly
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: danieloza_ai
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d danieloza_ai"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/danieloza_ai
+      STRIPE_WEBHOOK_SECRET: whsec_ci_local
+      MVP_WORKER_ENABLED: "true"
+      LEGACY_QUEUE_WORKER_ENABLED: "false"
+      STRIPE_CREDIT_PRICE_CENTS: "100"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Run migrations
+        run: python backend/migrate_postgres.py
+
+      - name: Run tests
+        run: |
+          python -m unittest -q backend/mvp_critical_path_test.py
+          python -m unittest -q backend/mvp_billing_integrity_test.py
+
+  deploy-render:
+    needs: preflight
+    if: ${{ github.event.inputs.target == 'render' }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Trigger Render deploy hook
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "Missing RENDER_DEPLOY_HOOK_URL secret"
+            exit 1
+          fi
+          curl -fsSL -X POST "$RENDER_DEPLOY_HOOK_URL"
+
+  deploy-fly:
+    needs: preflight
+    if: ${{ github.event.inputs.target == 'fly' }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Fly.io
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          if [ -z "$FLY_API_TOKEN" ]; then
+            echo "Missing FLY_API_TOKEN secret"
+            exit 1
+          fi
+          flyctl deploy --remote-only

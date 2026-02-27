@@ -1,0 +1,58 @@
+services:
+  - type: web
+    name: danieloza-ai-web
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r backend/requirements.txt
+    preDeployCommand: python backend/migrate_postgres.py
+    startCommand: python -m uvicorn backend.app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/ready
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12
+      - key: DATABASE_URL
+        fromDatabase:
+          name: danieloza-ai-db
+          property: connectionString
+      - key: MVP_WORKER_ENABLED
+        value: "false"
+      - key: LEGACY_QUEUE_WORKER_ENABLED
+        value: "false"
+      - key: STRIPE_CREDIT_PRICE_CENTS
+        value: "100"
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
+
+  - type: worker
+    name: danieloza-ai-worker
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: python -m backend.mvp_worker_runner
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12
+      - key: DATABASE_URL
+        fromDatabase:
+          name: danieloza-ai-db
+          property: connectionString
+      - key: MVP_WORKER_ENABLED
+        value: "true"
+      - key: LEGACY_QUEUE_WORKER_ENABLED
+        value: "false"
+      - key: REPLICATE_API_TOKEN
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
+
+databases:
+  - name: danieloza-ai-db
+    databaseName: danieloza_ai
+    user: danieloza_ai
+    plan: starter

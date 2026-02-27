@@ -11,12 +11,15 @@ backend/.env
 backend/payload.json
 backend/warmup.json
 backend/backups/
+backend/reports/
 backend/exports/
 backend/*.sqlite3
 backend/*.db
 backend_server.out.log
 backend_server.err.log
 *.local.log
+.local-trash/
+backend/*.bak_v*
 
 # Legacy artifacts (do not commit from root)
 *.bak

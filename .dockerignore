@@ -1,0 +1,15 @@
+.git
+.github
+backend/.venv
+backend/backups
+backend/exports
+backend/reports
+backend/uploads
+backend/jobs.sqlite3
+.local-trash
+_legacy_archive
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.pytest_cache

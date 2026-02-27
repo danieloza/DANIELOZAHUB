@@ -1,0 +1,65 @@
+name: Backend Monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check required secrets
+        env:
+          BACKEND_BASE_URL: ${{ secrets.BACKEND_BASE_URL }}
+          BACKEND_ADMIN_TOKEN: ${{ secrets.BACKEND_ADMIN_TOKEN }}
+        run: |
+          if [ -z "$BACKEND_BASE_URL" ]; then
+            echo "Missing BACKEND_BASE_URL secret"
+            exit 1
+          fi
+          if [ -z "$BACKEND_ADMIN_TOKEN" ]; then
+            echo "Missing BACKEND_ADMIN_TOKEN secret"
+            exit 1
+          fi
+
+      - name: Check /api/ready
+        env:
+          BACKEND_BASE_URL: ${{ secrets.BACKEND_BASE_URL }}
+        run: |
+          READY_JSON=$(curl -fsSL "$BACKEND_BASE_URL/api/ready")
+          python - "$READY_JSON" <<'PY'
+          import json, sys
+          data = json.loads(sys.argv[1])
+          if not bool(data.get("ok")):
+              print("READY check failed:", data)
+              sys.exit(1)
+          print("READY check OK")
+          PY
+        shell: bash
+
+      - name: Check /api/ops/metrics thresholds
+        env:
+          BACKEND_BASE_URL: ${{ secrets.BACKEND_BASE_URL }}
+          BACKEND_ADMIN_TOKEN: ${{ secrets.BACKEND_ADMIN_TOKEN }}
+          MAX_QUEUED: "500"
+        run: |
+          METRICS_JSON=$(curl -fsSL -H "x-admin-token: $BACKEND_ADMIN_TOKEN" "$BACKEND_BASE_URL/api/ops/metrics")
+          python - "$METRICS_JSON" "$MAX_QUEUED" <<'PY'
+          import json, sys
+          data = json.loads(sys.argv[1])
+          max_queued = int(sys.argv[2])
+          if not bool(data.get("ok")):
+              print("Metrics endpoint returned not ok:", data)
+              sys.exit(1)
+          queued = int(((data.get("queue_depth") or {}).get("queued") or 0))
+          failed_webhooks = int(data.get("webhook_failed_last_hour") or 0)
+          if failed_webhooks > 0:
+              print("Webhook failures detected:", failed_webhooks)
+              sys.exit(1)
+          if queued > max_queued:
+              print("Queue too large:", queued)
+              sys.exit(1)
+          print("Metrics thresholds OK")
+          PY
+        shell: bash

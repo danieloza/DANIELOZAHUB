@@ -19,6 +19,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
+from .mvp_billing import (
+    router as mvp_billing_router,
+    install_mvp_observability,
+    init_mvp_sentry,
+    start_mvp_worker,
+    stop_mvp_worker,
+)
 from .db import (
     init_db,
     insert_job,
@@ -140,6 +147,8 @@ CORS_ALLOW_ORIGINS = _split_csv_env("CORS_ALLOW_ORIGINS", "*")
 PUBLIC_ORIGIN_ALLOWLIST = _split_csv_env("PUBLIC_ORIGIN_ALLOWLIST", "")
 
 app = FastAPI(title="DANIELOZA.AI Backend", version="0.3")
+app.include_router(mvp_billing_router)
+init_mvp_sentry()
 
 app.add_middleware(
     CORSMiddleware,
@@ -149,6 +158,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+install_mvp_observability(app)
 
 app.mount("/uploads", StaticFiles(directory="backend/uploads"), name="uploads")
 
@@ -163,6 +173,13 @@ _rate_leads: Dict[str, List[datetime]] = {}
 
 RATE_LIMIT_EVENTS_MAX = 3000
 _rate_events: Dict[str, List[datetime]] = {}
+
+
+def _env_flag(name: str, default: bool = True) -> bool:
+    raw = (os.getenv(name) or "").strip().lower()
+    if not raw:
+        return default
+    return raw in {"1", "true", "yes", "on"}
 
 
 def client_ip(req: Request) -> str:
@@ -2170,7 +2187,14 @@ class TargetCommitCreateIn(BaseModel):
 @app.on_event("startup")
 async def startup() -> None:
     init_db()
-    asyncio.create_task(worker_loop())
+    if _env_flag("LEGACY_QUEUE_WORKER_ENABLED", True):
+        asyncio.create_task(worker_loop())
+    start_mvp_worker()
+
+
+@app.on_event("shutdown")
+async def shutdown() -> None:
+    await stop_mvp_worker()
 
 
 async def worker_loop() -> None:
@@ -2258,7 +2282,7 @@ async def upload_image(file: UploadFile = File(...)) -> Dict[str, Any]:
     }
 
 
-@app.post("/api/kling/jobs")
+@app.post("/api/kling/jobs", deprecated=True)
 async def create_job(req: Request, data: CreateJobIn) -> Dict[str, Any]:
     ip = client_ip(req)
     rate_check(_rate_jobs, ip, RATE_LIMIT_MAX)
@@ -2274,7 +2298,7 @@ async def create_job(req: Request, data: CreateJobIn) -> Dict[str, Any]:
     return {"id": job_id, "status": "queued", "payload": payload}
 
 
-@app.get("/api/kling/jobs/{job_id}")
+@app.get("/api/kling/jobs/{job_id}", deprecated=True)
 def read_job(job_id: str) -> Dict[str, Any]:
     row = get_job(job_id)
     if not row:
@@ -2293,7 +2317,7 @@ def read_job(job_id: str) -> Dict[str, Any]:
     }
 
 
-@app.get("/api/kling/jobs")
+@app.get("/api/kling/jobs", deprecated=True)
 def jobs(limit: int = 30) -> List[Dict[str, Any]]:
     rows = list_jobs(limit=limit)
     out: List[Dict[str, Any]] = []
