@@ -1,0 +1,37 @@
+name: Backend Live Smoke Staging
+
+on:
+  workflow_dispatch:
+
+jobs:
+  live-smoke-staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Check required secrets
+        env:
+          STAGING_BACKEND_BASE_URL: ${{ secrets.STAGING_BACKEND_BASE_URL }}
+          STAGING_STRIPE_WEBHOOK_SECRET: ${{ secrets.STAGING_STRIPE_WEBHOOK_SECRET }}
+        run: |
+          if [ -z "$STAGING_BACKEND_BASE_URL" ]; then
+            echo "Missing STAGING_BACKEND_BASE_URL secret"
+            exit 1
+          fi
+          if [ -z "$STAGING_STRIPE_WEBHOOK_SECRET" ]; then
+            echo "Missing STAGING_STRIPE_WEBHOOK_SECRET secret"
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run staging live smoke flow
+        env:
+          BACKEND_BASE_URL: ${{ secrets.STAGING_BACKEND_BASE_URL }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STAGING_STRIPE_WEBHOOK_SECRET }}
+        run: python backend/mvp_live_smoke_remote.py

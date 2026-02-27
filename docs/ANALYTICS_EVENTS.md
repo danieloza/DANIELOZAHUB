@@ -22,6 +22,11 @@ Tracking is handled in `assets/js/main.js` and currently supports:
 - `consent_update`
 - `lead_submit_success`
 - `lead_submit_error`
+- `signup` (app panel)
+- `checkout_started` (app panel)
+- `checkout_success` (app panel)
+- `job_created` (app panel)
+- `job_succeeded` (app panel)
 
 ## Payload (props)
 - `label`: human-readable action label
@@ -78,6 +83,8 @@ Forms with `data-track-submit` are automatically enriched with hidden fields:
 - `web_vital` sends LCP, CLS, INP (with rating: good / needs_improvement / poor).
 - UTM values are read from URL and persisted to localStorage for later events.
 - events are batched and sent to backend only when consent state is `granted`.
+- app panel (`app.html`) sends `signup/checkout/job*` events directly to `POST /api/analytics/events`
+  with `label=app_panel` and `payload.source=app_panel`.
 
 ## Consent Mode
 - Consent key: `localStorage['dz_analytics_consent']`

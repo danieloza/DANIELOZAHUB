@@ -29,6 +29,11 @@
     th, td { border-bottom: 1px solid rgba(255,255,255,.12); text-align: left; font-size: 12px; padding: 7px 8px; vertical-align: top; }
     .kpi { font-size: 36px; font-weight: 700; line-height: 1; margin: 6px 0; }
     .hint { font-size: 12px; opacity: .75; }
+    .onboarding-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+    .onboarding-item { border: 1px solid rgba(255,255,255,.16); border-radius: 10px; padding: 9px 10px; font-size: 13px; }
+    .onboarding-item.done { border-color: rgba(76,175,80,.5); background: rgba(76,175,80,.08); }
+    .onboarding-item.pending { border-color: rgba(255,255,255,.16); background: rgba(255,255,255,.02); }
+    .onboarding-note { margin-top: 9px; font-size: 12px; opacity: .8; }
     @media (max-width: 980px) {
       .api-row { grid-template-columns: 1fr; }
       .auth-grid { grid-template-columns: 1fr; }
@@ -120,6 +125,18 @@
           <button type="submit">Utworz job</button>
         </form>
       </article>
+    </section>
+
+    <section id="onboardingBox" class="control-card" style="margin-top:12px; display:none">
+      <h2>Onboarding MVP</h2>
+      <ul class="onboarding-list">
+        <li id="obRegistered" class="onboarding-item pending">1. Konto utworzone / aktywna sesja</li>
+        <li id="obCheckoutStarted" class="onboarding-item pending">2. Checkout rozpoczety</li>
+        <li id="obCheckoutSuccess" class="onboarding-item pending">3. Kredyty zaksiegowane</li>
+        <li id="obJobCreated" class="onboarding-item pending">4. Pierwszy job utworzony</li>
+        <li id="obJobSucceeded" class="onboarding-item pending">5. Pierwszy job zakonczony sukcesem</li>
+      </ul>
+      <p id="onboardingNote" class="onboarding-note">Ukoncz kroki 1-5, zeby przejsc pelny flow platnego usera.</p>
     </section>
 
     <section class="grid-2" style="margin-top:12px">

@@ -148,6 +148,11 @@ Rotacja runtime sekretow + hardening (lokalny `.env` + GitHub secrets + Render e
 Uwaga: automatyzuje rotacje `ADMIN_TOKEN` i `STRIPE_WEBHOOK_SECRET`.
 `STRIPE_SECRET_KEY` (klucz API) rotuj recznie w Stripe Dashboard.
 
+Szybki triage incydentu (ready + metrics + dead letters):
+```powershell
+.\incident-triage.ps1 -BackendBaseUrl "https://danieloza-ai-web.onrender.com" -BackendAdminToken "<token>"
+```
+
 Adresy lokalne:
 - frontend: `http://127.0.0.1:5500`
 - backend: `http://127.0.0.1:8000`
@@ -159,7 +164,11 @@ Adresy lokalne:
 - CD manualny: `.github/workflows/backend-deploy.yml` (Render/Fly)
 - Monitoring workflow: `.github/workflows/backend-monitor.yml` (ready + metrics thresholds)
 - Live smoke workflow: `.github/workflows/backend-live-smoke.yml` (register -> webhook -> job na live backendzie)
+- Staging deploy workflow: `.github/workflows/backend-deploy-staging.yml`
+- Staging monitor workflow: `.github/workflows/backend-monitor-staging.yml`
+- Staging live smoke workflow: `.github/workflows/backend-live-smoke-staging.yml`
 - Render blueprint: `render.yaml`
+- Render staging blueprint: `render.staging.yaml`
 - Fly config: `fly.toml`
 - Kontener: `Dockerfile`
 
@@ -178,6 +187,8 @@ Adresy lokalne:
 - `docs/MASTER_EXECUTION_PLAN_2026-2027.md`
 - `backend/docs/MVP_RUNBOOK.md`
 - `backend/docs/MVP_GO_LIVE_CHECKLIST.md`
+- `backend/docs/STAGING_SETUP.md`
+- `backend/docs/INCIDENT_RESPONSE_PLAYBOOK.md`
 
 ## API (skrot)
 - `POST /api/leads`

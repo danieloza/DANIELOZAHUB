@@ -40,6 +40,11 @@
   - `BACKEND_ADMIN_TOKEN`
   - `MONITOR_ALERT_WEBHOOK_URL` (optional)
 - [ ] Enable and check `Backend Live Smoke` workflow.
+- [ ] Enable and check `Backend Monitor Staging` + `Backend Live Smoke Staging` before prod cutover.
+
+## Incident Readiness
+- [ ] Validate `.\incident-triage.ps1` against production URL.
+- [ ] Keep `backend/docs/INCIDENT_RESPONSE_PLAYBOOK.md` up to date.
 
 ## Quality Gate
 - [ ] Run one-shot script: `.\go-live-all-at-once.ps1 -Target render`.

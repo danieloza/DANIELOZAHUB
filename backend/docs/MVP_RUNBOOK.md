@@ -4,6 +4,8 @@
 Runbook for MVP SaaS core (`auth`, `credits`, `stripe`, `jobs`, `worker`) implemented in `backend/mvp_billing.py`.
 Legacy `kling` job endpoints in `backend/app.py` are kept only for backward compatibility and marked as deprecated.
 Go-live checklist: `backend/docs/MVP_GO_LIVE_CHECKLIST.md`.
+Incident response playbook: `backend/docs/INCIDENT_RESPONSE_PLAYBOOK.md`.
+Staging setup: `backend/docs/STAGING_SETUP.md`.
 
 ## Required Environment
 - `DATABASE_URL`

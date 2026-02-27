@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: danieloza-ai-staging-web
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    preDeployCommand: python backend/migrate_postgres.py
+    startCommand: python -m uvicorn backend.app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/ready
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12
+      - key: DATABASE_URL
+        fromDatabase:
+          name: danieloza-ai-staging-db
+          property: connectionString
+      - key: MVP_WORKER_ENABLED
+        value: "true"
+      - key: LEGACY_QUEUE_WORKER_ENABLED
+        value: "false"
+      - key: STRIPE_CREDIT_PRICE_CENTS
+        value: "100"
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: AUTH_ORIGIN_ALLOWLIST
+        sync: false
+      - key: CORS_ALLOW_ORIGINS
+        sync: false
+
+databases:
+  - name: danieloza-ai-staging-db
+    databaseName: danieloza_ai_staging
+    user: danieloza_ai_staging
+    plan: free

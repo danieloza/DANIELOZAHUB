@@ -1,0 +1,110 @@
+name: Backend Monitor Staging
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 */2 * * *"
+
+jobs:
+  monitor-staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Check required secrets
+        env:
+          STAGING_BACKEND_BASE_URL: ${{ secrets.STAGING_BACKEND_BASE_URL }}
+          STAGING_BACKEND_ADMIN_TOKEN: ${{ secrets.STAGING_BACKEND_ADMIN_TOKEN }}
+        run: |
+          if [ -z "$STAGING_BACKEND_BASE_URL" ]; then
+            echo "Missing STAGING_BACKEND_BASE_URL secret"
+            exit 1
+          fi
+          if [ -z "$STAGING_BACKEND_ADMIN_TOKEN" ]; then
+            echo "Missing STAGING_BACKEND_ADMIN_TOKEN secret"
+            exit 1
+          fi
+
+      - name: Check /api/ready
+        env:
+          STAGING_BACKEND_BASE_URL: ${{ secrets.STAGING_BACKEND_BASE_URL }}
+        run: |
+          READY_JSON=$(curl -fsSL "$STAGING_BACKEND_BASE_URL/api/ready")
+          python - "$READY_JSON" <<'PY'
+          import json, sys
+          data = json.loads(sys.argv[1])
+          if not bool(data.get("ok")):
+              print("READY check failed:", data)
+              sys.exit(1)
+          print("READY check OK")
+          PY
+        shell: bash
+
+      - name: Check /api/ops/metrics thresholds
+        env:
+          STAGING_BACKEND_BASE_URL: ${{ secrets.STAGING_BACKEND_BASE_URL }}
+          STAGING_BACKEND_ADMIN_TOKEN: ${{ secrets.STAGING_BACKEND_ADMIN_TOKEN }}
+          MAX_QUEUED: "150"
+          MAX_WEBHOOK_FAILED_LAST_HOUR: "20"
+          MAX_JOBS_FAILED_LAST_HOUR: "30"
+          MAX_DEAD_LETTERS_LAST_24H: "30"
+          MAX_WORKER_HEARTBEAT_AGE_S: "120"
+        run: |
+          METRICS_JSON=$(curl -fsSL -H "x-admin-token: $STAGING_BACKEND_ADMIN_TOKEN" "$STAGING_BACKEND_BASE_URL/api/ops/metrics")
+          python - "$METRICS_JSON" "$MAX_QUEUED" "$MAX_WEBHOOK_FAILED_LAST_HOUR" "$MAX_JOBS_FAILED_LAST_HOUR" "$MAX_DEAD_LETTERS_LAST_24H" "$MAX_WORKER_HEARTBEAT_AGE_S" <<'PY'
+          import json, sys
+          from datetime import datetime, timezone
+          data = json.loads(sys.argv[1])
+          max_queued = int(sys.argv[2])
+          max_webhook_failed = int(sys.argv[3])
+          max_jobs_failed = int(sys.argv[4])
+          max_dead_letters = int(sys.argv[5])
+          max_hb_age = int(sys.argv[6])
+          if not bool(data.get("ok")):
+              print("Metrics endpoint returned not ok:", data)
+              sys.exit(1)
+          queued = int(((data.get("queue_depth") or {}).get("queued") or 0))
+          failed_webhooks = int(data.get("webhook_failed_last_hour") or 0)
+          jobs_failed = int(data.get("jobs_failed_last_hour") or 0)
+          dead_letters = int(data.get("dead_letters_last_24h") or 0)
+          worker = data.get("worker") or {}
+          last_hb = worker.get("last_heartbeat")
+          if not last_hb:
+              hb_age = 10**9
+          else:
+              hb_dt = datetime.fromisoformat(str(last_hb).replace("Z", "+00:00"))
+              hb_age = (datetime.now(timezone.utc) - hb_dt).total_seconds()
+          if failed_webhooks > max_webhook_failed:
+              print("Webhook failures detected:", failed_webhooks)
+              sys.exit(1)
+          if jobs_failed > max_jobs_failed:
+              print("Too many failed jobs:", jobs_failed)
+              sys.exit(1)
+          if dead_letters > max_dead_letters:
+              print("Too many dead letters:", dead_letters)
+              sys.exit(1)
+          if hb_age > max_hb_age:
+              print("Worker heartbeat too old:", hb_age)
+              sys.exit(1)
+          if queued > max_queued:
+              print("Queue too large:", queued)
+              sys.exit(1)
+          print("Metrics thresholds OK")
+          PY
+        shell: bash
+
+      - name: Send alert webhook on failure
+        if: ${{ failure() }}
+        env:
+          STAGING_BACKEND_BASE_URL: ${{ secrets.STAGING_BACKEND_BASE_URL }}
+          STAGING_MONITOR_ALERT_WEBHOOK_URL: ${{ secrets.STAGING_MONITOR_ALERT_WEBHOOK_URL }}
+        run: |
+          if [ -z "$STAGING_MONITOR_ALERT_WEBHOOK_URL" ]; then
+            echo "STAGING_MONITOR_ALERT_WEBHOOK_URL is empty, skipping alert send."
+            exit 0
+          fi
+          BODY="{\"text\":\"Staging Monitor FAILED for $STAGING_BACKEND_BASE_URL at run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}"
+          curl -fsSL -X POST \
+            -H "Content-Type: application/json" \
+            -d "$BODY" \
+            "$STAGING_MONITOR_ALERT_WEBHOOK_URL"
+        shell: bash
