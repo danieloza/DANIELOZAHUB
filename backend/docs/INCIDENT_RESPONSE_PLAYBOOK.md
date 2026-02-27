@@ -27,13 +27,14 @@ Dotyczy incydentow backendu MVP (`auth`, `billing`, `jobs`, `worker`, `stripe we
 ## Triage Decision Tree
 ### A) `webhook_failed_last_hour > 0`
 1. Zweryfikuj `STRIPE_WEBHOOK_SECRET` na runtime.
-2. Sprawdz ostatnie `webhook_events` z `status='failed'`.
+2. Sprawdz ostatnie `webhook_events` z `status='failed'` przez `GET /api/ops/webhook-events?status=failed`.
 3. Po fixie replay eventu Stripe (idempotencja powinna zapobiec duplikatom).
 
 ### B) `queue_depth.queued` rosnie lub `worker_running=false`
 1. Sprawdz heartbeat workera i logi deploya.
 2. Potwierdz `MVP_WORKER_ENABLED=true` i `LEGACY_QUEUE_WORKER_ENABLED=false`.
-3. Zrob redeploy (`Backend Deploy`) i monitoruj metryki przez 10-15 min.
+3. Sprawdz `worker.recovered_last_summary` w `GET /api/ops/metrics` (czy recovery stale `running` jobs zadzialal).
+4. Zrob redeploy (`Backend Deploy`) i monitoruj metryki przez 10-15 min.
 
 ### C) `jobs_failed_last_hour` lub `dead_letters_last_24h` rosna
 1. Pobierz `/api/ops/dead-letters`.

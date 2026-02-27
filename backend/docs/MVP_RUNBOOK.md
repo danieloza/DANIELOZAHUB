@@ -18,6 +18,7 @@ Optional:
 - `REPLICATE_API_TOKEN`
 - `SENTRY_DSN`
 - `SENTRY_TRACES_SAMPLE_RATE`
+- `MVP_RUNNING_STALE_SECONDS` (default `300`, recovery stale `running` jobs on worker start)
 - `AUTH_ORIGIN_ALLOWLIST`
 - `AUTH_LOGIN_*`
 - `MONITOR_ALERT_WEBHOOK_URL` (GitHub Actions secret dla alertow z `backend-monitor.yml`)
@@ -39,6 +40,7 @@ Optional:
    - `GET /api/ready`
    - `GET /api/ops/metrics` (with admin token)
    - `GET /api/ops/dead-letters` (with admin token)
+   - `GET /api/ops/webhook-events?status=failed` (with admin token)
 
 ## Backup and Restore
 - Create backup: `.\backup-postgres.ps1`
@@ -61,7 +63,7 @@ Symptoms:
 
 Checklist:
 1. Confirm `STRIPE_WEBHOOK_SECRET`.
-2. Inspect recent rows in `webhook_events` with `status='failed'`.
+2. Inspect recent rows in `webhook_events` with `status='failed'` (API: `GET /api/ops/webhook-events?status=failed`).
 3. Replay event from Stripe Dashboard after fix.
 
 ### Worker stuck / queue growing
@@ -72,8 +74,9 @@ Symptoms:
 Checklist:
 1. Confirm worker process is running.
 2. Check `worker_last_heartbeat`.
-3. Check `last_error` in `jobs`.
-4. Check `job_dead_letters`.
+3. Check worker recovery summary (`worker.recovered_last_summary`) in `GET /api/ops/metrics`.
+4. Check `last_error` in `jobs`.
+5. Check `job_dead_letters`.
 
 ### Credits mismatch
 Symptoms:

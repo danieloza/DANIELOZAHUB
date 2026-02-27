@@ -13,7 +13,7 @@ from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
 from backend.app import app
-from backend.mvp_billing import JobCreateIn, _create_job_with_credit_hold
+from backend.mvp_billing import JobCreateIn, _create_job_with_credit_hold, _recover_stale_running_jobs
 
 
 def _sign(payload_raw: str, secret: str) -> str:
@@ -34,6 +34,7 @@ class MVPBillingIntegrityTest(unittest.TestCase):
             raise unittest.SkipTest("STRIPE_WEBHOOK_SECRET is required")
         os.environ["ADMIN_TOKEN"] = "admin-test-token"
         os.environ["LEGACY_QUEUE_WORKER_ENABLED"] = "false"
+        os.environ.pop("AUTH_ORIGIN_ALLOWLIST", None)
         cls.lock = threading.Lock()
 
     def _create_user(self, email: str, password_hash: str = "x") -> str:
@@ -211,6 +212,93 @@ class MVPBillingIntegrityTest(unittest.TestCase):
             self.assertEqual(bad1.status_code, 401, bad1.text)
             self.assertEqual(bad2.status_code, 401, bad2.text)
             self.assertEqual(bad3.status_code, 429, bad3.text)
+
+    def test_recover_stale_running_jobs(self) -> None:
+        user_retry = self._create_user(f"recover-retry-{int(time.time())}@example.com")
+        user_fail = self._create_user(f"recover-fail-{int(time.time())}@example.com")
+
+        self._seed_credits(user_retry, 8, f"seed-recover-retry-{int(time.time())}")
+        self._seed_credits(user_fail, 3, f"seed-recover-fail-{int(time.time())}")
+
+        retry_job = _create_job_with_credit_hold(
+            user_retry,
+            JobCreateIn(
+                provider="mock",
+                operation="image.generate",
+                credits_cost=4,
+                max_attempts=2,
+                input={"prompt": "retry"},
+            ),
+        )
+        fail_job = _create_job_with_credit_hold(
+            user_fail,
+            JobCreateIn(
+                provider="mock",
+                operation="image.generate",
+                credits_cost=3,
+                max_attempts=1,
+                input={"prompt": "fail"},
+            ),
+        )
+        retry_job_id = str(retry_job["id"])
+        fail_job_id = str(fail_job["id"])
+
+        with psycopg.connect(self.dsn) as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    UPDATE jobs
+                    SET status = 'running',
+                        attempt_count = 1,
+                        updated_at = now() - INTERVAL '10 minutes'
+                    WHERE id IN (%s, %s)
+                    """,
+                    (retry_job_id, fail_job_id),
+                )
+            conn.commit()
+
+        old_stale = os.getenv("MVP_RUNNING_STALE_SECONDS")
+        os.environ["MVP_RUNNING_STALE_SECONDS"] = "60"
+        try:
+            summary = _recover_stale_running_jobs()
+        finally:
+            if old_stale is None:
+                os.environ.pop("MVP_RUNNING_STALE_SECONDS", None)
+            else:
+                os.environ["MVP_RUNNING_STALE_SECONDS"] = old_stale
+
+        self.assertGreaterEqual(int(summary.get("queued") or 0), 1, summary)
+        self.assertGreaterEqual(int(summary.get("failed") or 0), 1, summary)
+
+        with psycopg.connect(self.dsn) as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT status FROM jobs WHERE id = %s", (retry_job_id,))
+                retry_status = str(cur.fetchone()[0])
+                cur.execute("SELECT status FROM jobs WHERE id = %s", (fail_job_id,))
+                fail_status = str(cur.fetchone()[0])
+                cur.execute("SELECT COALESCE(SUM(amount), 0) FROM credit_ledger WHERE user_id = %s", (user_retry,))
+                retry_balance = int(cur.fetchone()[0])
+                cur.execute("SELECT COALESCE(SUM(amount), 0) FROM credit_ledger WHERE user_id = %s", (user_fail,))
+                fail_balance = int(cur.fetchone()[0])
+                cur.execute("SELECT COUNT(*) FROM job_dead_letters WHERE job_id = %s", (fail_job_id,))
+                dead_letters = int(cur.fetchone()[0])
+                cur.execute(
+                    """
+                    SELECT COUNT(*) FROM job_events
+                    WHERE job_id = %s
+                      AND event_type = 'retry_scheduled'
+                      AND payload->>'recovered' = 'true'
+                    """,
+                    (retry_job_id,),
+                )
+                recovered_events = int(cur.fetchone()[0])
+
+        self.assertEqual(retry_status, "queued")
+        self.assertEqual(fail_status, "failed")
+        self.assertEqual(retry_balance, 4)
+        self.assertEqual(fail_balance, 3)
+        self.assertEqual(dead_letters, 1)
+        self.assertGreaterEqual(recovered_events, 1)
 
 
 if __name__ == "__main__":

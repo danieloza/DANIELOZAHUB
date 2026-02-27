@@ -25,6 +25,9 @@ _WORKER_STATE: Dict[str, Any] = {
     "last_heartbeat": None,
     "processed_total": 0,
     "failures_total": 0,
+    "recovered_total": 0,
+    "recovered_last_at": None,
+    "recovered_last_summary": None,
 }
 _AUTH_LOCK = threading.Lock()
 _LOGIN_ATTEMPTS: Dict[str, List[datetime]] = {}
@@ -50,6 +53,15 @@ def _worker_enabled() -> bool:
     if not (os.getenv("DATABASE_URL") or "").strip():
         return False
     return _env_bool("MVP_WORKER_ENABLED", True)
+
+
+def _running_stale_seconds() -> int:
+    raw = (os.getenv("MVP_RUNNING_STALE_SECONDS") or "300").strip()
+    try:
+        value = int(raw)
+    except Exception:
+        value = 300
+    return max(30, min(86400, value))
 
 
 def _require_env(name: str) -> str:
@@ -952,6 +964,121 @@ def _mark_job_failed_or_retry(job: Dict[str, Any], error_text: str) -> None:
                 )
 
 
+def _recover_stale_running_jobs() -> Dict[str, int]:
+    stale_seconds = _running_stale_seconds()
+    summary: Dict[str, int] = {"stale_seconds": stale_seconds, "queued": 0, "failed": 0}
+    with _connect_postgres() as conn:
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT
+                      id, user_id, attempt_count, max_attempts, credits_cost
+                    FROM jobs
+                    WHERE status = 'running'
+                      AND updated_at <= (now() - make_interval(secs => %s))
+                    ORDER BY updated_at ASC
+                    FOR UPDATE SKIP LOCKED
+                    """,
+                    (stale_seconds,),
+                )
+                rows = cur.fetchall() or []
+                summary["candidates"] = len(rows)
+
+                for row in rows:
+                    job_id = str(row["id"])
+                    user_id = str(row["user_id"])
+                    attempt_count = int(row.get("attempt_count") or 0)
+                    max_attempts = int(row.get("max_attempts") or 1)
+                    credits_cost = int(row.get("credits_cost") or 0)
+
+                    if attempt_count < max_attempts:
+                        error_text = "recovered stale running job after worker restart"
+                        cur.execute(
+                            """
+                            UPDATE jobs
+                            SET status = 'queued',
+                                available_at = now(),
+                                last_error = %s,
+                                updated_at = now()
+                            WHERE id = %s AND status = 'running'
+                            """,
+                            (error_text, job_id),
+                        )
+                        if int(cur.rowcount or 0) > 0:
+                            cur.execute(
+                                """
+                                INSERT INTO job_events (job_id, event_type, payload, created_at)
+                                VALUES (%s, 'retry_scheduled', %s::jsonb, now())
+                                """,
+                                (
+                                    job_id,
+                                    json.dumps(
+                                        {
+                                            "attempt": attempt_count,
+                                            "next_retry_seconds": 0,
+                                            "error": error_text,
+                                            "recovered": True,
+                                        }
+                                    ),
+                                ),
+                            )
+                            summary["queued"] = int(summary.get("queued") or 0) + 1
+                        continue
+
+                    error_text = "job recovered as failed after stale running timeout"
+                    _insert_ledger_release(cur, user_id, job_id, credits_cost, "release_on_recover_fail")
+                    cur.execute(
+                        """
+                        UPDATE jobs
+                        SET status = 'failed',
+                            last_error = %s,
+                            finished_at = now(),
+                            updated_at = now()
+                        WHERE id = %s AND status = 'running'
+                        """,
+                        (error_text, job_id),
+                    )
+                    if int(cur.rowcount or 0) <= 0:
+                        continue
+
+                    cur.execute(
+                        """
+                        INSERT INTO job_events (job_id, event_type, payload, created_at)
+                        VALUES (%s, 'failed', %s::jsonb, now())
+                        """,
+                        (
+                            job_id,
+                            json.dumps({"attempt": attempt_count, "error": error_text, "recovered": True}),
+                        ),
+                    )
+                    cur.execute(
+                        """
+                        INSERT INTO job_dead_letters
+                          (id, job_id, user_id, reason, payload, created_at)
+                        VALUES
+                          (%s, %s, %s, %s, %s::jsonb, now())
+                        ON CONFLICT (job_id) DO NOTHING
+                        """,
+                        (
+                            str(uuid.uuid4()),
+                            job_id,
+                            user_id,
+                            "worker_recovery_exhausted",
+                            json.dumps(
+                                {
+                                    "attempt_count": attempt_count,
+                                    "max_attempts": max_attempts,
+                                    "error": error_text,
+                                    "recovered": True,
+                                }
+                            ),
+                        ),
+                    )
+                    summary["failed"] = int(summary.get("failed") or 0) + 1
+    return summary
+
+
 def _process_one_job() -> bool:
     job = _claim_next_job()
     if not job:
@@ -966,6 +1093,20 @@ def _process_one_job() -> bool:
 
 async def _mvp_worker_loop() -> None:
     logger.info("mvp worker started")
+    recovered: Dict[str, Any] = {"queued": 0, "failed": 0}
+    try:
+        recovered = await asyncio.to_thread(_recover_stale_running_jobs)
+        if int(recovered.get("queued") or 0) > 0 or int(recovered.get("failed") or 0) > 0:
+            logger.info("mvp worker recovery summary: %s", json.dumps(recovered, ensure_ascii=True))
+    except Exception as exc:
+        _WORKER_STATE["failures_total"] = int(_WORKER_STATE.get("failures_total") or 0) + 1
+        recovered = {"queued": 0, "failed": 0, "error": str(exc)}
+        logger.exception("mvp worker recovery pass failed: %s", exc)
+    _WORKER_STATE["recovered_total"] = int(_WORKER_STATE.get("recovered_total") or 0) + int(
+        recovered.get("queued") or 0
+    ) + int(recovered.get("failed") or 0)
+    _WORKER_STATE["recovered_last_at"] = _now_iso()
+    _WORKER_STATE["recovered_last_summary"] = recovered
     while True:
         _WORKER_STATE["last_heartbeat"] = _now_iso()
         try:
@@ -1456,6 +1597,9 @@ def ops_metrics(req: Request) -> Dict[str, Any]:
                     "last_heartbeat": _WORKER_STATE.get("last_heartbeat"),
                     "processed_total": int(_WORKER_STATE.get("processed_total") or 0),
                     "failures_total": int(_WORKER_STATE.get("failures_total") or 0),
+                    "recovered_total": int(_WORKER_STATE.get("recovered_total") or 0),
+                    "recovered_last_at": _WORKER_STATE.get("recovered_last_at"),
+                    "recovered_last_summary": _WORKER_STATE.get("recovered_last_summary"),
                 },
             }
 
@@ -1480,4 +1624,45 @@ def ops_dead_letters(req: Request, limit: int = 100) -> Dict[str, Any]:
             for row in rows:
                 if row.get("created_at"):
                     row["created_at"] = row["created_at"].isoformat()
+            return {"ok": True, "rows": rows}
+
+
+@router.get("/api/ops/webhook-events")
+def ops_webhook_events(req: Request, status: str = "", limit: int = 100) -> Dict[str, Any]:
+    if not _admin_token_ok(req):
+        raise HTTPException(status_code=401, detail="admin unauthorized")
+    limit = max(1, min(1000, int(limit)))
+    status_norm = (status or "").strip().lower()
+    allowed = {"", "received", "processed", "ignored", "failed"}
+    if status_norm not in allowed:
+        raise HTTPException(status_code=400, detail="invalid status filter")
+
+    with _connect_postgres() as conn:
+        with conn.cursor() as cur:
+            if status_norm:
+                cur.execute(
+                    """
+                    SELECT provider, event_id, event_type, status, error_text, received_at, processed_at
+                    FROM webhook_events
+                    WHERE status = %s
+                    ORDER BY received_at DESC
+                    LIMIT %s
+                    """,
+                    (status_norm, limit),
+                )
+            else:
+                cur.execute(
+                    """
+                    SELECT provider, event_id, event_type, status, error_text, received_at, processed_at
+                    FROM webhook_events
+                    ORDER BY received_at DESC
+                    LIMIT %s
+                    """,
+                    (limit,),
+                )
+            rows = cur.fetchall() or []
+            for row in rows:
+                for key in ("received_at", "processed_at"):
+                    if row.get(key):
+                        row[key] = row[key].isoformat()
             return {"ok": True, "rows": rows}

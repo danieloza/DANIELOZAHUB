@@ -208,6 +208,7 @@ Adresy lokalne:
 - `GET /api/ready`
 - `GET /api/ops/metrics` (admin token)
 - `GET /api/ops/dead-letters` (admin token)
+- `GET /api/ops/webhook-events` (admin token)
 - `POST /api/ops/credits/adjust` (admin token)
 
 Uwaga:
