@@ -18,6 +18,7 @@ Optional:
 - `SENTRY_TRACES_SAMPLE_RATE`
 - `AUTH_ORIGIN_ALLOWLIST`
 - `AUTH_LOGIN_*`
+- `MONITOR_ALERT_WEBHOOK_URL` (GitHub Actions secret dla alertow z `backend-monitor.yml`)
 
 ## Processes
 - Web API:
@@ -87,6 +88,7 @@ Checklist:
 - `jobs_failed_last_hour > threshold`
 - worker heartbeat age > 60s
 - queued jobs grows for 10+ minutes
+- dead-letter growth > threshold (`dead_letters_last_24h`)
 
 ## Security Operations
 - Rotate leaked/old Stripe keys immediately.

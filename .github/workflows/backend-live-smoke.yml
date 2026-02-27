@@ -1,0 +1,38 @@
+name: Backend Live Smoke
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+jobs:
+  live-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check required secrets
+        env:
+          BACKEND_BASE_URL: ${{ secrets.BACKEND_BASE_URL }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+        run: |
+          if [ -z "$BACKEND_BASE_URL" ]; then
+            echo "Missing BACKEND_BASE_URL secret"
+            exit 1
+          fi
+          if [ -z "$STRIPE_WEBHOOK_SECRET" ]; then
+            echo "Missing STRIPE_WEBHOOK_SECRET secret"
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run live smoke flow
+        env:
+          BACKEND_BASE_URL: ${{ secrets.BACKEND_BASE_URL }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+        run: python backend/mvp_live_smoke_remote.py

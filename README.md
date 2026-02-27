@@ -141,6 +141,13 @@ One-shot go-live preflight + deploy:
 Opcjonalnie `-Target fly` lub `-SkipDeploy` (tylko preflight bez triggera deploy).
 Na start nie potrzebujesz wlasnej domeny: wystarczy URL uslugi z Render/Fly.
 
+Rotacja runtime sekretow + hardening (lokalny `.env` + GitHub secrets + Render env):
+```powershell
+.\rotate-mvp-runtime-secrets.ps1 -RenderApiKey "<rnd_...>" -RenderWebServiceId "<srv_...>"
+```
+Uwaga: automatyzuje rotacje `ADMIN_TOKEN` i `STRIPE_WEBHOOK_SECRET`.
+`STRIPE_SECRET_KEY` (klucz API) rotuj recznie w Stripe Dashboard.
+
 Adresy lokalne:
 - frontend: `http://127.0.0.1:5500`
 - backend: `http://127.0.0.1:8000`
@@ -151,6 +158,7 @@ Adresy lokalne:
 - CI: `.github/workflows/backend-ci.yml` (Postgres service + migracje + testy MVP)
 - CD manualny: `.github/workflows/backend-deploy.yml` (Render/Fly)
 - Monitoring workflow: `.github/workflows/backend-monitor.yml` (ready + metrics thresholds)
+- Live smoke workflow: `.github/workflows/backend-live-smoke.yml` (register -> webhook -> job na live backendzie)
 - Render blueprint: `render.yaml`
 - Fly config: `fly.toml`
 - Kontener: `Dockerfile`

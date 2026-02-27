@@ -31,12 +31,15 @@
 - [ ] Configure `SENTRY_DSN`.
 - [ ] Configure alert checks for:
   - webhook failures per hour
+  - failed jobs per hour
   - worker heartbeat age
   - queue growth
   - dead-letter growth
 - [ ] Configure GitHub workflow `Backend Monitor` secrets:
   - `BACKEND_BASE_URL`
   - `BACKEND_ADMIN_TOKEN`
+  - `MONITOR_ALERT_WEBHOOK_URL` (optional)
+- [ ] Enable and check `Backend Live Smoke` workflow.
 
 ## Quality Gate
 - [ ] Run one-shot script: `.\go-live-all-at-once.ps1 -Target render`.
