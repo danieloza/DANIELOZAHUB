@@ -92,11 +92,15 @@ jobs:
         shell: bash
 
       - name: Send alert webhook on failure
-        if: ${{ failure() && secrets.MONITOR_ALERT_WEBHOOK_URL != '' }}
+        if: ${{ failure() }}
         env:
           BACKEND_BASE_URL: ${{ secrets.BACKEND_BASE_URL }}
           MONITOR_ALERT_WEBHOOK_URL: ${{ secrets.MONITOR_ALERT_WEBHOOK_URL }}
         run: |
+          if [ -z "$MONITOR_ALERT_WEBHOOK_URL" ]; then
+            echo "MONITOR_ALERT_WEBHOOK_URL is empty, skipping alert send."
+            exit 0
+          fi
           BODY="{\"text\":\"Backend Monitor FAILED for $BACKEND_BASE_URL at run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}"
           curl -fsSL -X POST \
             -H "Content-Type: application/json" \
