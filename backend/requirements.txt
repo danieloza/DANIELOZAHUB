@@ -5,3 +5,4 @@ python-multipart==0.0.9
 psycopg[binary]==3.2.12
 stripe==13.1.1
 sentry-sdk[fastapi]==2.39.0
+httpx==0.27.2
