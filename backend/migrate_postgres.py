@@ -49,10 +49,10 @@ def apply_migrations() -> int:
                     continue
 
             sql = path.read_text(encoding="utf-8")
-            with conn:
-                with conn.cursor() as cur:
-                    cur.execute(sql)
-                    cur.execute("INSERT INTO schema_migrations (version) VALUES (%s)", (version,))
+            with conn.cursor() as cur:
+                cur.execute(sql)
+                cur.execute("INSERT INTO schema_migrations (version) VALUES (%s)", (version,))
+            conn.commit()
             applied += 1
             print(f"apply {version}")
 
