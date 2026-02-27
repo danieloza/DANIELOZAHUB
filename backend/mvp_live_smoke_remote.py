@@ -15,7 +15,7 @@ def _require_env(name: str) -> str:
     return value
 
 
-def _call(base_url: str, path: str, *, method: str = "GET", body=None, headers=None):
+def _call(base_url: str, path: str, *, method: str = "GET", body=None, headers=None, retries: int = 3):
     url = base_url.rstrip("/") + path
     req_headers = {"Content-Type": "application/json"}
     if headers:
@@ -23,19 +23,55 @@ def _call(base_url: str, path: str, *, method: str = "GET", body=None, headers=N
     data = None
     if body is not None:
         data = json.dumps(body).encode("utf-8")
-    req = urllib.request.Request(url, data=data, method=method, headers=req_headers)
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            raw = resp.read().decode("utf-8")
-            payload = json.loads(raw) if raw else {}
-            return resp.getcode(), payload
-    except urllib.error.HTTPError as exc:
-        raw = exc.read().decode("utf-8")
+    last_exc = None
+    for attempt in range(max(1, retries)):
+        req = urllib.request.Request(url, data=data, method=method, headers=req_headers)
         try:
-            payload = json.loads(raw) if raw else {}
-        except Exception:
-            payload = {"raw": raw}
-        return exc.code, payload
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                raw = resp.read().decode("utf-8")
+                payload = json.loads(raw) if raw else {}
+                return resp.getcode(), payload
+        except urllib.error.HTTPError as exc:
+            raw = exc.read().decode("utf-8")
+            try:
+                payload = json.loads(raw) if raw else {}
+            except Exception:
+                payload = {"raw": raw}
+            return exc.code, payload
+        except (urllib.error.URLError, TimeoutError) as exc:
+            last_exc = exc
+            if attempt + 1 >= max(1, retries):
+                raise
+            time.sleep(1.5 * (attempt + 1))
+    if last_exc is not None:
+        raise last_exc
+    raise RuntimeError("unreachable")
+
+
+def _post_webhook(base_url: str, payload_raw: str, signature: str, retries: int = 3):
+    last_exc = None
+    for attempt in range(max(1, retries)):
+        req = urllib.request.Request(
+            base_url + "/api/billing/stripe/webhook",
+            data=payload_raw.encode("utf-8"),
+            method="POST",
+            headers={"Stripe-Signature": signature, "Content-Type": "application/json"},
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                raw = resp.read().decode("utf-8")
+                return resp.getcode(), json.loads(raw) if raw else {}
+        except urllib.error.HTTPError as exc:
+            raw = exc.read().decode("utf-8")
+            return exc.code, json.loads(raw) if raw else {}
+        except (urllib.error.URLError, TimeoutError) as exc:
+            last_exc = exc
+            if attempt + 1 >= max(1, retries):
+                raise
+            time.sleep(1.5 * (attempt + 1))
+    if last_exc is not None:
+        raise last_exc
+    raise RuntimeError("unreachable")
 
 
 def _assert(cond: bool, msg: str):
@@ -86,21 +122,7 @@ def main() -> None:
     }
     payload_raw = json.dumps(event, separators=(",", ":"))
     signature = _sign_stripe_payload(payload_raw, webhook_secret)
-    req = urllib.request.Request(
-        base_url + "/api/billing/stripe/webhook",
-        data=payload_raw.encode("utf-8"),
-        method="POST",
-        headers={"Stripe-Signature": signature, "Content-Type": "application/json"},
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            webhook_raw = resp.read().decode("utf-8")
-            webhook = json.loads(webhook_raw) if webhook_raw else {}
-            webhook_sc = resp.getcode()
-    except urllib.error.HTTPError as exc:
-        webhook_raw = exc.read().decode("utf-8")
-        webhook = json.loads(webhook_raw) if webhook_raw else {}
-        webhook_sc = exc.code
+    webhook_sc, webhook = _post_webhook(base_url, payload_raw, signature, retries=3)
 
     _assert(webhook_sc == 200, f"webhook failed: {webhook_sc} {webhook}")
     _assert(str(webhook.get("status")) == "processed", f"webhook not processed: {webhook}")
