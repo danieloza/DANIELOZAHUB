@@ -337,6 +337,11 @@ def _parse_stripe_event(payload: bytes, signature_header: str) -> Dict[str, Any]
 
 def _resolve_checkout_credits(session: Dict[str, Any]) -> int:
     metadata = session.get("metadata") or {}
+    if isinstance(metadata, str):
+        try:
+            metadata = json.loads(metadata)
+        except Exception:
+            metadata = {}
     if not isinstance(metadata, dict):
         metadata = {}
     raw = metadata.get("credits")
@@ -351,6 +356,11 @@ def _resolve_checkout_credits(session: Dict[str, Any]) -> int:
 
 def _resolve_checkout_user_id(session: Dict[str, Any]) -> str:
     metadata = session.get("metadata") or {}
+    if isinstance(metadata, str):
+        try:
+            metadata = json.loads(metadata)
+        except Exception:
+            metadata = {}
     if not isinstance(metadata, dict):
         metadata = {}
     user_id = str(metadata.get("user_id") or "").strip()
@@ -361,9 +371,19 @@ def _resolve_checkout_user_id(session: Dict[str, Any]) -> str:
 
 def _apply_checkout_completed(cur: Any, event: Dict[str, Any]) -> Tuple[str, Optional[str]]:
     data = event.get("data") or {}
+    if isinstance(data, str):
+        try:
+            data = json.loads(data)
+        except Exception:
+            data = {}
     if not isinstance(data, dict):
         return "failed", "invalid event.data payload"
     session = data.get("object") or {}
+    if isinstance(session, str):
+        try:
+            session = json.loads(session)
+        except Exception:
+            session = {}
     if not isinstance(session, dict):
         return "failed", "invalid event.data.object payload"
     event_id = str(event.get("id") or "").strip()
