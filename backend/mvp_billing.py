@@ -306,14 +306,33 @@ def _parse_stripe_event(payload: bytes, signature_header: str) -> Dict[str, Any]
         raise HTTPException(status_code=500, detail="stripe package is not installed") from exc
 
     try:
-        event = stripe.Webhook.construct_event(
+        event_obj = stripe.Webhook.construct_event(
             payload=payload,
             sig_header=signature_header,
             secret=webhook_secret,
         )
     except Exception as exc:
         raise HTTPException(status_code=400, detail=f"Invalid Stripe signature: {exc}") from exc
-    return dict(event)
+
+    event: Any
+    if hasattr(event_obj, "to_dict_recursive"):
+        event = event_obj.to_dict_recursive()
+    elif isinstance(event_obj, dict):
+        event = event_obj
+    elif isinstance(event_obj, str):
+        try:
+            event = json.loads(event_obj)
+        except Exception as exc:
+            raise HTTPException(status_code=400, detail=f"Invalid Stripe event payload: {exc}") from exc
+    else:
+        try:
+            event = json.loads(payload.decode("utf-8"))
+        except Exception as exc:
+            raise HTTPException(status_code=400, detail=f"Invalid Stripe event payload: {exc}") from exc
+
+    if not isinstance(event, dict):
+        raise HTTPException(status_code=400, detail="Invalid Stripe event payload type")
+    return event
 
 
 def _resolve_checkout_credits(session: Dict[str, Any]) -> int:
@@ -338,7 +357,11 @@ def _resolve_checkout_user_id(session: Dict[str, Any]) -> str:
 
 def _apply_checkout_completed(cur: Any, event: Dict[str, Any]) -> Tuple[str, Optional[str]]:
     data = event.get("data") or {}
+    if not isinstance(data, dict):
+        return "failed", "invalid event.data payload"
     session = data.get("object") or {}
+    if not isinstance(session, dict):
+        return "failed", "invalid event.data.object payload"
     event_id = str(event.get("id") or "").strip()
     if not event_id:
         return "failed", "missing event id"
