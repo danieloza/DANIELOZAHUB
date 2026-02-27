@@ -216,6 +216,10 @@
     return node;
   }
 
+  function makeIdempotencyKey(prefix) {
+    return (prefix || "req") + "-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+  }
+
   function clear(node) {
     while (node.firstChild) node.removeChild(node.firstChild);
   }
@@ -423,14 +427,19 @@
       await trackEvent("checkout_started", "app_panel", { credits: credits });
       var successUrl = location.origin + location.pathname + "?checkout=success";
       var cancelUrl = location.origin + location.pathname + "?checkout=cancel";
+      var checkoutIdem = makeIdempotencyKey("checkout");
       var out = await apiFetch("/api/billing/checkout-session", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Idempotency-Key": checkoutIdem
+        },
         body: JSON.stringify({
           credits: credits,
           success_url: successUrl,
           cancel_url: cancelUrl,
-          currency: "usd"
+          currency: "usd",
+          idempotency_key: checkoutIdem
         })
       });
       if (out.url) {
@@ -449,16 +458,21 @@
       var provider = document.getElementById("jobProvider").value;
       var prompt = document.getElementById("jobPrompt").value.trim();
       var creditsCost = Number(document.getElementById("jobCreditsCost").value || "1");
+      var jobIdem = makeIdempotencyKey("job");
       if (!prompt) throw new Error("Prompt jest wymagany");
       setStatus("Tworze job...", "info");
       await apiFetch("/api/jobs", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Idempotency-Key": jobIdem
+        },
         body: JSON.stringify({
           provider: provider,
           operation: "image.generate",
           credits_cost: creditsCost,
-          input: { prompt: prompt }
+          input: { prompt: prompt },
+          idempotency_key: jobIdem
         })
       });
       markOnboarding("first_job_created", true);

@@ -16,6 +16,7 @@
 - [ ] Configure production webhook URL to `/api/billing/stripe/webhook`.
 - [ ] Subscribe only required events (`checkout.session.completed`).
 - [ ] Run replay/idempotency test (same event twice => single topup).
+- [ ] Verify checkout session request uses `Idempotency-Key`.
 
 ## Runtime
 - [ ] Deploy web process with `MVP_WORKER_ENABLED=false`.
@@ -53,3 +54,4 @@
 - [ ] Run local smoke tests:
   - `python -m unittest -q backend/mvp_critical_path_test.py`
   - `python -m unittest -q backend/mvp_billing_integrity_test.py`
+- [ ] Verify `POST /api/jobs` with same `Idempotency-Key` returns same job id and single hold.

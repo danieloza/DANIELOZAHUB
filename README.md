@@ -213,6 +213,7 @@ Adresy lokalne:
 
 Uwaga:
 - legacy endpointy `/api/kling/jobs*` sa oznaczone jako deprecated (utrzymane pod kompatybilnosc).
+- dla `POST /api/jobs` i `POST /api/billing/checkout-session` wysylaj `Idempotency-Key` (ochrona przed duplikatami przy retry).
 
 ## Status porzadkowania
 - dokumentacja przeniesiona do `docs/`

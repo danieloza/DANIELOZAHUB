@@ -13,6 +13,7 @@ from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
 from backend.app import app
+from backend.migrate_postgres import apply_migrations
 from backend.mvp_billing import JobCreateIn, _create_job_with_credit_hold, _recover_stale_running_jobs
 
 
@@ -32,6 +33,8 @@ class MVPBillingIntegrityTest(unittest.TestCase):
             raise unittest.SkipTest("DATABASE_URL is required")
         if not cls.whsec:
             raise unittest.SkipTest("STRIPE_WEBHOOK_SECRET is required")
+        os.environ["DATABASE_URL"] = cls.dsn
+        apply_migrations()
         os.environ["ADMIN_TOKEN"] = "admin-test-token"
         os.environ["LEGACY_QUEUE_WORKER_ENABLED"] = "false"
         os.environ.pop("AUTH_ORIGIN_ALLOWLIST", None)
@@ -138,6 +141,53 @@ class MVPBillingIntegrityTest(unittest.TestCase):
         err_402 = sum(1 for x in results if x == "err:402")
         self.assertEqual(ok_count, 1, results)
         self.assertEqual(err_402, 1, results)
+
+    def test_job_create_idempotency_key_prevents_double_hold(self) -> None:
+        with TestClient(app) as client:
+            email = f"job-idem-{int(time.time())}@example.com"
+            reg = client.post("/api/auth/register", json={"email": email, "password": "StrongPass123"})
+            self.assertEqual(reg.status_code, 200, reg.text)
+            reg_json = reg.json()
+            user_id = str(reg_json["user"]["id"])
+            token = str(reg_json["token"])
+            self._seed_credits(user_id, 12, f"seed-job-idem-{int(time.time())}")
+
+            idem = f"job-idem-{int(time.time())}"
+            headers = {"Authorization": f"Bearer {token}", "Idempotency-Key": idem}
+            payload = {
+                "provider": "mock",
+                "operation": "image.generate",
+                "credits_cost": 5,
+                "max_attempts": 2,
+                "idempotency_key": idem,
+                "input": {"prompt": "idempotent"},
+            }
+            first = client.post("/api/jobs", headers=headers, json=payload)
+            second = client.post("/api/jobs", headers=headers, json=payload)
+
+            self.assertEqual(first.status_code, 200, first.text)
+            self.assertEqual(second.status_code, 200, second.text)
+            first_job = first.json()["job"]
+            second_job = second.json()["job"]
+            self.assertEqual(str(first_job["id"]), str(second_job["id"]))
+            self.assertEqual(bool(first_job.get("idempotent_replay")), False)
+            self.assertEqual(bool(second_job.get("idempotent_replay")), True)
+
+            balance = client.get("/api/credits/balance", headers={"Authorization": f"Bearer {token}"})
+            self.assertEqual(balance.status_code, 200, balance.text)
+            self.assertEqual(int(balance.json().get("balance") or 0), 7)
+
+            with psycopg.connect(self.dsn) as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT COUNT(*) FROM credit_ledger
+                        WHERE user_id=%s AND source_type='job' AND source_id=%s AND entry_type='hold'
+                        """,
+                        (user_id, str(first_job["id"])),
+                    )
+                    hold_count = int(cur.fetchone()[0])
+            self.assertEqual(hold_count, 1)
 
     def test_failed_job_releases_credits_and_creates_dead_letter(self) -> None:
         with TestClient(app) as client:

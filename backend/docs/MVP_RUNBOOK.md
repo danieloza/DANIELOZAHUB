@@ -31,6 +31,13 @@ Optional:
   - command: `python -m backend.mvp_worker_runner`
   - env: `MVP_WORKER_ENABLED=true`, `LEGACY_QUEUE_WORKER_ENABLED=false`
 
+## Write Idempotency
+- Send `Idempotency-Key` for:
+  - `POST /api/jobs`
+  - `POST /api/billing/checkout-session`
+- `POST /api/jobs` also supports body field `idempotency_key`.
+- Repeated request with same key returns existing job and does not create extra credit hold.
+
 ## Release Procedure
 1. Deploy new image/build.
 2. Run migrations: `python backend/migrate_postgres.py`.

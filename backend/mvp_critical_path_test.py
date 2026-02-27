@@ -25,6 +25,8 @@ class MVPCriticalPathTest(unittest.TestCase):
         if not (os.getenv("STRIPE_WEBHOOK_SECRET") or "").strip():
             raise unittest.SkipTest("STRIPE_WEBHOOK_SECRET is required")
         os.environ["LEGACY_QUEUE_WORKER_ENABLED"] = "false"
+        os.environ.pop("AUTH_ORIGIN_ALLOWLIST", None)
+
     def test_signup_webhook_job_result(self) -> None:
         email = f"mvp-e2e-{int(time.time())}@example.com"
         password = "StrongPass123"

@@ -293,6 +293,7 @@ class CheckoutSessionIn(BaseModel):
     success_url: str = Field(min_length=8, max_length=512)
     cancel_url: str = Field(min_length=8, max_length=512)
     currency: str = Field(default="usd", min_length=3, max_length=8)
+    idempotency_key: str = Field(default="", max_length=200)
 
 
 class JobCreateIn(BaseModel):
@@ -301,6 +302,7 @@ class JobCreateIn(BaseModel):
     input: Dict[str, Any] = Field(default_factory=dict)
     credits_cost: int = Field(default=1, ge=1, le=1_000_000)
     max_attempts: int = Field(default=5, ge=1, le=20)
+    idempotency_key: str = Field(default="", max_length=200)
 
 
 class CreditAdjustmentIn(BaseModel):
@@ -480,9 +482,21 @@ def _process_event_in_tx(event: Dict[str, Any]) -> Dict[str, Any]:
                 return {"status": status, "event_id": event_id, "event_type": event_type, "error_text": error_text}
 
 
-def _create_job_with_credit_hold(user_id: str, data: JobCreateIn) -> Dict[str, Any]:
+def _resolve_idempotency_key(*values: Optional[str]) -> str:
+    for raw in values:
+        key = str(raw or "").strip()
+        if not key:
+            continue
+        if len(key) > 200:
+            raise HTTPException(status_code=400, detail="idempotency key too long")
+        return key
+    return ""
+
+
+def _create_job_with_credit_hold(user_id: str, data: JobCreateIn, request_idempotency_key: str = "") -> Dict[str, Any]:
     job_id = str(uuid.uuid4())
     hold_entry_id = str(uuid.uuid4())
+    request_idempotency_key = _resolve_idempotency_key(request_idempotency_key)
 
     with _connect_postgres() as conn:
         with conn:
@@ -490,6 +504,34 @@ def _create_job_with_credit_hold(user_id: str, data: JobCreateIn) -> Dict[str, A
                 cur.execute("SELECT id FROM users WHERE id = %s FOR UPDATE", (user_id,))
                 if not cur.fetchone():
                     raise HTTPException(status_code=404, detail="user not found")
+
+                if request_idempotency_key:
+                    cur.execute(
+                        "SELECT pg_advisory_xact_lock(hashtext(%s))",
+                        (f"job-idem:{user_id}:{request_idempotency_key}",),
+                    )
+                    cur.execute(
+                        """
+                        SELECT id, status, provider, operation, credits_cost
+                        FROM jobs
+                        WHERE user_id = %s AND request_idempotency_key = %s
+                        LIMIT 1
+                        """,
+                        (user_id, request_idempotency_key),
+                    )
+                    existing = cur.fetchone()
+                    if existing:
+                        return {
+                            "id": str(existing["id"]),
+                            "status": str(existing.get("status") or "queued"),
+                            "user_id": user_id,
+                            "provider": str(existing.get("provider") or ""),
+                            "operation": str(existing.get("operation") or ""),
+                            "credits_cost": int(existing.get("credits_cost") or 0),
+                            "balance_after": _current_balance(cur, user_id),
+                            "request_idempotency_key": request_idempotency_key,
+                            "idempotent_replay": True,
+                        }
 
                 balance_before = _current_balance(cur, user_id)
                 if balance_before < data.credits_cost:
@@ -527,9 +569,9 @@ def _create_job_with_credit_hold(user_id: str, data: JobCreateIn) -> Dict[str, A
                 cur.execute(
                     """
                     INSERT INTO jobs
-                      (id, user_id, provider, operation, status, attempt_count, max_attempts, credits_cost, available_at, input_json, created_at, updated_at)
+                      (id, user_id, provider, operation, status, attempt_count, max_attempts, credits_cost, request_idempotency_key, available_at, input_json, created_at, updated_at)
                     VALUES
-                      (%s, %s, %s, %s, 'queued', 0, %s, %s, now(), %s::jsonb, now(), now())
+                      (%s, %s, %s, %s, 'queued', 0, %s, %s, %s, now(), %s::jsonb, now(), now())
                     """,
                     (
                         job_id,
@@ -538,6 +580,7 @@ def _create_job_with_credit_hold(user_id: str, data: JobCreateIn) -> Dict[str, A
                         data.operation,
                         data.max_attempts,
                         data.credits_cost,
+                        request_idempotency_key or None,
                         json.dumps(data.input or {}),
                     ),
                 )
@@ -566,6 +609,8 @@ def _create_job_with_credit_hold(user_id: str, data: JobCreateIn) -> Dict[str, A
                     "operation": data.operation,
                     "credits_cost": data.credits_cost,
                     "balance_after": balance_after,
+                    "request_idempotency_key": request_idempotency_key or "",
+                    "idempotent_replay": False,
                 }
 
 
@@ -1364,14 +1409,15 @@ def billing_checkout_session(req: Request, data: CheckoutSessionIn) -> Dict[str,
         raise HTTPException(status_code=500, detail="STRIPE_CREDIT_PRICE_CENTS must be >= 1")
 
     currency = (data.currency or "usd").strip().lower()
+    request_idempotency_key = _resolve_idempotency_key(data.idempotency_key, req.headers.get("idempotency-key"))
     try:
-        session = stripe.checkout.Session.create(
-            mode="payment",
-            success_url=data.success_url,
-            cancel_url=data.cancel_url,
-            client_reference_id=user["id"],
-            metadata={"user_id": user["id"], "credits": str(data.credits)},
-            line_items=[
+        create_args: Dict[str, Any] = {
+            "mode": "payment",
+            "success_url": data.success_url,
+            "cancel_url": data.cancel_url,
+            "client_reference_id": user["id"],
+            "metadata": {"user_id": user["id"], "credits": str(data.credits)},
+            "line_items": [
                 {
                     "price_data": {
                         "currency": currency,
@@ -1381,6 +1427,11 @@ def billing_checkout_session(req: Request, data: CheckoutSessionIn) -> Dict[str,
                     "quantity": data.credits,
                 }
             ],
+        }
+        if request_idempotency_key:
+            create_args["idempotency_key"] = f"checkout:{user['id']}:{request_idempotency_key}"
+        session = stripe.checkout.Session.create(
+            **create_args,
         )
     except Exception as exc:
         raise HTTPException(status_code=502, detail=f"stripe checkout session failed: {exc}") from exc
@@ -1392,6 +1443,7 @@ def billing_checkout_session(req: Request, data: CheckoutSessionIn) -> Dict[str,
         "credits": data.credits,
         "amount_cents": per_credit_cents * data.credits,
         "currency": currency,
+        "request_idempotency_key": request_idempotency_key,
     }
 
 
@@ -1411,7 +1463,8 @@ async def stripe_webhook(req: Request) -> Dict[str, Any]:
 @router.post("/api/jobs")
 def create_job_with_hold(req: Request, data: JobCreateIn) -> Dict[str, Any]:
     user = _auth_user_from_token(req)
-    row = _create_job_with_credit_hold(user["id"], data)
+    request_idempotency_key = _resolve_idempotency_key(data.idempotency_key, req.headers.get("idempotency-key"))
+    row = _create_job_with_credit_hold(user["id"], data, request_idempotency_key=request_idempotency_key)
     req.state.user_id = user["id"]
     req.state.job_id = str(row["id"])
     return {"ok": True, "job": row}
@@ -1427,7 +1480,7 @@ def jobs_list(req: Request, limit: int = 50) -> Dict[str, Any]:
                 """
                 SELECT
                   id, status, provider, operation, attempt_count, max_attempts,
-                  credits_cost, created_at, updated_at, started_at, finished_at,
+                  credits_cost, request_idempotency_key, created_at, updated_at, started_at, finished_at,
                   last_error, result_json
                 FROM jobs
                 WHERE user_id = %s
@@ -1453,7 +1506,7 @@ def job_details(req: Request, job_id: str) -> Dict[str, Any]:
                 """
                 SELECT
                   id, user_id, status, provider, operation, attempt_count, max_attempts,
-                  credits_cost, input_json, result_json, last_error,
+                  credits_cost, request_idempotency_key, input_json, result_json, last_error,
                   created_at, updated_at, started_at, finished_at
                 FROM jobs
                 WHERE id = %s AND user_id = %s
