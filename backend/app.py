@@ -17,6 +17,7 @@ from typing import Any, Dict, Optional, List, Tuple
 
 from fastapi import FastAPI, HTTPException, UploadFile, File, Request, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -164,6 +165,29 @@ install_mvp_observability(app)
 UPLOADS_DIR = Path("backend/uploads")
 UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="uploads")
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+SITE_ASSETS_DIR = REPO_ROOT / "assets"
+SITE_APP_HTML = REPO_ROOT / "app.html"
+if SITE_ASSETS_DIR.exists():
+    app.mount("/assets", StaticFiles(directory=str(SITE_ASSETS_DIR)), name="assets")
+
+
+@app.get("/", include_in_schema=False)
+def site_root() -> RedirectResponse:
+    return RedirectResponse(url="/app.html", status_code=307)
+
+
+@app.get("/app", include_in_schema=False)
+def site_app_shortcut() -> RedirectResponse:
+    return RedirectResponse(url="/app.html", status_code=307)
+
+
+@app.get("/app.html", include_in_schema=False)
+def site_app_panel() -> FileResponse:
+    if not SITE_APP_HTML.exists():
+        raise HTTPException(status_code=404, detail="app panel not found")
+    return FileResponse(SITE_APP_HTML)
 
 queue: "asyncio.Queue[Dict[str, Any]]" = asyncio.Queue()
 
