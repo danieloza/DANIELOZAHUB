@@ -337,6 +337,8 @@ def _parse_stripe_event(payload: bytes, signature_header: str) -> Dict[str, Any]
 
 def _resolve_checkout_credits(session: Dict[str, Any]) -> int:
     metadata = session.get("metadata") or {}
+    if not isinstance(metadata, dict):
+        metadata = {}
     raw = metadata.get("credits")
     if raw is None:
         return 0
@@ -349,6 +351,8 @@ def _resolve_checkout_credits(session: Dict[str, Any]) -> int:
 
 def _resolve_checkout_user_id(session: Dict[str, Any]) -> str:
     metadata = session.get("metadata") or {}
+    if not isinstance(metadata, dict):
+        metadata = {}
     user_id = str(metadata.get("user_id") or "").strip()
     if user_id:
         return user_id
