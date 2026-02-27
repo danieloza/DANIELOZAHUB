@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DANIELOZA.AI - Panel Usera</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    .app-wrap { max-width: 1200px; margin: 0 auto; padding: 28px 16px 72px; }
+    .app-top { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .app-title { margin: 0; font-size: 28px; }
+    .status { border-radius: 10px; padding: 10px 12px; font-size: 14px; border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.05); }
+    .status.ok { border-color: rgba(76,175,80,.5); }
+    .status.warn { border-color: rgba(255,193,7,.5); }
+    .status.err { border-color: rgba(244,67,54,.6); }
+    .control-card { border-radius: 16px; border: 1px solid rgba(255,255,255,.14); background: rgba(0,0,0,.2); padding: 14px; }
+    .api-row { display: grid; grid-template-columns: 1fr auto auto auto; gap: 8px; align-items: center; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 12px; }
+    .auth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stack { display: grid; gap: 8px; }
+    label { font-size: 13px; opacity: .85; }
+    input, select, textarea { width: 100%; border-radius: 10px; border: 1px solid rgba(255,255,255,.2); background: rgba(0,0,0,.22); color: #fff; padding: 10px; }
+    textarea { min-height: 90px; resize: vertical; }
+    button { border: 1px solid rgba(255,255,255,.24); border-radius: 10px; background: rgba(255,255,255,.08); color: #fff; padding: 9px 12px; cursor: pointer; }
+    .table-card { border-radius: 16px; border: 1px solid rgba(255,255,255,.14); background: rgba(0,0,0,.2); padding: 12px; overflow: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 760px; }
+    th, td { border-bottom: 1px solid rgba(255,255,255,.12); text-align: left; font-size: 12px; padding: 7px 8px; vertical-align: top; }
+    .kpi { font-size: 36px; font-weight: 700; line-height: 1; margin: 6px 0; }
+    .hint { font-size: 12px; opacity: .75; }
+    @media (max-width: 980px) {
+      .api-row { grid-template-columns: 1fr; }
+      .auth-grid { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header id="hdr">
+    <a class="brand-mini" href="index.html">
+      <img src="assets/img/logotype.png" alt="DANIELOZA.AI" />
+      <strong>DANIELOZA.AI</strong>
+    </a>
+    <nav>
+      <a href="index.html">HOME</a>
+      <a href="demo.html">DEMO</a>
+      <a href="app.html">APP</a>
+      <a href="kontakt.html">KONTAKT</a>
+    </nav>
+  </header>
+
+  <main class="app-wrap">
+    <section class="app-top">
+      <h1 class="app-title">Panel usera MVP</h1>
+      <div id="status" class="status info">Ladowanie...</div>
+    </section>
+
+    <section class="control-card">
+      <div class="api-row">
+        <label for="apiBase">API Base URL</label>
+        <input id="apiBase" placeholder="https://danieloza-ai-web.onrender.com" />
+        <button id="saveApiBase" type="button">Zapisz API</button>
+        <button id="refreshBtn" type="button" style="display:none">Odswiez</button>
+      </div>
+      <p class="hint">Na produkcji ustaw URL backendu Render. Lokalnie: `http://127.0.0.1:8000`.</p>
+    </section>
+
+    <section id="authBox" class="auth-grid grid-2">
+      <form id="registerForm" class="control-card stack">
+        <h2>Rejestracja</h2>
+        <label for="registerEmail">Email</label>
+        <input id="registerEmail" type="email" required />
+        <label for="registerPassword">Haslo</label>
+        <input id="registerPassword" type="password" required minlength="8" />
+        <button type="submit">Utworz konto</button>
+      </form>
+
+      <form id="loginForm" class="control-card stack">
+        <h2>Logowanie</h2>
+        <label for="loginEmail">Email</label>
+        <input id="loginEmail" type="email" required />
+        <label for="loginPassword">Haslo</label>
+        <input id="loginPassword" type="password" required minlength="8" />
+        <button type="submit">Zaloguj</button>
+      </form>
+    </section>
+
+    <section id="accountBox" class="grid-3" style="display:none">
+      <article class="control-card">
+        <h2>Konto</h2>
+        <p><strong>Email:</strong> <span id="meEmail">-</span></p>
+        <p><strong>User ID:</strong> <span id="meUserId">-</span></p>
+        <button id="logoutBtn" type="button" style="display:none">Wyloguj</button>
+      </article>
+
+      <article class="control-card">
+        <h2>Saldo kredytow</h2>
+        <div class="kpi" id="balance">0</div>
+        <form id="topupForm" class="stack">
+          <label for="topupCredits">Kup kredyty (test checkout)</label>
+          <input id="topupCredits" type="number" min="1" step="1" value="20" />
+          <button type="submit">Przejdz do Stripe Checkout</button>
+        </form>
+      </article>
+
+      <article class="control-card">
+        <h2>Nowy job</h2>
+        <form id="createJobForm" class="stack">
+          <label for="jobProvider">Provider</label>
+          <select id="jobProvider">
+            <option value="mock">mock</option>
+            <option value="replicate">replicate</option>
+          </select>
+          <label for="jobCreditsCost">Koszt (kredyty)</label>
+          <input id="jobCreditsCost" type="number" min="1" step="1" value="5" />
+          <label for="jobPrompt">Prompt</label>
+          <textarea id="jobPrompt" required>Test prompt z panelu MVP</textarea>
+          <button type="submit">Utworz job</button>
+        </form>
+      </article>
+    </section>
+
+    <section class="grid-2" style="margin-top:12px">
+      <article class="table-card">
+        <h2>Jobs (ostatnie 30)</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Status</th>
+              <th>Provider</th>
+              <th>Operation</th>
+              <th>Koszt</th>
+              <th>Attempt</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody id="jobsBody"></tbody>
+        </table>
+      </article>
+
+      <article class="table-card">
+        <h2>Ledger (ostatnie 20)</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Created</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Balance After</th>
+              <th>Source</th>
+              <th>Idempotency</th>
+            </tr>
+          </thead>
+          <tbody id="ledgerBody"></tbody>
+        </table>
+      </article>
+    </section>
+  </main>
+
+  <script src="assets/js/app.panel.js"></script>
+</body>
+</html>

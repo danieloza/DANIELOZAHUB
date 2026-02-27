@@ -145,6 +145,7 @@ Adresy lokalne:
 - frontend: `http://127.0.0.1:5500`
 - backend: `http://127.0.0.1:8000`
 - admin: `http://127.0.0.1:5500/admin.html`
+- app panel: `http://127.0.0.1:5500/app.html`
 
 ## CI/CD i Deploy
 - CI: `.github/workflows/backend-ci.yml` (Postgres service + migracje + testy MVP)

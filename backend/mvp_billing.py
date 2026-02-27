@@ -465,7 +465,7 @@ def _process_event_in_tx(event: Dict[str, Any]) -> Dict[str, Any]:
                     """,
                     (status, error_text, event_id),
                 )
-                return {"status": status, "event_id": event_id, "event_type": event_type}
+                return {"status": status, "event_id": event_id, "event_type": event_type, "error_text": error_text}
 
 
 def _create_job_with_credit_hold(user_id: str, data: JobCreateIn) -> Dict[str, Any]:
