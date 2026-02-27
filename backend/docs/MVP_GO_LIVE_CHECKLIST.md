@@ -22,6 +22,10 @@
 - [ ] Deploy worker process with `MVP_WORKER_ENABLED=true`.
 - [ ] Set `LEGACY_QUEUE_WORKER_ENABLED=false` on both.
 - [ ] Verify `/api/ready` is `ok=true`.
+- [ ] If worker service is unavailable on plan, run fallback all-in-one mode:
+  - web only
+  - `MVP_WORKER_ENABLED=true`
+  - monitor `worker_heartbeat_age_s` from `/api/ops/metrics`
 
 ## Monitoring and Alerts
 - [ ] Configure `SENTRY_DSN`.
