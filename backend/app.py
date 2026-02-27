@@ -160,7 +160,9 @@ app.add_middleware(
 )
 install_mvp_observability(app)
 
-app.mount("/uploads", StaticFiles(directory="backend/uploads"), name="uploads")
+UPLOADS_DIR = Path("backend/uploads")
+UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="uploads")
 
 queue: "asyncio.Queue[Dict[str, Any]]" = asyncio.Queue()
 
