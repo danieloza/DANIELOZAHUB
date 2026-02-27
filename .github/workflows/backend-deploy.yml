@@ -62,15 +62,30 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Trigger Render deploy hook
+      - name: Trigger Render deploy via API
         env:
-          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_WEB_SERVICE_ID: ${{ secrets.RENDER_WEB_SERVICE_ID }}
+          RENDER_WORKER_SERVICE_ID: ${{ secrets.RENDER_WORKER_SERVICE_ID }}
         run: |
-          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
-            echo "Missing RENDER_DEPLOY_HOOK_URL secret"
+          if [ -z "$RENDER_API_KEY" ]; then
+            echo "Missing RENDER_API_KEY secret"
             exit 1
           fi
-          curl -fsSL -X POST "$RENDER_DEPLOY_HOOK_URL"
+          if [ -z "$RENDER_WEB_SERVICE_ID" ]; then
+            echo "Missing RENDER_WEB_SERVICE_ID secret"
+            exit 1
+          fi
+          curl -fsSL -X POST "https://api.render.com/v1/services/$RENDER_WEB_SERVICE_ID/deploys" \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"clearCache":"do_not_clear"}'
+          if [ -n "$RENDER_WORKER_SERVICE_ID" ]; then
+            curl -fsSL -X POST "https://api.render.com/v1/services/$RENDER_WORKER_SERVICE_ID/deploys" \
+              -H "Authorization: Bearer $RENDER_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{"clearCache":"do_not_clear"}'
+          fi
 
   deploy-fly:
     needs: preflight

@@ -3,6 +3,7 @@ import csv
 import hashlib
 import io
 import json
+import logging
 import os
 import re
 import secrets
@@ -182,6 +183,17 @@ def _env_flag(name: str, default: bool = True) -> bool:
     if not raw:
         return default
     return raw in {"1", "true", "yes", "on"}
+
+
+def _maybe_apply_postgres_migrations_on_startup() -> None:
+    dsn = (os.getenv("DATABASE_URL") or "").strip().lower()
+    if not dsn.startswith("postgres"):
+        return
+    if not _env_flag("MVP_STARTUP_AUTO_MIGRATE", True):
+        return
+    from .migrate_postgres import apply_migrations
+
+    apply_migrations()
 
 
 def client_ip(req: Request) -> str:
@@ -2189,6 +2201,11 @@ class TargetCommitCreateIn(BaseModel):
 @app.on_event("startup")
 async def startup() -> None:
     init_db()
+    try:
+        _maybe_apply_postgres_migrations_on_startup()
+    except Exception:
+        logging.exception("startup postgres migrations failed")
+        raise
     if _env_flag("LEGACY_QUEUE_WORKER_ENABLED", True):
         asyncio.create_task(worker_loop())
     start_mvp_worker()
