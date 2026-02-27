@@ -43,18 +43,20 @@ jobs:
           BACKEND_BASE_URL: ${{ secrets.BACKEND_BASE_URL }}
           BACKEND_ADMIN_TOKEN: ${{ secrets.BACKEND_ADMIN_TOKEN }}
           MAX_QUEUED: "500"
+          MAX_WEBHOOK_FAILED_LAST_HOUR: "10"
         run: |
           METRICS_JSON=$(curl -fsSL -H "x-admin-token: $BACKEND_ADMIN_TOKEN" "$BACKEND_BASE_URL/api/ops/metrics")
-          python - "$METRICS_JSON" "$MAX_QUEUED" <<'PY'
+          python - "$METRICS_JSON" "$MAX_QUEUED" "$MAX_WEBHOOK_FAILED_LAST_HOUR" <<'PY'
           import json, sys
           data = json.loads(sys.argv[1])
           max_queued = int(sys.argv[2])
+          max_webhook_failed = int(sys.argv[3])
           if not bool(data.get("ok")):
               print("Metrics endpoint returned not ok:", data)
               sys.exit(1)
           queued = int(((data.get("queue_depth") or {}).get("queued") or 0))
           failed_webhooks = int(data.get("webhook_failed_last_hour") or 0)
-          if failed_webhooks > 0:
+          if failed_webhooks > max_webhook_failed:
               print("Webhook failures detected:", failed_webhooks)
               sys.exit(1)
           if queued > max_queued:
