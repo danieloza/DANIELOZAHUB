@@ -9,7 +9,7 @@ param(
   [string]$BackendBaseUrl = $env:BACKEND_BASE_URL,
   [string]$BackendAdminToken = $env:BACKEND_ADMIN_TOKEN,
   [string]$RenderDeployHookUrl = $env:RENDER_DEPLOY_HOOK_URL,
-  [string]$ProductionDomain = "danieloza.ai"
+  [string]$ProductionDomain = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -225,14 +225,15 @@ Run-OptionalStep "Post-deploy health checks" {
   }
 }
 
-Run-OptionalStep "Domain HTTPS check" {
-  if ([string]::IsNullOrWhiteSpace($ProductionDomain)) {
-    throw "ProductionDomain empty"
-  }
-  Resolve-DnsName $ProductionDomain -ErrorAction Stop | Out-Null
-  $resp = Invoke-WebRequest -Method Head -Uri ("https://" + $ProductionDomain) -MaximumRedirection 5
-  if ($resp.StatusCode -lt 200 -or $resp.StatusCode -ge 400) {
-    throw "unexpected HTTP status: $($resp.StatusCode)"
+if ([string]::IsNullOrWhiteSpace($ProductionDomain)) {
+  $summary["Domain HTTPS check"] = "skipped"
+} else {
+  Run-OptionalStep "Domain HTTPS check" {
+    Resolve-DnsName $ProductionDomain -ErrorAction Stop | Out-Null
+    $resp = Invoke-WebRequest -Method Head -Uri ("https://" + $ProductionDomain) -MaximumRedirection 5
+    if ($resp.StatusCode -lt 200 -or $resp.StatusCode -ge 400) {
+      throw "unexpected HTTP status: $($resp.StatusCode)"
+    }
   }
 }
 

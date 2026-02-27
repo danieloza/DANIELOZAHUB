@@ -139,6 +139,7 @@ One-shot go-live preflight + deploy:
 .\go-live-all-at-once.ps1 -Target render
 ```
 Opcjonalnie `-Target fly` lub `-SkipDeploy` (tylko preflight bez triggera deploy).
+Na start nie potrzebujesz wlasnej domeny: wystarczy URL uslugi z Render/Fly.
 
 Adresy lokalne:
 - frontend: `http://127.0.0.1:5500`
