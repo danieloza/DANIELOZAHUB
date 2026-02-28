@@ -1,0 +1,94 @@
+name: Backend Update Auth Origin
+
+on:
+  workflow_dispatch:
+    inputs:
+      auth_origin_allowlist:
+        description: "Comma-separated allowlist for AUTH_ORIGIN_ALLOWLIST"
+        required: true
+        type: string
+        default: "https://danieloza-ai-web.onrender.com"
+
+jobs:
+  update-auth-origin:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Check required secrets
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_WEB_SERVICE_ID: ${{ secrets.RENDER_WEB_SERVICE_ID }}
+        run: |
+          if [ -z "$RENDER_API_KEY" ]; then
+            echo "Missing RENDER_API_KEY secret"
+            exit 1
+          fi
+          if [ -z "$RENDER_WEB_SERVICE_ID" ]; then
+            echo "Missing RENDER_WEB_SERVICE_ID secret"
+            exit 1
+          fi
+
+      - name: Update AUTH_ORIGIN_ALLOWLIST in Render env
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_WEB_SERVICE_ID: ${{ secrets.RENDER_WEB_SERVICE_ID }}
+          AUTH_ORIGIN_ALLOWLIST: ${{ github.event.inputs.auth_origin_allowlist }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          api_key = os.environ["RENDER_API_KEY"].strip()
+          service_id = os.environ["RENDER_WEB_SERVICE_ID"].strip()
+          auth_allowlist = os.environ["AUTH_ORIGIN_ALLOWLIST"].strip()
+          if not auth_allowlist:
+              raise SystemExit("AUTH_ORIGIN_ALLOWLIST input is empty")
+
+          base = f"https://api.render.com/v1/services/{service_id}/env-vars"
+          headers = {"Authorization": f"Bearer {api_key}"}
+
+          req = urllib.request.Request(base, headers=headers, method="GET")
+          with urllib.request.urlopen(req, timeout=60) as resp:
+              current = json.loads(resp.read().decode("utf-8"))
+
+          kv = {}
+          for row in current:
+              env_var = row.get("envVar") or {}
+              key = str(env_var.get("key") or "").strip()
+              if key:
+                  kv[key] = str(env_var.get("value") or "")
+
+          kv["AUTH_ORIGIN_ALLOWLIST"] = auth_allowlist
+
+          payload = [{"key": k, "value": v} for k, v in kv.items()]
+          body = json.dumps(payload, separators=(",", ":")).encode("utf-8")
+          put_req = urllib.request.Request(
+              base,
+              data=body,
+              headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+              method="PUT",
+          )
+          with urllib.request.urlopen(put_req, timeout=60) as resp:
+              updated = json.loads(resp.read().decode("utf-8"))
+
+          applied = None
+          for row in updated:
+              env_var = row.get("envVar") or {}
+              if str(env_var.get("key") or "") == "AUTH_ORIGIN_ALLOWLIST":
+                  applied = str(env_var.get("value") or "")
+                  break
+          if applied != auth_allowlist:
+              raise SystemExit("AUTH_ORIGIN_ALLOWLIST update verification failed")
+          print("AUTH_ORIGIN_ALLOWLIST updated.")
+          PY
+
+      - name: Trigger Render deploy
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_WEB_SERVICE_ID: ${{ secrets.RENDER_WEB_SERVICE_ID }}
+        run: |
+          curl -fsSL -X POST "https://api.render.com/v1/services/$RENDER_WEB_SERVICE_ID/deploys" \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"clearCache":"do_not_clear"}'
