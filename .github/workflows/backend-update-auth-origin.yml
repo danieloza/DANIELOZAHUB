@@ -3,8 +3,8 @@ name: Backend Update Auth Origin
 on:
   workflow_dispatch:
     inputs:
-      auth_origin_allowlist:
-        description: "Comma-separated allowlist for AUTH_ORIGIN_ALLOWLIST"
+      origin_allowlist:
+        description: "Comma-separated production origins allowlist"
         required: true
         type: string
         default: "https://danieloza-ai-web.onrender.com"
@@ -28,11 +28,11 @@ jobs:
             exit 1
           fi
 
-      - name: Update AUTH_ORIGIN_ALLOWLIST in Render env
+      - name: Update origin policy env vars in Render env
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
           RENDER_WEB_SERVICE_ID: ${{ secrets.RENDER_WEB_SERVICE_ID }}
-          AUTH_ORIGIN_ALLOWLIST: ${{ github.event.inputs.auth_origin_allowlist }}
+          ORIGIN_ALLOWLIST: ${{ github.event.inputs.origin_allowlist }}
         run: |
           python - <<'PY'
           import json
@@ -41,9 +41,9 @@ jobs:
 
           api_key = os.environ["RENDER_API_KEY"].strip()
           service_id = os.environ["RENDER_WEB_SERVICE_ID"].strip()
-          auth_allowlist = os.environ["AUTH_ORIGIN_ALLOWLIST"].strip()
-          if not auth_allowlist:
-              raise SystemExit("AUTH_ORIGIN_ALLOWLIST input is empty")
+          origin_allowlist = os.environ["ORIGIN_ALLOWLIST"].strip()
+          if not origin_allowlist:
+              raise SystemExit("origin_allowlist input is empty")
 
           base = f"https://api.render.com/v1/services/{service_id}/env-vars"
           headers = {"Authorization": f"Bearer {api_key}"}
@@ -59,7 +59,11 @@ jobs:
               if key:
                   kv[key] = str(env_var.get("value") or "")
 
-          kv["AUTH_ORIGIN_ALLOWLIST"] = auth_allowlist
+          kv["AUTH_ORIGIN_ALLOWLIST"] = origin_allowlist
+          kv["CORS_ALLOW_ORIGINS"] = origin_allowlist
+          kv["PUBLIC_ORIGIN_ALLOWLIST"] = origin_allowlist
+          kv["ALLOW_LOCALHOST_ORIGINS"] = "false"
+          kv["ALLOW_NULL_ORIGIN"] = "false"
 
           payload = [{"key": k, "value": v} for k, v in kv.items()]
           body = json.dumps(payload, separators=(",", ":")).encode("utf-8")
@@ -72,15 +76,23 @@ jobs:
           with urllib.request.urlopen(put_req, timeout=60) as resp:
               updated = json.loads(resp.read().decode("utf-8"))
 
-          applied = None
+          applied = {}
           for row in updated:
               env_var = row.get("envVar") or {}
-              if str(env_var.get("key") or "") == "AUTH_ORIGIN_ALLOWLIST":
-                  applied = str(env_var.get("value") or "")
-                  break
-          if applied != auth_allowlist:
-              raise SystemExit("AUTH_ORIGIN_ALLOWLIST update verification failed")
-          print("AUTH_ORIGIN_ALLOWLIST updated.")
+              key = str(env_var.get("key") or "")
+              if key in {"AUTH_ORIGIN_ALLOWLIST", "CORS_ALLOW_ORIGINS", "PUBLIC_ORIGIN_ALLOWLIST", "ALLOW_LOCALHOST_ORIGINS", "ALLOW_NULL_ORIGIN"}:
+                  applied[key] = str(env_var.get("value") or "")
+          expected = {
+              "AUTH_ORIGIN_ALLOWLIST": origin_allowlist,
+              "CORS_ALLOW_ORIGINS": origin_allowlist,
+              "PUBLIC_ORIGIN_ALLOWLIST": origin_allowlist,
+              "ALLOW_LOCALHOST_ORIGINS": "false",
+              "ALLOW_NULL_ORIGIN": "false",
+          }
+          for key, value in expected.items():
+              if applied.get(key) != value:
+                  raise SystemExit(f"{key} update verification failed")
+          print("Origin policy env vars updated.")
           PY
 
       - name: Trigger Render deploy

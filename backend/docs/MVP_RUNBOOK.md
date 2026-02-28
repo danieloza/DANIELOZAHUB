@@ -20,6 +20,10 @@ Optional:
 - `SENTRY_TRACES_SAMPLE_RATE`
 - `MVP_RUNNING_STALE_SECONDS` (default `300`, recovery stale `running` jobs on worker start)
 - `AUTH_ORIGIN_ALLOWLIST`
+- `CORS_ALLOW_ORIGINS`
+- `PUBLIC_ORIGIN_ALLOWLIST`
+- `ALLOW_LOCALHOST_ORIGINS` (set `false` on production)
+- `ALLOW_NULL_ORIGIN` (set `false` on production)
 - `AUTH_LOGIN_*`
 - `MONITOR_ALERT_WEBHOOK_URL` (GitHub Actions secret dla alertow z `backend-monitor.yml`)
 

@@ -5,6 +5,8 @@
 - [ ] Rotate `STRIPE_WEBHOOK_SECRET` and update app env.
 - [ ] Rotate `ADMIN_TOKEN`.
 - [ ] Set `AUTH_ORIGIN_ALLOWLIST` to production origins only.
+- [ ] Set `CORS_ALLOW_ORIGINS` and `PUBLIC_ORIGIN_ALLOWLIST` to production origins only.
+- [ ] Set `ALLOW_LOCALHOST_ORIGINS=false` and `ALLOW_NULL_ORIGIN=false` on production.
 
 ## Database and Recovery
 - [ ] Run migrations: `python backend/migrate_postgres.py`.

@@ -145,8 +145,24 @@ def _split_csv_env(name: str, fallback: str = "") -> List[str]:
     return out
 
 
+def _env_bool(name: str, default: bool) -> bool:
+    raw = (os.getenv(name) or "").strip().lower()
+    if not raw:
+        return default
+    return raw in {"1", "true", "yes", "on"}
+
+
 CORS_ALLOW_ORIGINS = _split_csv_env("CORS_ALLOW_ORIGINS", "*")
 PUBLIC_ORIGIN_ALLOWLIST = _split_csv_env("PUBLIC_ORIGIN_ALLOWLIST", "")
+ALLOW_LOCALHOST_ORIGINS = _env_bool("ALLOW_LOCALHOST_ORIGINS", True)
+ALLOW_NULL_ORIGIN = _env_bool("ALLOW_NULL_ORIGIN", True)
+
+_origin_regex_parts: List[str] = []
+if ALLOW_LOCALHOST_ORIGINS:
+    _origin_regex_parts.append(r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$")
+if ALLOW_NULL_ORIGIN:
+    _origin_regex_parts.append(r"^null$")
+CORS_ALLOW_ORIGIN_REGEX = "|".join(_origin_regex_parts) if _origin_regex_parts else None
 
 app = FastAPI(title="DANIELOZA.AI Backend", version="0.3")
 app.include_router(mvp_billing_router)
@@ -155,7 +171,7 @@ init_mvp_sentry()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ALLOW_ORIGINS or ["*"],
-    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$|^null$",
+    allow_origin_regex=CORS_ALLOW_ORIGIN_REGEX,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -203,10 +219,7 @@ _rate_events: Dict[str, List[datetime]] = {}
 
 
 def _env_flag(name: str, default: bool = True) -> bool:
-    raw = (os.getenv(name) or "").strip().lower()
-    if not raw:
-        return default
-    return raw in {"1", "true", "yes", "on"}
+    return _env_bool(name, default)
 
 
 def _maybe_apply_postgres_migrations_on_startup() -> None:
@@ -1875,7 +1888,9 @@ def _is_origin_allowed(req: Request) -> bool:
         return True
     if origin in PUBLIC_ORIGIN_ALLOWLIST:
         return True
-    if origin.startswith("http://127.0.0.1") or origin.startswith("http://localhost"):
+    if ALLOW_LOCALHOST_ORIGINS and (origin.startswith("http://127.0.0.1") or origin.startswith("http://localhost")):
+        return True
+    if ALLOW_NULL_ORIGIN and origin == "null":
         return True
     return False
 
